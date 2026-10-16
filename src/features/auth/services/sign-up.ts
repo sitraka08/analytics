@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/routes";
 import { signUpSchema, type SignUpField } from "../schemas/sign-up";
 import type { FormState } from "../types/form-state";
 import { getAuthErrorMessage } from "../utils/auth-error";
-import { auth } from "./auth";
+import { auth, isEmailVerificationRequired } from "./auth";
 
 export async function signUpAction(
   _previous: FormState<SignUpField>,
@@ -32,6 +32,8 @@ export async function signUpAction(
   } catch (error) {
     return { ok: false, message: getAuthErrorMessage(error), values };
   }
+
+  if (!isEmailVerificationRequired) redirect(ROUTES.dashboard);
 
   redirect(`${ROUTES.verifyEmail}?email=${encodeURIComponent(parsed.data.email)}`);
 }

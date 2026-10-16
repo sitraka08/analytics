@@ -10,12 +10,17 @@ type EmailMessage = {
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function sendEmail(message: EmailMessage) {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  // In development, print the email in the terminal so the link can be followed.
+  const logToConsole = () =>
+    console.info(`\n[email] To: ${message.to}\n[email] Subject: ${message.subject}\n${message.text}\n`);
+
   if (!resend) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("RESEND_API_KEY manquante : impossible d'envoyer l'e-mail.");
+    if (isProduction) {
+      throw new Error("RESEND_API_KEY missing: cannot send the email.");
     }
-    // En développement sans Resend, on affiche l'e-mail dans le terminal pour pouvoir suivre le lien.
-    console.info(`\n[email] À : ${message.to}\n[email] Objet : ${message.subject}\n${message.text}\n`);
+    logToConsole();
     return;
   }
 
@@ -25,6 +30,11 @@ export async function sendEmail(message: EmailMessage) {
   });
 
   if (error) {
-    throw new Error(`Échec de l'envoi de l'e-mail : ${error.message}`);
+    if (isProduction) {
+      throw new Error(`Failed to send the email: ${error.message}`);
+    }
+    // E.g. unverified domain: Resend then only sends to the account's own address.
+    console.warn(`[email] Resend refused to send (${error.message}), link printed below.`);
+    logToConsole();
   }
 }
