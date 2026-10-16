@@ -11,3 +11,4 @@ export { ForgotPasswordForm } from "./components/forgot-password-form";
 export { ResetPasswordForm } from "./components/reset-password-form";
 export { ResendVerificationForm } from "./components/resend-verification-form";
 export { SignOutButton } from "./components/sign-out-button";
+export { SignOutMenuButton } from "./components/sign-out-menu-button";
