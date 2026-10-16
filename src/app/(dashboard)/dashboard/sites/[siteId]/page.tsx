@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import {
   ActiveFilters,
+  FilterBar,
   KpiGrid,
   PeriodTabs,
   RankingSection,
@@ -56,8 +57,16 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
         <PeriodTabs current={period} basePath={basePath} filters={filters} />
       </div>
 
-      {filtered ? (
+      {hasData || filtered ? (
         <div className="mt-6">
+          <Suspense fallback={<SectionSkeleton className="h-16 rounded-3xl" />}>
+            <FilterBar {...scope} basePath={basePath} />
+          </Suspense>
+        </div>
+      ) : null}
+
+      {filtered ? (
+        <div className="mt-4">
           <ActiveFilters basePath={basePath} period={period} filters={filters} />
         </div>
       ) : null}

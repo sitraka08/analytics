@@ -8,7 +8,7 @@ import type { RankingDimension, RankingItem } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
 import { eventConditions } from "./event-conditions";
 
-const RANKING_LIMIT = 8;
+const DEFAULT_LIMIT = 8;
 
 const DIMENSION_COLUMN = {
   pages: event.path,
@@ -23,6 +23,7 @@ export async function getRanking(
   period: Period,
   filters: Filters,
   dimension: RankingDimension,
+  limit = DEFAULT_LIMIT,
 ): Promise<RankingItem[]> {
   await getOwnedSite(userId, siteId);
   const { from, to } = getPeriodRange(period);
@@ -35,7 +36,7 @@ export async function getRanking(
     .where(and(eventConditions(siteId, from, to, filters), isNotNull(column)))
     .groupBy(column)
     .orderBy(desc(visitors))
-    .limit(RANKING_LIMIT);
+    .limit(limit);
 
   // The `isNotNull` filter guarantees a label; the column types stay nullable.
   return rows.map((row) => ({ label: row.label as string, visitors: row.visitors }));

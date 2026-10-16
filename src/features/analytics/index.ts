@@ -1,6 +1,7 @@
 export { filtersSchema } from "./schemas/filters";
 export { hasActiveFilters } from "./utils/search-params";
 export { ActiveFilters } from "./components/active-filters";
+export { FilterBar } from "./components/filter-bar";
 export { periodSchema } from "./schemas/period";
 export { getOverview } from "./services/overview";
 export { PeriodTabs } from "./components/period-tabs";
