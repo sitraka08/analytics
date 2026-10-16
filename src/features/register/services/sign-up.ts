@@ -13,11 +13,16 @@ export async function signUpAction(
   _previous: FormState<SignUpField>,
   formData: FormData,
 ): Promise<FormState<SignUpField>> {
-  const values = { name: String(formData.get("name") ?? ""), email: String(formData.get("email") ?? "") };
+  const values = {
+    name: String(formData.get("name") ?? ""),
+    email: String(formData.get("email") ?? ""),
+    terms: String(formData.get("terms") ?? ""),
+  };
   const parsed = signUpSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    terms: formData.get("terms"),
   });
 
   if (!parsed.success) {
