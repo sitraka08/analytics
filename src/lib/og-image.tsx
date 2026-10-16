@@ -15,17 +15,17 @@ export function createOgImage() {
   return new ImageResponse(
     (
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%", padding: 72, background: "#f6f5f1", color: "#121212" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 64, height: 64, borderRadius: 16, background: "#121212" }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f6f5f1" strokeWidth="2.5" strokeLinecap="round">
+        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 128, height: 128, borderRadius: 32, background: "#121212" }}>
+            <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#f6f5f1" strokeWidth="3.5" strokeLinecap="round">
               <path d="M5 19v-6M12 19V6M19 19v-9" />
             </svg>
           </div>
-          <div style={{ fontSize: 40, fontWeight: 700 }}>{BRAND.name}</div>
+          <div style={{ fontSize: 72, fontWeight: 800, letterSpacing: -2 }}>{BRAND.name}</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.05, letterSpacing: -2 }}>Des statistiques web enfin lisibles</div>
+          <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.05, letterSpacing: -2 }}>Des statistiques web enfin lisibles</div>
           <div style={{ fontSize: 32, color: "#5c5a54" }}>Pays, pages, appareils et sources. Sans cookie.</div>
         </div>
 
