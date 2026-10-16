@@ -5,35 +5,39 @@ import { BrandLogo } from "@/components/shared/brand-logo";
 
 export function LandingHeader() {
   return (
-    <header className="mx-auto flex w-full max-w-6xl items-center justify-between rounded-xl bg-surface px-3 py-2.5 shadow-sm">
-      <BrandLogo />
+    // Zero-height sticky wrapper: the bar overlays the hero and follows the whole page on scroll.
+    // The offset uses a transform: padding would give the zero-height wrapper a real height and push the hero down.
+    <div className="sticky top-0 z-50 h-0 px-6 md:px-8">
+      <header className="mx-auto flex w-full max-w-6xl translate-y-6 items-center justify-between rounded-xl bg-surface px-3 py-2.5 shadow-sm md:translate-y-8">
+        <BrandLogo />
 
-      <nav aria-label="Navigation principale" className="hidden md:block">
-        <ul className="flex items-center gap-8 text-sm text-muted-foreground">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className="transition-colors hover:text-foreground">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        <nav aria-label="Navigation principale" className="hidden md:block">
+          <ul className="flex items-center gap-8 text-sm text-muted-foreground">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className="transition-colors hover:text-foreground">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-      <div className="flex items-center gap-2">
-        <Link
-          href={ROUTES.login}
-          className="hidden rounded-full bg-cream-deep px-4 py-2 text-sm font-medium transition-colors hover:bg-line sm:block"
-        >
-          {HEADER_ACTIONS.login}
-        </Link>
-        <Link
-          href={ROUTES.register}
-          className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-85"
-        >
-          {HEADER_ACTIONS.register}
-        </Link>
-      </div>
-    </header>
+        <div className="flex items-center gap-2">
+          <Link
+            href={ROUTES.login}
+            className="hidden rounded-full bg-cream-deep px-4 py-2 text-sm font-medium transition-colors hover:bg-line sm:block"
+          >
+            {HEADER_ACTIONS.login}
+          </Link>
+          <Link
+            href={ROUTES.register}
+            className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-85"
+          >
+            {HEADER_ACTIONS.register}
+          </Link>
+        </div>
+      </header>
+    </div>
   );
 }

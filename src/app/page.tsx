@@ -1,6 +1,7 @@
 import {
   LandingFinalCta,
   LandingFooter,
+  LandingHeader,
   LandingHero,
   LandingPrivacy,
   LandingShowcase,
@@ -10,6 +11,7 @@ import {
 export default function HomePage() {
   return (
     <>
+      <LandingHeader />
       <main>
         <LandingHero />
         <LandingStats />

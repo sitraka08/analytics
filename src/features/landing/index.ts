@@ -1,3 +1,4 @@
+export { LandingHeader } from "./components/landing-header";
 export { LandingHero } from "./components/landing-hero";
 export { LandingStats } from "./components/landing-stats";
 export { LandingPrivacy } from "./components/landing-privacy";

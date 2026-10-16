@@ -4,14 +4,14 @@ import { BRAND } from "@/lib/brand";
 import { HERO } from "../constants/content";
 import { GlobeScene } from "./globe-scene";
 import { HeroVisitorTrail } from "./hero-visitor-trail";
-import { LandingHeader } from "./landing-header";
 import { SignupForm } from "./signup-form";
 
 export function LandingHero() {
   return (
     <div className="px-3 pt-3">
       <section className="relative rounded-t-4xl bg-cream-deep px-3 pb-16 pt-3 md:px-5 md:pt-5">
-        <LandingHeader />
+        {/* Reserves the space of the sticky header, which is rendered at page level. */}
+        <div aria-hidden className="h-14" />
 
         <div className="relative mx-auto max-w-6xl pt-16 text-center md:pt-24">
           <HeroVisitorTrail side="left" />
