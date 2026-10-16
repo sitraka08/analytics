@@ -31,4 +31,4 @@
 - Rejection of known bots and of requests without a user-agent.
 
 ## Compliance
-No personal data, no cookie, no browser storage: no consent banner. Document this behavior on the privacy page.
+No personal data, no cookie, no browser storage: no consent banner. Documented on `/privacy` (`features/legal/constants/privacy.ts`); keep it in sync with any change to the collected data.
