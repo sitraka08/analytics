@@ -8,3 +8,4 @@ export { PeriodTabs } from "./components/period-tabs";
 export { KpiGrid } from "./components/kpi-grid";
 export { RankingSection, SectionSkeleton, VisitorsSection } from "./components/analytics-sections";
 export type { Period } from "./schemas/period";
+export { SitesOverview } from "./components/sites-overview";

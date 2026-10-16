@@ -18,6 +18,22 @@ export type TimeseriesPoint = {
   pageviews: number;
 };
 
+export type SiteOverview = {
+  id: string;
+  name: string;
+  domain: string;
+  visitors: number;
+  pageviews: number;
+  previousVisitors: number;
+  points: TimeseriesPoint[];
+};
+
+export type SitesOverview = {
+  sites: SiteOverview[];
+  /** Sum of every site's curve. */
+  points: TimeseriesPoint[];
+};
+
 export type RankingItem = {
   label: string;
   visitors: number;
