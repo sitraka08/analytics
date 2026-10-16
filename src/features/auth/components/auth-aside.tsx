@@ -1,14 +1,11 @@
 import { DeskScene } from "@/components/shared/illustrations/desk-scene";
 import { toneClass, type Tone } from "@/lib/tones";
-import { AUTH_COPY } from "../constants/content";
-
-const copy = AUTH_COPY.aside;
 
 const TILES: { value: string; label: string; tone: Tone; className: string }[] = [
-  { ...copy.live, tone: "blue", className: "rounded-3xl" },
-  { ...copy.trend, tone: "green", className: "rounded-[2.5rem_1.5rem_2.5rem_1.5rem]" },
-  { ...copy.cookies, tone: "yellow", className: "rounded-[1.5rem_2.5rem_1.5rem_2.5rem]" },
-  { ...copy.script, tone: "orange", className: "rounded-3xl" },
+  { value: "128", label: "visiteurs en ce moment", tone: "blue", className: "rounded-3xl" },
+  { value: "+12 %", label: "vs la semaine dernière", tone: "green", className: "rounded-[2.5rem_1.5rem_2.5rem_1.5rem]" },
+  { value: "0", label: "cookie déposé", tone: "yellow", className: "rounded-[1.5rem_2.5rem_1.5rem_2.5rem]" },
+  { value: "< 2 Ko", label: "de script à installer", tone: "orange", className: "rounded-3xl" },
 ];
 
 export function AuthAside() {
@@ -16,9 +13,9 @@ export function AuthAside() {
     <aside className="relative hidden flex-col justify-between gap-8 overflow-hidden rounded-4xl bg-cream-deep p-10 lg:flex xl:p-14">
       <div className="flex flex-col gap-4">
         <p className="max-w-md text-balance font-heading text-4xl font-bold leading-[1.15] tracking-tight xl:text-5xl">
-          {copy.titleStart} <span className="bg-highlight px-2">{copy.titleHighlight}</span> {copy.titleEnd}
+          Vos visiteurs, <span className="bg-highlight px-2">sans cookie</span> ni jargon.
         </p>
-        <p className="max-w-sm text-base leading-relaxed text-muted-foreground">{copy.text}</p>
+        <p className="max-w-sm text-base leading-relaxed text-muted-foreground">Pays, pages, sources et appareils réunis sur un écran que tout le monde comprend.</p>
       </div>
 
       <DeskScene className="mx-auto w-full max-w-md" />

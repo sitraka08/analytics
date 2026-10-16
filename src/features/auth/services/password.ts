@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import {
   forgotPasswordSchema,
   resetPasswordSchema,
@@ -36,7 +35,7 @@ export async function requestPasswordResetAction(
   }
 
   // Same response whether the account exists or not, so registered addresses are not revealed.
-  return { ok: true, message: AUTH_COPY.forgotPassword.sent, values };
+  return { ok: true, message: "Si un compte existe pour cette adresse, un e-mail vient d'être envoyé. Pensez à vérifier vos spams.", values };
 }
 
 export async function resetPasswordAction(

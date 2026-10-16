@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
-  AUTH_COPY,
   AuthPanel,
   AuthDivider,
   AuthFormFallback,
@@ -20,7 +19,11 @@ async function RegisterContent({ searchParams }: Pick<PageProps<"/register">, "s
 
 export default function RegisterPage({ searchParams }: PageProps<"/register">) {
   return (
-    <AuthPanel title={AUTH_COPY.signUp.title} highlight={AUTH_COPY.signUp.titleHighlight} description={AUTH_COPY.signUp.description}>
+    <AuthPanel
+      title="Créons votre compte"
+      highlight="compte"
+      description="Deux minutes suffisent. Ensuite, une ligne de code et vos premières visites arrivent."
+    >
       <div className="flex flex-col gap-5">
         {isGoogleEnabled ? (
           <>

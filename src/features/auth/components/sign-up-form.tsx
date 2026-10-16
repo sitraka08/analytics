@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import type { SignUpField } from "../schemas/sign-up";
 import { signUpAction } from "../services/sign-up";
 import type { FormState } from "../types/form-state";
@@ -17,7 +16,6 @@ const INITIAL_STATE: FormState<SignUpField> = { ok: false };
 
 export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
   const [state, formAction] = useActionState(signUpAction, INITIAL_STATE);
-  const copy = AUTH_COPY.signUp;
 
   return (
     <form action={formAction} noValidate>
@@ -26,8 +24,8 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
 
         <TextField
           name="name"
-          label={copy.name}
-          placeholder={copy.namePlaceholder}
+          label="Comment vous appeler ?"
+          placeholder="Camille Martin"
           autoComplete="name"
           required
           defaultValue={state.values?.name}
@@ -36,8 +34,8 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
         <TextField
           name="email"
           type="email"
-          label={AUTH_COPY.common.email}
-          placeholder={AUTH_COPY.common.emailPlaceholder}
+          label="Adresse e-mail"
+          placeholder="vous@exemple.fr"
           autoComplete="email"
           required
           defaultValue={state.values?.email ?? defaultEmail}
@@ -45,21 +43,21 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
         />
         <PasswordField
           name="password"
-          label={AUTH_COPY.common.password}
-          placeholder={AUTH_COPY.common.passwordPlaceholder}
+          label="Mot de passe"
+          placeholder="••••••••"
           autoComplete="new-password"
           required
           minLength={8}
-          description={copy.passwordHint}
+          description="8 caractères minimum."
           errors={state.fieldErrors?.password}
         />
 
         <Field className="gap-4">
-          <SubmitButton className="w-full">{copy.submit}</SubmitButton>
+          <SubmitButton className="w-full">Créer mon compte</SubmitButton>
           <FieldDescription className="text-center text-sm">
-            {copy.hasAccount}{" "}
+            Déjà un compte ?{" "}
             <Link href={ROUTES.login} className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4">
-              {copy.toLogin}
+              Se connecter
             </Link>
           </FieldDescription>
         </Field>

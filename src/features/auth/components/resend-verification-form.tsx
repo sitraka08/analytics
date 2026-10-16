@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import type { ForgotPasswordField } from "../schemas/password";
 import { resendVerificationAction } from "../services/verification";
 import type { FormState } from "../types/form-state";
@@ -23,12 +22,12 @@ export function ResendVerificationForm({ email }: { email?: string }) {
         <form action={formAction}>
           <input type="hidden" name="email" value={email} />
           <SubmitButton variant="outline" className="w-full">
-            {AUTH_COPY.verifyEmail.resend}
+            Renvoyer l&apos;e-mail
           </SubmitButton>
         </form>
       ) : null}
       <Link href={ROUTES.login} className={buttonVariants({ variant: "ghost", size: "lg", className: "h-12 rounded-full text-base hover:bg-cream-deep" })}>
-        {AUTH_COPY.common.backToLogin}
+        Retour à la connexion
       </Link>
     </div>
   );

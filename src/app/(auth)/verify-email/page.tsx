@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AUTH_COPY, AuthPanel, AuthFormFallback, ResendVerificationForm } from "@/features/auth";
+import { AuthPanel, AuthFormFallback, ResendVerificationForm } from "@/features/auth";
 
 export const metadata: Metadata = { title: "Vérifiez votre e-mail" };
 
 async function VerifyEmailContent({ searchParams }: Pick<PageProps<"/verify-email">, "searchParams">) {
   const { email } = await searchParams;
   const address = typeof email === "string" ? email : undefined;
-  const copy = AUTH_COPY.verifyEmail;
 
   return (
     <div className="flex flex-col gap-5">
       <p className="text-base leading-relaxed text-muted-foreground">
         {address ? (
           <>
-            {copy.description} <strong className="font-medium text-foreground">{address}</strong>.
+            Nous avons envoyé un lien de confirmation à <strong className="font-medium text-foreground">{address}</strong>.
           </>
         ) : (
-          copy.descriptionFallback
+          "Nous vous avons envoyé un lien de confirmation."
         )}{" "}
-        {copy.hint}
+        Cliquez sur le lien pour activer votre compte. Il est valable 1 heure.
       </p>
       <ResendVerificationForm email={address} />
     </div>
@@ -28,7 +27,7 @@ async function VerifyEmailContent({ searchParams }: Pick<PageProps<"/verify-emai
 
 export default function VerifyEmailPage({ searchParams }: PageProps<"/verify-email">) {
   return (
-    <AuthPanel title={AUTH_COPY.verifyEmail.title} highlight={AUTH_COPY.verifyEmail.titleHighlight}>
+    <AuthPanel title="Vérifiez votre boîte mail" highlight="boîte mail">
       <Suspense fallback={<AuthFormFallback fields={1} />}>
         <VerifyEmailContent searchParams={searchParams} />
       </Suspense>

@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import type { ForgotPasswordField } from "../schemas/password";
 import { requestPasswordResetAction } from "../services/password";
 import type { FormState } from "../types/form-state";
@@ -26,8 +25,8 @@ export function ForgotPasswordForm() {
         <TextField
           name="email"
           type="email"
-          label={AUTH_COPY.common.email}
-          placeholder={AUTH_COPY.common.emailPlaceholder}
+          label="Adresse e-mail"
+          placeholder="vous@exemple.fr"
           autoComplete="email"
           required
           defaultValue={state.values?.email}
@@ -35,9 +34,9 @@ export function ForgotPasswordForm() {
         />
 
         <Field className="gap-2">
-          <SubmitButton>{AUTH_COPY.forgotPassword.submit}</SubmitButton>
+          <SubmitButton>Envoyer le lien</SubmitButton>
           <Link href={ROUTES.login} className={buttonVariants({ variant: "ghost", size: "lg", className: "h-12 rounded-full text-base hover:bg-cream-deep" })}>
-            {AUTH_COPY.common.backToLogin}
+            Retour à la connexion
           </Link>
         </Field>
       </FieldGroup>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
-  AUTH_COPY,
   AuthPanel,
   AuthDivider,
   AuthFormFallback,
@@ -29,9 +28,9 @@ async function LoginContent({
       <SignInForm
         next={nextPath}
         notice={
-          reset === "success" ? AUTH_COPY.signIn.passwordResetDone : undefined
+          reset === "success" ? "Mot de passe modifié. Vous pouvez vous connecter." : undefined
         }
-        error={error === "google" ? AUTH_COPY.signIn.googleError : undefined}
+        error={error === "google" ? "La connexion avec Google a échoué. Réessayez." : undefined}
       />
     </div>
   );
@@ -40,9 +39,9 @@ async function LoginContent({
 export default function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <AuthPanel
-      title={AUTH_COPY.signIn.title}
-      highlight={AUTH_COPY.signIn.titleHighlight}
-      description={AUTH_COPY.signIn.description}
+      title="Content de vous revoir"
+      highlight="revoir"
+      description="Vos statistiques vous attendent là où vous les avez laissées."
     >
       <Suspense fallback={<AuthFormFallback />}>
         <LoginContent searchParams={searchParams} />

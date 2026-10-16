@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AUTH_COPY, AuthPanel, AuthFormFallback, ResetPasswordForm } from "@/features/auth";
+import { AuthPanel, AuthFormFallback, ResetPasswordForm } from "@/features/auth";
 
 export const metadata: Metadata = { title: "Nouveau mot de passe" };
 
@@ -13,7 +13,11 @@ async function ResetPasswordContent({ searchParams }: Pick<PageProps<"/reset-pas
 
 export default function ResetPasswordPage({ searchParams }: PageProps<"/reset-password">) {
   return (
-    <AuthPanel title={AUTH_COPY.resetPassword.title} highlight={AUTH_COPY.resetPassword.titleHighlight} description={AUTH_COPY.resetPassword.description}>
+    <AuthPanel
+      title="Nouveau mot de passe"
+      highlight="Nouveau"
+      description="Choisissez un mot de passe d'au moins 8 caractères."
+    >
       <Suspense fallback={<AuthFormFallback />}>
         <ResetPasswordContent searchParams={searchParams} />
       </Suspense>

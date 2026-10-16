@@ -1,4 +1,3 @@
-import { AUTH_COPY } from "../constants/content";
 import { signInWithGoogleAction } from "../services/sign-in";
 import { SubmitButton } from "./submit-button";
 
@@ -19,7 +18,7 @@ export function GoogleSignInButton({ next }: { next?: string }) {
       {next ? <input type="hidden" name="next" value={next} /> : null}
       <SubmitButton variant="outline" className="w-full">
         <GoogleIcon />
-        {AUTH_COPY.common.google}
+        Continuer avec Google
       </SubmitButton>
     </form>
   );

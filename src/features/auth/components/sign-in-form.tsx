@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import type { SignInField } from "../schemas/sign-in";
 import { signInAction } from "../services/sign-in";
 import type { FormState } from "../types/form-state";
@@ -24,7 +23,6 @@ type SignInFormProps = {
 
 export function SignInForm({ next, notice, error }: SignInFormProps) {
   const [state, formAction] = useActionState(signInAction, INITIAL_STATE);
-  const copy = AUTH_COPY.signIn;
 
   return (
     <form action={formAction} noValidate>
@@ -36,8 +34,8 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
         <TextField
           name="email"
           type="email"
-          label={AUTH_COPY.common.email}
-          placeholder={AUTH_COPY.common.emailPlaceholder}
+          label="Adresse e-mail"
+          placeholder="vous@exemple.fr"
           autoComplete="email"
           required
           defaultValue={state.values?.email}
@@ -45,14 +43,14 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
         />
         <PasswordField
           name="password"
-          label={AUTH_COPY.common.password}
-          placeholder={AUTH_COPY.common.passwordPlaceholder}
+          label="Mot de passe"
+          placeholder="••••••••"
           autoComplete="current-password"
           required
           errors={state.fieldErrors?.password}
           labelAction={
             <Link href={ROUTES.forgotPassword} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
-              {copy.forgotPassword}
+              Mot de passe oublié ?
             </Link>
           }
         />
@@ -65,16 +63,16 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
             className="size-4.5 rounded-md border-[1.5px] bg-surface data-checked:border-foreground data-checked:bg-foreground"
           />
           <FieldLabel htmlFor="remember-me" className="text-sm font-normal">
-            {copy.rememberMe}
+            Rester connecté
           </FieldLabel>
         </Field>
 
         <Field className="gap-4">
-          <SubmitButton className="w-full">{copy.submit}</SubmitButton>
+          <SubmitButton className="w-full">Se connecter</SubmitButton>
           <FieldDescription className="text-center text-sm">
-            {copy.noAccount}{" "}
+            Pas encore de compte ?{" "}
             <Link href={ROUTES.register} className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4">
-              {copy.toRegister}
+              Créer un compte
             </Link>
           </FieldDescription>
         </Field>

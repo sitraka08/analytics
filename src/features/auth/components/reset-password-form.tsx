@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import type { ResetPasswordField } from "../schemas/password";
 import { resetPasswordAction } from "../services/password";
 import type { FormState } from "../types/form-state";
@@ -17,14 +16,13 @@ const INITIAL_STATE: FormState<ResetPasswordField> = { ok: false };
 
 export function ResetPasswordForm({ token }: { token?: string }) {
   const [state, formAction] = useActionState(resetPasswordAction, INITIAL_STATE);
-  const copy = AUTH_COPY.resetPassword;
 
   if (!token) {
     return (
       <div className="flex flex-col gap-4">
-        <FormMessage message={copy.invalidLink} />
+        <FormMessage message="Ce lien n'est plus valide. Demandez-en un nouveau." />
         <Link href={ROUTES.forgotPassword} className={buttonVariants({ size: "lg", className: "h-12 rounded-full text-base" })}>
-          {copy.requestNewLink}
+          Demander un nouveau lien
         </Link>
       </div>
     );
@@ -38,7 +36,7 @@ export function ResetPasswordForm({ token }: { token?: string }) {
 
         <PasswordField
           name="password"
-          label={copy.password}
+          label="Nouveau mot de passe"
           autoComplete="new-password"
           required
           minLength={8}
@@ -46,14 +44,14 @@ export function ResetPasswordForm({ token }: { token?: string }) {
         />
         <PasswordField
           name="confirmPassword"
-          label={copy.confirmPassword}
+          label="Confirmer le mot de passe"
           autoComplete="new-password"
           required
           errors={state.fieldErrors?.confirmPassword}
         />
 
         <Field>
-          <SubmitButton>{copy.submit}</SubmitButton>
+          <SubmitButton>Enregistrer</SubmitButton>
         </Field>
       </FieldGroup>
     </form>

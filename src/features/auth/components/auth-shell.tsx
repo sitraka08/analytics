@@ -2,7 +2,6 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/shared/brand-logo";
 import { Reveal } from "@/components/shared/reveal";
 import { ROUTES } from "@/lib/routes";
-import { AUTH_COPY } from "../constants/content";
 import { AuthAside } from "./auth-aside";
 
 // Two columns: form on the cream background, brand panel on the right (hidden on mobile).
@@ -16,7 +15,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
             href={ROUTES.home}
             className="text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
-            {AUTH_COPY.common.backHome}
+            Retour à l&apos;accueil
           </Link>
         </header>
 

@@ -1,6 +1,5 @@
 export { auth, isGoogleEnabled } from "./services/auth";
 export { getSession, requireSession } from "./services/session";
-export { AUTH_COPY } from "./constants/content";
 export { AuthShell } from "./components/auth-shell";
 export { AuthPanel } from "./components/auth-panel";
 export { AuthDivider } from "./components/auth-divider";
