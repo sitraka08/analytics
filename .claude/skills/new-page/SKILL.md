@@ -1,15 +1,15 @@
 ---
 name: new-page
-description: Ajouter une route App Router qui compose des composants de feature. À utiliser pour une page, un layout, un loading ou un error sous src/app.
+description: Add an App Router route that composes feature components. Use for a page, layout, loading or error file under src/app.
 ---
 
-# Nouvelle page
+# New page
 
-1. Lire `.claude/rules/nextjs-app-router.md` et vérifier la doc locale (`node_modules/next/dist/docs`) si l'API de cache ou de PPR est concernée.
-2. Choisir le groupe : `(marketing)`, `(auth)` ou `(dashboard)`. Ne créer le groupe que s'il manque.
-3. `page.tsx` est un Server Component qui compose des composants de feature et lit les données via leurs `services/`. Aucune logique métier dans la page.
-4. Dashboard : vérifier la session côté serveur et passer l'utilisateur aux services.
-5. Ajouter `loading.tsx` (Skeleton de même forme) et `error.tsx` quand la page charge des données ; `not-found.tsx` pour un site inexistant ou non possédé.
-6. Exporter la metadata (titre, description) ; soigner le SEO pour les pages marketing.
-7. Client Components en feuilles uniquement.
-8. Vérifier au navigateur sur mobile et desktop, puis `pnpm lint` et `pnpm build`.
+1. Read `.claude/rules/nextjs-app-router.md` and check the local docs (`node_modules/next/dist/docs`) if the cache or PPR API is involved.
+2. Choose the group: `(marketing)`, `(auth)` or `(dashboard)`. Create the group only if it is missing.
+3. `page.tsx` is a Server Component that composes feature components and reads data through their `services/`. No business logic in the page.
+4. Dashboard: check the session on the server and pass the user to the services.
+5. Add `loading.tsx` (same-shape Skeleton) and `error.tsx` when the page loads data; `not-found.tsx` for a missing or non-owned site.
+6. Export metadata (title, description); polish SEO for marketing pages.
+7. Client Components at the leaves only.
+8. Check in the browser on mobile and desktop, then `pnpm lint` and `pnpm build`.

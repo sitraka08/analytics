@@ -1,25 +1,25 @@
-# Produit et domaine
+# Product and domain
 
 ## Vision
-Un outil d'analytics web simple : on ajoute un script sur son site et on comprend en quelques secondes d'où viennent les visiteurs, ce qu'ils lisent et combien de temps ils restent. Inspiré de Vercel Analytics, mais avec des graphes et des libellés plus faciles à lire.
+A simple web analytics tool: add a script to your site and understand in a few seconds where visitors come from, what they read and how long they stay. Inspired by Vercel Analytics, but with charts and labels that are easier to read.
 
-## Problème résolu
-Les dashboards existants sont denses ou cryptiques. Ici : peu de chiffres par écran, titres en langage clair, comparaison à la période précédente, états vides qui expliquent quoi faire.
+## Problem solved
+Existing dashboards are dense or cryptic. Here: few numbers per screen, titles in plain language, comparison with the previous period, empty states that explain what to do.
 
-## Cible
-Développeurs indépendants, créateurs, petites équipes qui veulent suivre leurs sites sans configuration lourde.
+## Target
+Independent developers, creators and small teams who want to track their sites without heavy setup.
 
-## Modèle
-- **Utilisateur** : compte (Better Auth).
-- **Site** : domaine suivi, appartient à un utilisateur, possède une clé publique de collecte.
-- **Événement** : pageview (et plus tard événements custom) : site, chemin, référent, UTM, pays, appareil, navigateur, OS, horodatage.
-- **Visiteur** : identifiant anonyme = hash quotidien salé (voir tracking-and-privacy.md).
-- **Session** : suite d'événements d'un même visiteur, coupée après 30 min d'inactivité.
+## Model
+- **User**: account (Better Auth).
+- **Site**: tracked domain, belongs to a user, has a public collection key.
+- **Event**: pageview (and custom events later): site, path, referrer, UTM, country, device, browser, OS, timestamp.
+- **Visitor**: anonymous identifier = salted daily hash (see tracking-and-privacy.md).
+- **Session**: sequence of events from the same visitor, cut after 30 min of inactivity.
 
-## Métriques
-- Visiteurs uniques, pages vues, durée moyenne de visite, taux de rebond (session d'une seule page).
-- Top pages, top référents, pays, appareils, navigateurs, OS, campagnes UTM.
-- Périodes : 24 h, 7 j, 30 j, 90 j, personnalisée, avec comparaison à la période précédente.
+## Metrics
+- Unique visitors, pageviews, average visit duration, bounce rate (single-page session).
+- Top pages, top referrers, countries, devices, browsers, OS, UTM campaigns.
+- Periods: 24 h, 7 d, 30 d, 90 d, custom, with comparison to the previous period.
 
-## Hors périmètre MVP
-Événements custom, entonnoirs, temps réel, équipes multi-membres, alertes, export, facturation.
+## Out of MVP scope
+Custom events, funnels, real time, multi-member teams, alerts, export, billing.

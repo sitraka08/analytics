@@ -1,15 +1,15 @@
 ---
 name: new-feature
-description: Créer une nouvelle feature sous src/features selon l'architecture par feature. À utiliser pour ajouter une capacité comme sites, analytics, tracking, auth ou settings.
+description: Create a new feature under src/features following the feature architecture. Use to add a capability such as sites, analytics, tracking, auth or settings.
 ---
 
-# Nouvelle feature
+# New feature
 
-1. Lire `.claude/rules/architecture.md` et lister `src/features/` : la capacité existe-t-elle déjà ? Si oui, l'étendre.
-2. Choisir le nom de la feature (kebab-case, une capacité métier).
-3. Créer uniquement les sous-dossiers nécessaires parmi `components/ hooks/ schemas/ services/ types/ utils/ constants/`. Pas de dossier vide.
-4. Nommer sans suffixe de rôle : `schemas/site.ts`, `services/site.ts`, `types/site.ts`. Hooks : `use-*.ts`.
-5. Données : accès DB uniquement dans `services/`, avec contrôle d'accès au site. Validation Zod dans `schemas/`.
-6. Ajouter `index.ts` seulement si d'autres features ou pages doivent importer ; n'y exposer que l'API voulue.
-7. Brancher la feature depuis `src/app/` (voir skill `new-page`).
-8. Vérifier : pas de dépendance circulaire, pas d'import des internes d'une autre feature, `pnpm lint` et `pnpm build`.
+1. Read `.claude/rules/architecture.md` and list `src/features/`: does the capability already exist? If so, extend it.
+2. Choose the feature name (kebab-case, one business capability).
+3. Create only the needed subfolders among `components/ hooks/ schemas/ services/ types/ utils/ constants/`. No empty folder.
+4. Name without role suffix: `schemas/site.ts`, `services/site.ts`, `types/site.ts`. Hooks: `use-*.ts`.
+5. Data: database access only in `services/`, with site access control. Zod validation in `schemas/`.
+6. Add `index.ts` only if other features or pages must import from it; expose only the intended API there.
+7. Wire the feature from `src/app/` (see the `new-page` skill).
+8. Check: no circular dependency, no import of another feature's internals, `pnpm lint` and `pnpm build`.

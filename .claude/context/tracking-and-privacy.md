@@ -1,27 +1,27 @@
-# Tracking et vie privée
+# Tracking and privacy
 
-## Flux de collecte
-1. Le site client charge un script minuscule (`/script.js`, servi par l'app) avec sa clé de site.
-2. Le script envoie un `POST /api/collect` (`navigator.sendBeacon` ou `fetch` keepalive) à chaque navigation, y compris SPA (History API).
-3. La durée est envoyée à la fermeture ou au masquage de la page (`visibilitychange`).
-4. Le serveur valide (Zod), filtre les bots, enrichit (pays, appareil), calcule le hash visiteur, puis insère l'événement. Réponse `202` sans corps.
+## Collection flow
+1. The client site loads a tiny script (`/script.js`, served by the app) with its site key.
+2. The script sends a `POST /api/collect` (`navigator.sendBeacon` or keepalive `fetch`) on each navigation, SPA included (History API).
+3. Duration is sent when the page is closed or hidden (`visibilitychange`).
+4. The server validates (Zod), filters bots, enriches (country, device), computes the visitor hash, then inserts the event. Response `202` with no body.
 
-## Identité visiteur sans cookie
-`visitor_id = hash(sel_quotidien + site_id + IP + user-agent)`.
-- Le sel change chaque jour et n'est pas conservé après rotation : impossible de relier un visiteur d'un jour à l'autre.
-- L'IP et le user-agent bruts ne sont jamais stockés.
-- Conséquence assumée : un visiteur revenant un autre jour compte comme nouveau.
+## Cookie-less visitor identity
+`visitor_id = hash(daily_salt + site_id + IP + user-agent)`.
+- The salt changes every day and is not kept after rotation: a visitor cannot be linked from one day to the next.
+- The raw IP and user-agent are never stored.
+- Accepted consequence: a visitor returning on another day counts as new.
 
-## Enrichissement
-- Pays : headers Vercel (`x-vercel-ip-country`), région/ville seulement si utile et non précis.
-- Appareil, navigateur, OS : parsés depuis le user-agent, puis le user-agent est jeté.
-- Référent : domaine seulement par défaut ; UTM depuis l'URL de la page.
+## Enrichment
+- Country: Vercel headers (`x-vercel-ip-country`); region/city only if useful and not precise.
+- Device, browser, OS: parsed from the user-agent, then the user-agent is discarded.
+- Referrer: domain only by default; UTM from the page URL.
 
-## Protection de l'endpoint public
-- CORS limité aux domaines déclarés pour la clé de site.
-- Limite de débit par IP et par site.
-- Taille de payload bornée, champs validés et tronqués.
-- Rejet des bots connus et des requêtes sans user-agent.
+## Public endpoint protection
+- CORS limited to the domains declared for the site key.
+- Rate limit per IP and per site.
+- Bounded payload size, validated and truncated fields.
+- Rejection of known bots and of requests without a user-agent.
 
-## Conformité
-Aucune donnée personnelle, aucun cookie, aucun stockage navigateur : pas de bannière de consentement. Documenter ce fonctionnement dans la page de confidentialité.
+## Compliance
+No personal data, no cookie, no browser storage: no consent banner. Document this behavior on the privacy page.

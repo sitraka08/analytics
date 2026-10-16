@@ -1,19 +1,19 @@
 # CLAUDE.md
 
-SaaS d'analytics web (pays, pages, durées, appareils, sources…) avec des graphes **lisibles** : l'alternative claire à Vercel Analytics. Fullstack Next.js, sans backend séparé.
+Web analytics SaaS (countries, pages, durations, devices, sources…) with **readable** charts: the clear alternative to Vercel Analytics. Fullstack Next.js, no separate backend.
 
 ## Stack
-Next.js (dernière version, App Router) · React · TypeScript strict · Tailwind CSS 4 · shadcn/ui · Neon Postgres + Drizzle ORM · Better Auth · Zod · TanStack Query (interactivité client seulement) · pnpm · Vercel. Alias `@/*` → `src/*`.
+Next.js (latest, App Router) · React · strict TypeScript · Tailwind CSS 4 · shadcn/ui · Neon Postgres + Drizzle ORM · Better Auth · Zod · TanStack Query (client interactivity only) · pnpm · Vercel. Alias `@/*` → `src/*`.
 
-Next.js évolue vite : vérifier `node_modules/next/dist/docs` avant d'utiliser une API peu familière.
+Next.js moves fast: check `node_modules/next/dist/docs` before using an unfamiliar API.
 
-## Commandes
+## Commands
 - `pnpm dev` · `pnpm build` · `pnpm lint`
 - `pnpm db:generate` · `pnpm db:migrate` · `pnpm db:studio` (Drizzle)
 
-## Contexte (lire avant de modifier)
-- `.claude/context/product-and-domain.md` — vision, modèle, métriques
-- `.claude/context/tracking-and-privacy.md` — collecte, hash visiteur, RGPD
+## Context (read before changing anything)
+- `.claude/context/product-and-domain.md` — vision, model, metrics
+- `.claude/context/tracking-and-privacy.md` — collection, visitor hash, GDPR
 
 ## Rules (`.claude/rules/`)
 `architecture.md` · `nextjs-app-router.md` · `database-and-api.md` · `tracking-privacy.md` · `design-and-dataviz.md` · `code-quality.md`
@@ -21,16 +21,16 @@ Next.js évolue vite : vérifier `node_modules/next/dist/docs` avant d'utiliser 
 ## Skills (`.claude/skills/`)
 `new-feature` · `new-page` · `new-form` · `new-analytics-widget` · `review-architecture`
 
-## Non-négociables
-1. Privacy-first : pas de cookie, pas d'IP stockée, pas de fingerprinting.
-2. Lisibilité avant densité : une idée par graphe, titres explicites, états vides soignés.
-3. Agrégation côté serveur (SQL), jamais de gros jeux d'événements envoyés au client.
-4. Chaque requête de données vérifie que l'utilisateur a accès au site demandé.
-5. Organisation par feature d'abord (`src/features/<name>/...`), partage seulement si réellement multi-features.
-6. Fichiers et dossiers en `kebab-case`, sans suffixe de rôle (le dossier le porte) ; composants en PascalCase.
-7. Server Components par défaut ; `"use client"` uniquement en feuille, pour l'interactivité.
-8. Pas de dépendance nouvelle sans besoin clair ; réutiliser l'existant.
-9. Pas de dossier vide ni de fichier placeholder.
-10. UI en français uniquement, textes faciles à extraire ; code, routes et identifiants en anglais. Polices : Manrope (titres, grands chiffres), Google Sans (texte/UI), Google Sans Code (code, nombres alignés).
-11. Règle ambiguë : poser l'hypothèse et demander avant d'inventer.
-12. Avant de finir : `pnpm lint` et `pnpm build` passent.
+## Non-negotiables
+1. Privacy-first: no cookie, no stored IP, no fingerprinting.
+2. Readability over density: one idea per chart, explicit titles, polished empty states.
+3. Aggregate on the server (SQL), never send large event sets to the client.
+4. Every data request checks that the user has access to the requested site.
+5. Organize by feature first (`src/features/<name>/...`), share only what is truly multi-feature.
+6. Files and folders in `kebab-case`, no role suffix (the folder carries it); components in PascalCase.
+7. Server Components by default; `"use client"` only at the leaf, for interactivity.
+8. No new dependency without a clear need; reuse what exists.
+9. No empty folder or placeholder file.
+10. **Everything is in English** — code, identifiers, routes, comments, docs, `CLAUDE.md` and `.claude/` files, commit messages, PR descriptions. **Only the text displayed in the site UI is French**, kept in easy-to-extract constants. Fonts: Manrope (headings, big numbers), Google Sans (text/UI), Google Sans Code (code, aligned numbers).
+11. Ambiguous rule: state the assumption and ask before inventing.
+12. Before finishing: `pnpm lint` and `pnpm build` pass.

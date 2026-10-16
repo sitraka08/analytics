@@ -1,43 +1,43 @@
-# Design et visualisation
+# Design and visualization
 
-## Identité
-- Inspiration landing : fond crème chaleureux, grandes sections aux coins très arrondis, titres forts, CTA en pilule sombre, cartes de stats colorées (bleu, vert, orange, jaune), photos/illustrations sobres.
-- Le produit doit paraître fait à la main, pas « UI générée » : éviter carte centrée + logo au-dessus + grosse ombre, halos bleus de focus, fonds sombres à cercles décoratifs. Préférer mises en page éditoriales alignées à gauche, détails dessinés (`HandDrawnUnderline`, surlignage `bg-highlight`), ton de texte chaleureux.
-- Palette de référence (ne pas la changer sans demande) : fond `#f6f5f1`, crème `#efebe1`, texte `#121212`, bleu `#4a6cf7`, vert `#7dd389`, orange `#ff6633`, jaune `#ffde2e`. Dégradés de panneaux via tokens `panel-*` (`bg-linear-160 from-panel-sand-from to-panel-sand-to`).
-- Cartes et pastilles colorées : fond via `toneClass` de `src/lib/tones.ts`, texte toujours blanc (`text-tone-foreground`), choix assumé même sur jaune/vert.
-- Illustrations : SVG inline dessinés au trait (contour `var(--foreground)`, remplissages `var(--brand-*)`), `aria-hidden`, sans dépendance ni image externe. Partagées dans `components/shared/illustrations/` (`DeskScene`), sinon dans la feature (`GlobeScene` de la landing).
-- Polices via `next/font/google` dans `src/app/layout.tsx`, mappées dans `globals.css` :
-  - `font-heading` → Manrope : `h1`–`h3` (appliqué globalement), titres de cartes, grands chiffres/KPI.
-  - `font-sans` → Google Sans : texte courant, formulaires, navigation.
-  - `font-mono` → Google Sans Code : extraits de code, tableaux de nombres (avec `tabular-nums`).
-- shadcn/ui (style base-nova, Base UI) ; registre `@shadcn-space` dans `components.json` pour partir de blocs gratuits : les adapter dans la feature concernée puis supprimer les fichiers générés (`components/shadcn-space/`, routes de démo).
-- Animations : `motion` (`motion/react`) via `MotionProvider` (LazyMotion + `reducedMotion="user"`) et les primitives `Reveal`/`RevealGroup`/`RevealItem` de `components/shared/reveal.tsx`. Animer l'entrée et le survol, jamais bloquer la lecture.
-- Tokens en variables CSS dans `globals.css` (couleurs, rayons, ombres). Pas de couleur codée en dur dans les composants.
-- Light et dark : les deux, via tokens. Mobile-first et responsive.
+## Identity
+- Landing inspiration: warm cream background, large sections with very rounded corners, strong headings, dark pill CTAs, colored stat cards (blue, green, orange, yellow), sober photos/illustrations.
+- The product must feel hand-made, not "generated UI": avoid centered card + logo above + big shadow, blue focus halos, dark backgrounds with decorative circles. Prefer left-aligned editorial layouts, drawn details (`HandDrawnUnderline`, `bg-highlight` marker), warm text tone.
+- Reference palette (do not change without being asked): background `#f6f5f1`, cream `#efebe1`, text `#121212`, blue `#4a6cf7`, green `#7dd389`, orange `#ff6633`, yellow `#ffde2e`. Panel gradients via `panel-*` tokens (`bg-linear-160 from-panel-sand-from to-panel-sand-to`).
+- Colored cards and badges: background via `toneClass` from `src/lib/tones.ts`, text always white (`text-tone-foreground`), a deliberate choice even on yellow/green.
+- Illustrations: inline SVG drawn in line style (outline `var(--foreground)`, fills `var(--brand-*)`), `aria-hidden`, no dependency or external image. Shared ones in `components/shared/illustrations/` (`DeskScene`), otherwise in the feature (`GlobeScene` of the landing).
+- Fonts via `next/font/google` in `src/app/layout.tsx`, mapped in `globals.css`:
+  - `font-heading` → Manrope: `h1`–`h3` (applied globally), card titles, big numbers/KPIs.
+  - `font-sans` → Google Sans: body text, forms, navigation.
+  - `font-mono` → Google Sans Code: code snippets, number tables (with `tabular-nums`).
+- shadcn/ui (base-nova style, Base UI); `@shadcn-space` registry in `components.json` to start from free blocks: adapt them in the relevant feature then delete the generated files (`components/shadcn-space/`, demo routes).
+- Animations: `motion` (`motion/react`) through `MotionProvider` (LazyMotion + `reducedMotion="user"`) and the `Reveal`/`RevealGroup`/`RevealItem` primitives from `components/shared/reveal.tsx`. Animate entrance and hover, never block reading.
+- Tokens as CSS variables in `globals.css` (colors, radii, shadows). No hardcoded color in components.
+- Light and dark: both, via tokens. Mobile-first and responsive.
 
-## Formulaires et pages d'auth
-- Layout auth (`AuthShell`) : deux colonnes sur fond crème ; formulaire à gauche (`max-w-sm`, aligné à gauche, titre via `AuthPanel` avec mot souligné), panneau de marque `AuthAside` à droite (`rounded-4xl bg-cream-deep`, illustration + tuiles colorées), masqué sous `lg`.
-- Champs : réutiliser `TextField` / `PasswordField` de `features/auth/components/` (à extraire en partagé dès qu'une 2ᵉ feature en a besoin). Style : boîte blanche `bg-surface`, bordure 2 px `border-foreground/15`, libellé en petit à l'intérieur, survol `border-foreground/35`, focus `border-foreground` sans halo, erreur `border-destructive` + message avec icône dessous. Ne jamais donner l'apparence d'un champ désactivé (fond gris sans bordure).
-- Mot de passe : bouton afficher/masquer (`aria-label`, `aria-pressed`).
-- Boutons : `SubmitButton` = pilule sombre `h-12` avec pastille fléchée (spinner pendant l'envoi) ; secondaires en pilule contour ; liens en texte souligné.
+## Forms and auth pages
+- Auth layout (`AuthShell`): two columns on cream background; form on the left (`max-w-sm`, left-aligned, title via `AuthPanel` with an underlined word), `AuthAside` brand panel on the right (`rounded-4xl bg-cream-deep`, illustration + colored tiles), hidden below `lg`.
+- Fields: reuse `TextField` / `PasswordField` from `features/auth/components/` (extract to shared as soon as a 2nd feature needs them). Style: white `bg-surface` box, 2 px `border-foreground/15` border, small label inside, hover `border-foreground/35`, focus `border-foreground` without halo, error `border-destructive` + message with icon below. Never make a field look disabled (gray background without border).
+- Password: show/hide button (`aria-label`, `aria-pressed`).
+- Buttons: `SubmitButton` = dark `h-12` pill with an arrow badge (spinner while submitting); secondary ones as outline pills; links as underlined text.
 
 ## Dashboard
-- shadcn/ui : `Sidebar` collapsible (icônes seules en mode réduit, état mémorisé), `Card`, `Tabs`, `Select`, `Skeleton`, `Chart`.
-- Layout : sidebar à gauche, en-tête avec sélecteur de site et de période, contenu en grille de cartes.
-- Les composants de `components/ui/` viennent de shadcn ; ne pas les réécrire.
+- shadcn/ui: collapsible `Sidebar` (icons only when collapsed, remembered state), `Card`, `Tabs`, `Select`, `Skeleton`, `Chart`.
+- Layout: sidebar on the left, header with site and period selectors, content as a grid of cards.
+- Components in `components/ui/` come from shadcn; do not rewrite them.
 
-## Lisibilité des graphes
-- Une idée par graphe ; un titre qui dit ce qu'on voit (« Visiteurs par jour », pas « Série temporelle »).
-- Commencer par 3 à 4 KPI avec variation vs période précédente (flèche + pourcentage, couleur et icône, jamais la couleur seule).
-- Graphes via shadcn Chart (Recharts) ; types adaptés : aire/ligne pour le temps, barres horizontales pour les classements, pas de camembert au-delà de 4 parts.
-- Tooltip lisible, axes sobres, grille discrète, valeurs compactes (`1,2 k`) avec `Intl.NumberFormat('fr')`.
-- Palette catégorielle limitée et accessible ; contraste suffisant en light et dark.
+## Chart readability
+- One idea per chart; a title that says what is shown ("Visitors per day", not "Time series").
+- Start with 3 to 4 KPIs with change vs previous period (arrow + percentage, color and icon, never color alone).
+- Charts via shadcn Chart (Recharts); suitable types: area/line for time, horizontal bars for rankings, no pie beyond 4 slices.
+- Readable tooltip, sober axes, discreet grid, compact values (`1,2 k`) with `Intl.NumberFormat('fr')`.
+- Limited, accessible categorical palette; sufficient contrast in light and dark.
 
-## États obligatoires
-Chaque widget gère : chargement (`Skeleton` de même forme), vide (message qui explique quoi faire, ex. installer le script), erreur (message clair + réessayer), et peu de données.
+## Required states
+Every widget handles: loading (same-shape `Skeleton`), empty (message explaining what to do, e.g. install the script), error (clear message + retry), and low data.
 
-## Accessibilité
-HTML sémantique, labels sur les champs, contrôles utilisables au clavier, focus visible, équivalent textuel ou tableau pour chaque graphe.
+## Accessibility
+Semantic HTML, labels on fields, keyboard-usable controls, visible focus, text equivalent or table for every chart.
 
-## Textes
-Français uniquement, ton simple. Centraliser les libellés (constantes de feature) pour pouvoir les extraire plus tard.
+## Text
+French only for displayed UI text, in a simple tone. Centralize labels (feature constants) so they can be extracted later. Code, comments and docs stay in English.

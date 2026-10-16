@@ -1,24 +1,24 @@
-# Base de données et API
+# Database and API
 
 ## Neon + Drizzle
-- Schéma dans `src/db/schema/`, client dans `src/db/index.ts`. Développement : Postgres local dans Docker ; production : Neon (URL poolée). Un seul driver Postgres standard (`pg` ou `postgres`) pour les deux, `DATABASE_URL` en variable d'environnement. Pas de driver spécifique Neon, qui ne fonctionne pas avec le Postgres local.
-- Migrations versionnées avec `pnpm db:generate` puis `pnpm db:migrate` ; ne jamais modifier une migration déjà appliquée.
-- Index sur les colonnes de filtre fréquentes : `(site_id, created_at)` au minimum.
-- Requêtes d'agrégation en SQL (`count`, `date_trunc`, `group by`), bornées par période et `limit`. Jamais de lecture de tous les événements.
-- Si le volume grandit : tables de rollup quotidiennes plutôt que d'agréger les événements bruts à chaque requête.
-- Respecter les limites du plan gratuit Neon : écritures légères, pas de requêtes lourdes inutiles, rétention bornée.
+- Schema in `src/db/schema/`, client in `src/db/index.ts`. Development: local Postgres in Docker; production: Neon (pooled URL). A single standard Postgres driver (`pg` or `postgres`) for both, `DATABASE_URL` as an environment variable. No Neon-specific driver, which does not work with local Postgres.
+- Versioned migrations with `pnpm db:generate` then `pnpm db:migrate`; never edit an already applied migration.
+- Index frequently filtered columns: `(site_id, created_at)` at minimum.
+- Aggregation queries in SQL (`count`, `date_trunc`, `group by`), bounded by period and `limit`. Never read all events.
+- If volume grows: daily rollup tables rather than aggregating raw events on every request.
+- Respect the Neon free plan limits: light writes, no needlessly heavy queries, bounded retention.
 
 ## Services
-- Tout accès aux données passe par `services/` d'une feature.
-- Chaque fonction qui lit ou écrit des données d'un site reçoit l'utilisateur et vérifie qu'il en est propriétaire avant la requête.
-- Les services retournent des données typées et lèvent des erreurs typées.
+- All data access goes through a feature's `services/`.
+- Every function that reads or writes a site's data receives the user and checks ownership before the query.
+- Services return typed data and throw typed errors.
 
-## Validation et erreurs
-- Zod à chaque frontière : formulaires, Server Actions, `/api/collect`, paramètres d'URL (période, filtres).
-- Types dérivés avec `z.infer`.
-- Server Actions : retourner `{ ok: true, data }` ou `{ ok: false, error, fieldErrors? }`, sans lever d'exception.
+## Validation and errors
+- Zod at every boundary: forms, Server Actions, `/api/collect`, URL params (period, filters).
+- Types derived with `z.infer`.
+- Server Actions: return `{ ok: true, data }` or `{ ok: false, error, fieldErrors? }`, without throwing.
 
-## Sécurité
-- Secrets uniquement en variables d'environnement, jamais dans le code ni côté client.
-- Aucune requête SQL brute avec concaténation ; utiliser les paramètres Drizzle.
-- Ne jamais exposer l'identifiant interne d'un autre utilisateur ni de données d'un site non possédé.
+## Security
+- Secrets only in environment variables, never in code nor on the client side.
+- No raw SQL with concatenation; use Drizzle parameters.
+- Never expose another user's internal identifier nor data from a site that is not owned.

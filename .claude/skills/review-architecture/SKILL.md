@@ -1,19 +1,20 @@
 ---
 name: review-architecture
-description: Auditer les changements récents par rapport à l'architecture, au nommage, à la vie privée et à la qualité. À utiliser avant de terminer une tâche ou sur demande de revue de structure.
+description: Audit recent changes against the architecture, naming, privacy and quality rules. Use before finishing a task or on request for a structure review.
 ---
 
-# Revue d'architecture
+# Architecture review
 
-Passer en revue les fichiers modifiés et signaler chaque écart avec chemin et correction proposée.
+Go through the modified files and report each deviation with its path and a proposed fix.
 
-- **Placement** : le code est dans la bonne feature ; rien de partagé sans deux consommateurs ; `src/app/` ne contient que du routing et de la composition.
-- **Nommage** : kebab-case, aucun suffixe de rôle (sauf `use-` pour les hooks) ; pas de noms génériques.
-- **Imports** : pas d'import des internes d'une autre feature, pas de cycle.
-- **Responsabilités** : services sans UI, schémas sans effet de bord, composants de présentation sans appel de données.
-- **Next.js** : Server Components par défaut, `"use client"` en feuille, Route Handlers limités à la collecte, auth et script.
-- **Données** : agrégation en SQL, requêtes bornées, contrôle d'accès au site dans chaque service, Zod aux frontières.
-- **Vie privée** : aucun cookie, stockage navigateur, IP ou user-agent bruts.
-- **UX** : états chargement/vide/erreur, textes français centralisés, accessibilité.
-- **Design** : pas de couleur codée en dur (tokens `globals.css`, `panel-*`, `toneClass`), texte blanc sur les cartes colorées, champs et boutons réutilisés (`TextField`, `SubmitButton`), rien qui fasse « UI générée » (voir `rules/design-and-dataviz.md`).
-- **Hygiène** : pas de dossier vide ni de placeholder, pas de dépendance injustifiée, `pnpm lint` et `pnpm build` passent.
+- **Placement**: the code is in the right feature; nothing shared without two consumers; `src/app/` only holds routing and composition.
+- **Naming**: kebab-case, no role suffix (except `use-` for hooks); no generic names.
+- **Imports**: no import of another feature's internals, no cycle.
+- **Responsibilities**: services without UI, schemas without side effects, presentation components without data calls.
+- **Next.js**: Server Components by default, `"use client"` at the leaf, Route Handlers limited to collection, auth and script.
+- **Data**: SQL aggregation, bounded queries, site access control in every service, Zod at the boundaries.
+- **Privacy**: no cookie, browser storage, raw IP or user-agent.
+- **UX**: loading/empty/error states, centralized French texts, accessibility.
+- **Language**: code, comments, docs and commit messages in English; French only in displayed UI text.
+- **Design**: no hardcoded color (`globals.css` tokens, `panel-*`, `toneClass`), white text on colored cards, reused fields and buttons (`TextField`, `SubmitButton`), nothing that looks "generated UI" (see `rules/design-and-dataviz.md`).
+- **Hygiene**: no empty folder or placeholder, no unjustified dependency, `pnpm lint` and `pnpm build` pass.

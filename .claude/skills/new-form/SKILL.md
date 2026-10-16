@@ -1,14 +1,14 @@
 ---
 name: new-form
-description: Construire un formulaire validé (schéma Zod, Server Action, UI shadcn) dans une feature. À utiliser pour connexion, inscription, création de site, paramètres.
+description: Build a validated form (Zod schema, Server Action, shadcn UI) in a feature. Use for sign-in, sign-up, site creation, settings.
 ---
 
-# Nouveau formulaire
+# New form
 
-1. Identifier la feature propriétaire ; une action = un formulaire (connexion et inscription sont séparés).
-2. `schemas/<nom>.ts` : schéma Zod et type `z.infer`. Messages d'erreur en français.
-3. `services/<nom>.ts` avec `"use server"` : valider avec le schéma, vérifier la session et l'accès, puis écrire en base. Retourner `{ ok: true, data }` ou `{ ok: false, error, fieldErrors }`, sans lever d'exception.
-4. Composant client en feuille (`components/<nom>-form.tsx`) : réutiliser `TextField`, `PasswordField`, `SubmitButton` et `FormMessage` (aujourd'hui dans `features/auth/components/` ; les déplacer vers `components/shared/` si une autre feature les utilise) plutôt que l'`Input` shadcn brut. Labels, erreurs par champ, état d'envoi, focus visible, utilisable au clavier. Style détaillé : `rules/design-and-dataviz.md` § Formulaires.
-5. Pour l'authentification, passer par Better Auth plutôt que de réécrire la logique de session.
-6. Après succès : `revalidatePath`/redirect adapté ; après échec : afficher les erreurs sans perdre la saisie.
-7. Vérifier `pnpm lint` et `pnpm build`.
+1. Identify the owning feature; one action = one form (sign-in and sign-up are separate).
+2. `schemas/<name>.ts`: Zod schema and `z.infer` type. Error messages in French (displayed text).
+3. `services/<name>.ts` with `"use server"`: validate with the schema, check the session and access, then write to the database. Return `{ ok: true, data }` or `{ ok: false, error, fieldErrors }`, without throwing.
+4. Leaf client component (`components/<name>-form.tsx`): reuse `TextField`, `PasswordField`, `SubmitButton` and `FormMessage` (currently in `features/auth/components/`; move them to `components/shared/` if another feature uses them) rather than the raw shadcn `Input`. Labels, per-field errors, submitting state, visible focus, keyboard-usable. Detailed style: `rules/design-and-dataviz.md` § Forms.
+5. For authentication, go through Better Auth rather than rewriting session logic.
+6. After success: suitable `revalidatePath`/redirect; after failure: show the errors without losing the input.
+7. Check `pnpm lint` and `pnpm build`.

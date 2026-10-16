@@ -1,12 +1,13 @@
-# Qualité du code
+# Code quality
 
-- TypeScript strict ; pas de `any` sans commentaire justifié. Types dérivés de Zod (`z.infer`).
-- Réutiliser l'existant avant de créer ; pas de duplication entre features.
-- Pas de dépendance sans besoin clair ; inspecter le code et `package.json` d'abord.
-- Perf : requêtes bornées, pas de gros payloads vers le client, `next/image` pour les images, bundles clients minimaux (importer les graphes seulement là où ils servent).
-- Dates : stocker en UTC, afficher dans le fuseau du navigateur ou du site ; regrouper par jour côté SQL avec fuseau explicite.
-- Nombres : formater avec `Intl` en `fr`.
-- Sécurité : validation à toutes les frontières, secrets en env, contrôle d'accès à chaque lecture/écriture de données d'un site.
-- Erreurs : ne pas avaler silencieusement ; messages utilisateur clairs, détails en logs serveur sans données personnelles.
-- Commentaires : seulement pour une intention non évidente, dans le style du code voisin.
-- Avant de terminer : `pnpm lint` et `pnpm build` passent.
+- Strict TypeScript; no `any` without a justified comment. Types derived from Zod (`z.infer`).
+- Reuse what exists before creating; no duplication between features.
+- No dependency without a clear need; inspect the code and `package.json` first.
+- Performance: bounded queries, no large payloads to the client, `next/image` for images, minimal client bundles (import charts only where they are used).
+- Dates: store in UTC, display in the browser's or the site's time zone; group by day in SQL with an explicit time zone.
+- Numbers: format with `Intl` in `fr`.
+- Security: validation at every boundary, secrets in env, access control on every read/write of site data.
+- Errors: never swallow silently; clear user messages, details in server logs without personal data.
+- Language: code, comments, docs and commit messages in English; only displayed UI text is French.
+- Comments: only for non-obvious intent, in the style of the neighboring code.
+- Before finishing: `pnpm lint` and `pnpm build` pass.

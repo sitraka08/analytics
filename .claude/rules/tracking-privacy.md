@@ -1,15 +1,15 @@
-# Tracking et vie privée (règles)
+# Tracking and privacy (rules)
 
-Détails du flux : `.claude/context/tracking-and-privacy.md`.
+Flow details: `.claude/context/tracking-and-privacy.md`.
 
-## Interdits
-- Cookies, `localStorage`, `sessionStorage` ou tout stockage navigateur côté script de tracking.
-- Stocker l'IP ou le user-agent bruts, en base comme dans les logs.
-- Fingerprinting (canvas, polices, etc.) ou identifiant persistant entre jours.
-- Collecter des champs de formulaire, du texte de page ou des données personnelles.
+## Forbidden
+- Cookies, `localStorage`, `sessionStorage` or any browser storage from the tracking script.
+- Storing the raw IP or user-agent, in the database as well as in logs.
+- Fingerprinting (canvas, fonts, etc.) or any identifier persisting across days.
+- Collecting form fields, page text or personal data.
 
-## Obligatoire
-- Hash visiteur salé avec rotation quotidienne ; sel jamais exposé.
-- `/api/collect` : validation Zod stricte, payload borné, CORS par domaine du site, limite de débit, filtre bots, réponse `202` sans corps.
-- Script de tracking minuscule (cible < 2 Ko gzip), sans dépendance, qui ne bloque pas le rendu et n'échoue jamais bruyamment sur le site client.
-- Toute nouvelle donnée collectée est justifiée dans le contexte et ne permet pas d'identifier une personne.
+## Required
+- Salted visitor hash with daily rotation; the salt is never exposed.
+- `/api/collect`: strict Zod validation, bounded payload, per-site-domain CORS, rate limit, bot filter, `202` response with no body.
+- Tiny tracking script (target < 2 KB gzip), dependency-free, that never blocks rendering and never fails noisily on the client site.
+- Any new collected data is justified in the context file and cannot identify a person.
