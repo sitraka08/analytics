@@ -1,5 +1,5 @@
-// Bureau dessiné au trait : ordinateur avec graphique, tasse fumante, plante et pense-bête.
-// Traits légèrement irréguliers pour un rendu « fait main » ; couleurs uniquement via les tokens.
+// Line-drawn desk: computer with a chart, steaming cup, plant and sticky note.
+// Slightly irregular strokes for a "hand-made" look; colors only through tokens.
 export function DeskScene({ className }: { className?: string }) {
   return (
     <svg
@@ -29,7 +29,7 @@ export function DeskScene({ className }: { className?: string }) {
       <path d="M126 150c14-6 26 4 40-4s24-14 40-22" stroke="var(--brand-blue)" strokeDasharray="1 6" strokeWidth="3" />
       <circle cx="206" cy="124" r="4" fill="var(--brand-blue)" stroke="none" />
 
-      {/* Pense-bête collé sur l'écran */}
+      {/* Sticky note stuck on the screen */}
       <path d="M232 126l34-4 4 34-34 4Z" fill="var(--brand-yellow)" />
       <path d="M242 142l6 6 12-14" strokeWidth="2.2" />
 
@@ -45,7 +45,7 @@ export function DeskScene({ className }: { className?: string }) {
       {/* Table */}
       <path d="M14 254c120-4 252-4 372-1" />
 
-      {/* Petites étincelles */}
+      {/* Small sparkles */}
       <path d="M300 92v14M293 99h14" stroke="var(--brand-orange)" strokeWidth="2.2" />
       <path d="M86 92v10M81 97h10" stroke="var(--brand-blue)" strokeWidth="2.2" />
     </svg>

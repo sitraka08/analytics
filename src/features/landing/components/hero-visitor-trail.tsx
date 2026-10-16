@@ -15,7 +15,7 @@ type Visitor = {
   live?: boolean;
 };
 
-// Coordonnées dans une boîte de 220 × 340, le côté droit est le miroir du gauche.
+// Coordinates in a 220 × 340 box, the right side mirrors the left.
 const BOX_WIDTH = 220;
 const BOX_HEIGHT = 340;
 const AVATAR_SIZE = 52;
@@ -56,7 +56,7 @@ export function HeroVisitorTrail({ side }: { side: "left" | "right" }) {
       className={`pointer-events-none absolute top-6 hidden h-85 w-55 xl:block ${side === "left" ? "left-0" : "right-0"}`}
     >
       <svg viewBox={`0 0 ${BOX_WIDTH} ${BOX_HEIGHT}`} className="absolute inset-0 size-full text-muted-foreground/50" fill="none">
-        {/* Le tracé progressif passe par un masque pour conserver les pointillés. */}
+        {/* The progressive stroke goes through a mask to keep the dotted pattern. */}
         <defs>
           {paths.map((d, i) => (
             <mask key={d} id={`trail-${side}-${i}`} maskUnits="userSpaceOnUse" x="0" y="0" width={BOX_WIDTH} height={BOX_HEIGHT}>

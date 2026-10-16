@@ -13,7 +13,7 @@ type RevealProps = {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  /** "view" : anime à l'entrée dans l'écran ; "mount" : anime dès l'affichage (hero, cartes d'auth). */
+  /** "view": animates when entering the viewport; "mount": animates as soon as displayed (hero, auth cards). */
   trigger?: "view" | "mount";
 };
 
@@ -58,7 +58,7 @@ type RevealItemProps = {
   children: React.ReactNode;
   className?: string;
   as?: "div" | "li";
-  /** Léger soulèvement au survol, pour les cartes. */
+  /** Slight lift on hover, for cards. */
   lift?: boolean;
 };
 

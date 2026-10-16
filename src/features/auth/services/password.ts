@@ -35,7 +35,7 @@ export async function requestPasswordResetAction(
     return { ok: false, message: getAuthErrorMessage(error), values };
   }
 
-  // Même réponse que le compte existe ou non, pour ne pas révéler les adresses inscrites.
+  // Same response whether the account exists or not, so registered addresses are not revealed.
   return { ok: true, message: AUTH_COPY.forgotPassword.sent, values };
 }
 

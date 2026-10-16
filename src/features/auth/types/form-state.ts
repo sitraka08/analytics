@@ -2,6 +2,6 @@ export type FormState<Field extends string> = {
   ok: boolean;
   message?: string;
   fieldErrors?: Partial<Record<Field, string[]>>;
-  /** Valeurs renvoyées pour ne pas vider le formulaire après une erreur (jamais les mots de passe). */
+  /** Values sent back so the form is not cleared after an error (never passwords). */
   values?: Partial<Record<Field, string>>;
 };

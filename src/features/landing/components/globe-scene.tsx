@@ -1,4 +1,4 @@
-// Globe dessiné au trait, avec des épingles reliées par des pointillés : des visiteurs venus de partout.
+// Line-drawn globe with pins linked by dotted lines: visitors from everywhere.
 export function GlobeScene({ className }: { className?: string }) {
   return (
     <svg
@@ -22,7 +22,7 @@ export function GlobeScene({ className }: { className?: string }) {
       <path d="M212 174c14-4 30 4 30 18s-12 28-24 28-10-14-16-24 0-20 10-22Z" fill="var(--brand-green)" />
       <path d="M146 186c10-2 18 6 16 14s-12 12-18 6-8-18 2-20Z" fill="var(--brand-green)" />
 
-      {/* Trajets entre épingles */}
+      {/* Paths between pins */}
       <path d="M150 112c20-40 70-50 100-26" strokeDasharray="5 6" strokeWidth="1.8" />
       <path d="M252 92c40 20 40 80-26 102" strokeDasharray="5 6" strokeWidth="1.8" />
 

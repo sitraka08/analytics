@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 type SubmitButtonProps = React.ComponentProps<typeof Button>;
 
-// Pilule sombre avec pastille fléchée, comme le CTA de la landing. La variante contour reste sans flèche.
+// Dark pill with an arrow badge, like the landing CTA. The outline variant has no arrow.
 export function SubmitButton({ children, className, variant = "default", ...props }: SubmitButtonProps) {
   const { pending } = useFormStatus();
   const primary = variant === "default";

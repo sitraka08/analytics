@@ -1,4 +1,4 @@
-// Squelette affiché pendant la lecture des paramètres d'URL (même forme que les formulaires).
+// Skeleton shown while URL params are read (same shape as the forms).
 export function AuthFormFallback({ fields = 2 }: { fields?: number }) {
   return (
     <div aria-hidden className="flex animate-pulse flex-col gap-5">

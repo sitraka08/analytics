@@ -1,4 +1,4 @@
-// Nom de travail : à remplacer ici, il est utilisé partout (metadata, landing, footer).
+// Working name: replace it here, it is used everywhere (metadata, landing, footer).
 export const BRAND = {
   name: "Statly",
   description:

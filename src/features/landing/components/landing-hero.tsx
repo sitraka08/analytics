@@ -49,7 +49,7 @@ export function LandingHero() {
               <SignupForm />
             </RevealItem>
 
-            {/* Les trajets de visiteurs ne tiennent qu'en très grand écran : le globe prend le relais ailleurs. */}
+            {/* Visitor trails only fit on very large screens: the globe takes over elsewhere. */}
             <RevealItem className="xl:hidden">
               <GlobeScene className="mx-auto mt-10 w-full max-w-xs sm:max-w-sm" />
             </RevealItem>

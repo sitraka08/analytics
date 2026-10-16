@@ -1,4 +1,4 @@
-// Trait irrégulier sous un mot clé, comme souligné au feutre. À placer dans un parent `relative inline-block`.
+// Irregular stroke under a key word, like a marker underline. Place it in a `relative inline-block` parent.
 export function HandDrawnUnderline({ className = "-bottom-2 h-3 w-[108%]" }: { className?: string }) {
   return (
     <svg

@@ -15,7 +15,7 @@
   --brand-green: #7dd389;
   --brand-orange: #ff6633;
   --brand-yellow: #ffde2e;
-  /* Texte posé sur les cartes colorées. */
+  /* Text placed on colored cards. */
   --tone-foreground: #ffffff;
   --panel-sand-from: #e9e2d4;
   --panel-sand-to: #dcd2bf;
@@ -26,7 +26,7 @@
   --panel-sky-from: #e3e8fb;
   --panel-sky-to: #ccd5f5;
 
-  /* Tokens shadcn alignés sur la marque */
+  /* shadcn tokens aligned with the brand */
   --background: #f6f5f1;
   --foreground: #121212;
   --card: #ffffff;
@@ -188,7 +188,7 @@
 }
 
 @layer components {
-  /* Bord festonné sous le hero : demi-cercles qui se touchent sur la ligne de base. */
+  /* Scalloped edge under the hero: half circles touching on the baseline. */
   .scallop-edge {
     background-image: radial-gradient(circle at 50% 0, var(--cream-deep) 47.5px, transparent 48px);
     background-size: 96px 48px;

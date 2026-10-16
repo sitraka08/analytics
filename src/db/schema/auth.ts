@@ -1,6 +1,6 @@
 import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-// Tables requises par Better Auth (noms de modèles : user, session, account, verification).
+// Tables required by Better Auth (model names: user, session, account, verification).
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),

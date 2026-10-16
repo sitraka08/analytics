@@ -2,7 +2,7 @@ import { HandDrawnUnderline } from "@/components/shared/hand-drawn-underline";
 
 type AuthPanelProps = {
   title: string;
-  /** Partie du titre soulignée à la main ; doit apparaître telle quelle dans `title`. */
+  /** Part of the title underlined by hand; must appear verbatim in `title`. */
   highlight?: string;
   description?: React.ReactNode;
   children: React.ReactNode;

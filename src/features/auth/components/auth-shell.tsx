@@ -5,7 +5,7 @@ import { ROUTES } from "@/lib/routes";
 import { AUTH_COPY } from "../constants/content";
 import { AuthAside } from "./auth-aside";
 
-// Deux colonnes : formulaire sur le fond crème, panneau de marque à droite (masqué sur mobile).
+// Two columns: form on the cream background, brand panel on the right (hidden on mobile).
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid min-h-screen gap-3 bg-background p-3 lg:grid-cols-2">

@@ -8,11 +8,11 @@ type TextFieldProps = Omit<React.ComponentProps<typeof Input>, "id"> & {
   description?: string;
   errors?: string[];
   labelAction?: React.ReactNode;
-  /** Élément placé à droite dans le champ (ex. bouton afficher le mot de passe). */
+  /** Element placed on the right inside the field (e.g. show/hide password button). */
   trailing?: React.ReactNode;
 };
 
-// Champ « rempli » : le libellé vit dans la boîte, comme sur un formulaire papier, et toute la boîte réagit au focus.
+// "Filled" field: the label lives inside the box, like on a paper form, and the whole box reacts to focus.
 export function TextField({ name, label, description, errors, labelAction, trailing, className, ...inputProps }: TextFieldProps) {
   const id = `field-${name}`;
   const invalid = Boolean(errors?.length);

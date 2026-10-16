@@ -19,7 +19,7 @@ export function getAuthErrorMessage(error: unknown) {
   return AUTH_COPY.errors.generic;
 }
 
-/** Accepte uniquement un chemin interne (« /dashboard »), jamais une URL externe. */
+/** Only accepts an internal path ("/dashboard"), never an external URL. */
 export function getSafeRedirectPath(value: FormDataEntryValue | string | null | undefined, fallback: string) {
   return typeof value === "string" && value.startsWith("/") && !value.startsWith("//") ? value : fallback;
 }

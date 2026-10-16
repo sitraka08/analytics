@@ -4,7 +4,7 @@ import { SignOutButton, requireSession } from "@/features/auth";
 
 export const metadata: Metadata = { title: "Tableau de bord" };
 
-// Page minimale en attendant le dashboard : elle valide la session et permet de se déconnecter.
+// Minimal page until the dashboard exists: it validates the session and allows signing out.
 async function Greeting() {
   const { user } = await requireSession();
 
