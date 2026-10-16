@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import {
   forgotPasswordSchema,
@@ -12,7 +13,6 @@ import {
 } from "../schemas/password";
 import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage } from "../utils/auth-error";
-import { auth } from "./auth";
 
 export async function requestPasswordResetAction(
   _previous: FormState<ForgotPasswordField>,
@@ -25,14 +25,13 @@ export async function requestPasswordResetAction(
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors, values };
   }
 
-  try {
-    await auth.api.requestPasswordReset({
-      body: { email: parsed.data.email, redirectTo: ROUTES.resetPassword },
-      headers: await headers(),
-    });
-  } catch (error) {
-    return { ok: false, message: getAuthErrorMessage(error), values };
-  }
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${origin}${ROUTES.authCallback}?next=${encodeURIComponent(ROUTES.resetPassword)}`,
+  });
+
+  if (error) return { ok: false, message: getAuthErrorMessage(error), values };
 
   // Same response whether the account exists or not, so registered addresses are not revealed.
   return { ok: true, message: "Si un compte existe pour cette adresse, un e-mail vient d'être envoyé. Pensez à vérifier vos spams.", values };
@@ -43,7 +42,6 @@ export async function resetPasswordAction(
   formData: FormData,
 ): Promise<FormState<ResetPasswordField>> {
   const parsed = resetPasswordSchema.safeParse({
-    token: formData.get("token"),
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
   });
@@ -52,14 +50,12 @@ export async function resetPasswordAction(
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
 
-  try {
-    await auth.api.resetPassword({
-      body: { token: parsed.data.token, newPassword: parsed.data.password },
-      headers: await headers(),
-    });
-  } catch (error) {
-    return { ok: false, message: getAuthErrorMessage(error) };
-  }
+  // The recovery link signed the user in (see /auth/callback): updating the password is enough.
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
 
+  if (error) return { ok: false, message: getAuthErrorMessage(error) };
+
+  await supabase.auth.signOut();
   redirect(`${ROUTES.login}?reset=success`);
 }

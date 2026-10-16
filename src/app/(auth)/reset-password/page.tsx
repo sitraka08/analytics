@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
-import { AuthPanel, AuthFormFallback, ResetPasswordForm } from "@/features/auth";
+import { FormMessage } from "@/components/shared/form-message";
+import { buttonVariants } from "@/components/ui/button";
+import { AuthPanel, AuthFormFallback, ResetPasswordForm, getSession } from "@/features/auth";
+import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Nouveau mot de passe" };
 
-async function ResetPasswordContent({ searchParams }: Pick<PageProps<"/reset-password">, "searchParams">) {
-  const { token, error } = await searchParams;
-  const validToken = typeof token === "string" && !error ? token : undefined;
+// The recovery link signs the user in through /auth/callback; without that session the link is invalid or expired.
+async function ResetPasswordContent() {
+  if (await getSession()) return <ResetPasswordForm />;
 
-  return <ResetPasswordForm token={validToken} />;
+  return (
+    <div className="flex flex-col gap-4">
+      <FormMessage message="Ce lien n'est plus valide. Demandez-en un nouveau." />
+      <Link href={ROUTES.forgotPassword} className={buttonVariants({ size: "lg", className: "h-12 rounded-full text-base" })}>
+        Demander un nouveau lien
+      </Link>
+    </div>
+  );
 }
 
-export default function ResetPasswordPage({ searchParams }: PageProps<"/reset-password">) {
+export default function ResetPasswordPage() {
   return (
     <AuthPanel
       title="Nouveau mot de passe"
@@ -19,7 +30,7 @@ export default function ResetPasswordPage({ searchParams }: PageProps<"/reset-pa
       description="Choisissez un mot de passe d'au moins 8 caractères."
     >
       <Suspense fallback={<AuthFormFallback />}>
-        <ResetPasswordContent searchParams={searchParams} />
+        <ResetPasswordContent />
       </Suspense>
     </AuthPanel>
   );

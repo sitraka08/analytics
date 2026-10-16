@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
 import type { SignInField } from "../schemas/sign-in";
 import { signInAction } from "../services/sign-in";
@@ -54,18 +53,6 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
             </Link>
           }
         />
-
-        <Field orientation="horizontal" className="gap-2.5">
-          <Checkbox
-            id="remember-me"
-            name="rememberMe"
-            defaultChecked
-            className="size-4.5 rounded-md border-[1.5px] bg-surface data-checked:border-foreground data-checked:bg-foreground"
-          />
-          <FieldLabel htmlFor="remember-me" className="text-sm font-normal">
-            Rester connecté
-          </FieldLabel>
-        </Field>
 
         <Field className="gap-4">
           <SubmitButton className="w-full">Se connecter</SubmitButton>

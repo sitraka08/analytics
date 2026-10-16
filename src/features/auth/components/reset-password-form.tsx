@@ -1,10 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
-import { buttonVariants } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
-import { ROUTES } from "@/lib/routes";
 import type { ResetPasswordField } from "../schemas/password";
 import { resetPasswordAction } from "../services/password";
 import type { FormState } from "@/lib/form-state";
@@ -14,23 +11,11 @@ import { SubmitButton } from "@/components/shared/submit-button";
 
 const INITIAL_STATE: FormState<ResetPasswordField> = { ok: false };
 
-export function ResetPasswordForm({ token }: { token?: string }) {
+export function ResetPasswordForm() {
   const [state, formAction] = useActionState(resetPasswordAction, INITIAL_STATE);
-
-  if (!token) {
-    return (
-      <div className="flex flex-col gap-4">
-        <FormMessage message="Ce lien n'est plus valide. Demandez-en un nouveau." />
-        <Link href={ROUTES.forgotPassword} className={buttonVariants({ size: "lg", className: "h-12 rounded-full text-base" })}>
-          Demander un nouveau lien
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <form action={formAction} noValidate>
-      <input type="hidden" name="token" value={token} />
       <FieldGroup className="gap-5">
         <FormMessage message={state.message} />
 

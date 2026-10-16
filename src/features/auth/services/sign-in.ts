@@ -3,11 +3,11 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { signInSchema, type SignInField } from "../schemas/sign-in";
 import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage, getSafeRedirectPath } from "../utils/auth-error";
-import { auth } from "./auth";
 
 export async function signInAction(
   _previous: FormState<SignInField>,
@@ -17,7 +17,6 @@ export async function signInAction(
   const parsed = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
-    rememberMe: formData.get("rememberMe") === "on",
   });
 
   if (!parsed.success) {
@@ -25,32 +24,23 @@ export async function signInAction(
   }
 
   const redirectTo = getSafeRedirectPath(formData.get("next"), ROUTES.dashboard);
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword(parsed.data);
 
-  try {
-    await auth.api.signInEmail({
-      body: { ...parsed.data, callbackURL: redirectTo },
-      headers: await headers(),
-    });
-  } catch (error) {
-    return { ok: false, message: getAuthErrorMessage(error), values };
-  }
+  if (error) return { ok: false, message: getAuthErrorMessage(error), values };
 
   redirect(redirectTo);
 }
 
 export async function signInWithGoogleAction(formData: FormData) {
   const redirectTo = getSafeRedirectPath(formData.get("next"), ROUTES.dashboard);
-  let url: string | undefined;
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
 
-  try {
-    const result = await auth.api.signInSocial({
-      body: { provider: "google", callbackURL: redirectTo, errorCallbackURL: `${ROUTES.login}?error=google` },
-      headers: await headers(),
-    });
-    url = result.url;
-  } catch {
-    url = undefined;
-  }
+  const { data } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${origin}${ROUTES.authCallback}?next=${encodeURIComponent(redirectTo)}` },
+  });
 
-  redirect(url ?? `${ROUTES.login}?error=google`);
+  redirect(data.url ?? `${ROUTES.login}?error=google`);
 }

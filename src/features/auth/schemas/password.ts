@@ -9,7 +9,6 @@ export type ForgotPasswordField = keyof z.infer<typeof forgotPasswordSchema>;
 
 export const resetPasswordSchema = z
   .object({
-    token: z.string().min(1),
     password: newPasswordField,
     confirmPassword: z.string(),
   })

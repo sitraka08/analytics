@@ -4,7 +4,7 @@ import { toneClass, type Tone } from "@/lib/tones";
 const TILES: { value: string; label: string; tone: Tone; className: string }[] = [
   { value: "128", label: "visiteurs en ce moment", tone: "blue", className: "rounded-3xl" },
   { value: "+12 %", label: "vs la semaine dernière", tone: "green", className: "rounded-[2.5rem_1.5rem_2.5rem_1.5rem]" },
-  { value: "0", label: "cookie déposé", tone: "yellow", className: "rounded-[1.5rem_2.5rem_1.5rem_2.5rem]" },
+  { value: "0", label: "cookie déposé", tone: "violet", className: "rounded-[1.5rem_2.5rem_1.5rem_2.5rem]" },
   { value: "< 2 Ko", label: "de script à installer", tone: "orange", className: "rounded-3xl" },
 ];
 
