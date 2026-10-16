@@ -1,4 +1,5 @@
-export { auth, isGoogleEnabled } from "./services/auth";
+export { isGoogleEnabled } from "./utils/providers";
+export { getSafeRedirectPath } from "./utils/auth-error";
 export { getSession, requireSession } from "./services/session";
 export { AuthShell } from "./components/auth-shell";
 export { AuthPanel } from "./components/auth-panel";

@@ -5,6 +5,7 @@ export const ROUTES = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   verifyEmail: "/verify-email",
+  authCallback: "/auth/callback",
   dashboard: "/dashboard",
   newSite: "/dashboard/sites/new",
   site: (siteId: string) => `/dashboard/sites/${siteId}`,
