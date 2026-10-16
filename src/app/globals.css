@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Marque (landing) */
+  --surface: #ffffff;
+  --cream-deep: #efebe1;
+  --line: #e4e0d5;
+  --highlight: #ffd6c7;
+  --accent-green: #2fb54f;
+  --brand-blue: #4a6cf7;
+  --brand-green: #7dd389;
+  --brand-orange: #ff6633;
+  --brand-yellow: #ffde2e;
+  /* Texte posé sur les cartes colorées. */
+  --tone-foreground: #ffffff;
+  --panel-sand-from: #e9e2d4;
+  --panel-sand-to: #dcd2bf;
+  --panel-warm-from: #e7dcc8;
+  --panel-warm-to: #d9cdb6;
+  --panel-sage-from: #e6efe4;
+  --panel-sage-to: #cfe1cb;
+  --panel-sky-from: #e3e8fb;
+  --panel-sky-to: #ccd5f5;
+
+  /* Tokens shadcn alignés sur la marque */
+  --background: #f6f5f1;
+  --foreground: #121212;
+  --card: #ffffff;
+  --card-foreground: #121212;
+  --popover: #ffffff;
+  --popover-foreground: #121212;
+  --primary: #121212;
+  --primary-foreground: #f6f5f1;
+  --secondary: #efebe1;
+  --secondary-foreground: #121212;
+  --muted: #efebe1;
+  --muted-foreground: #6f6b62;
+  --accent: #efebe1;
+  --accent-foreground: #121212;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #e4e0d5;
+  --input: #e4e0d5;
+  --ring: #4a6cf7;
+  --chart-1: #4a6cf7;
+  --chart-2: #7dd389;
+  --chart-3: #ff6633;
+  --chart-4: #ffde2e;
+  --chart-5: #121212;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #121212;
+  --sidebar-primary: #121212;
+  --sidebar-primary-foreground: #f6f5f1;
+  --sidebar-accent: #efebe1;
+  --sidebar-accent-foreground: #121212;
+  --sidebar-border: #e4e0d5;
+  --sidebar-ring: #4a6cf7;
+}
+
+.dark {
+  --surface: #1c1c1a;
+  --cream-deep: #22211e;
+  --line: #2e2d29;
+  --highlight: #5a3a2e;
+  --panel-sand-from: #2a2823;
+  --panel-sand-to: #222019;
+  --panel-warm-from: #2c2822;
+  --panel-warm-to: #23201a;
+  --panel-sage-from: #222a22;
+  --panel-sage-to: #1b221b;
+  --panel-sky-from: #22263a;
+  --panel-sky-to: #1b1f30;
+  --background: #121211;
+  --foreground: #f6f5f1;
+  --card: #1c1c1a;
+  --card-foreground: #f6f5f1;
+  --popover: #1c1c1a;
+  --popover-foreground: #f6f5f1;
+  --primary: #f6f5f1;
+  --primary-foreground: #121212;
+  --secondary: #22211e;
+  --secondary-foreground: #f6f5f1;
+  --muted: #22211e;
+  --muted-foreground: #a7a294;
+  --accent: #22211e;
+  --accent-foreground: #f6f5f1;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: #2e2d29;
+  --input: #2e2d29;
+  --ring: #7d95fa;
+  --sidebar: #1c1c1a;
+  --sidebar-foreground: #f6f5f1;
+  --sidebar-primary: #f6f5f1;
+  --sidebar-primary-foreground: #121212;
+  --sidebar-accent: #22211e;
+  --sidebar-accent-foreground: #f6f5f1;
+  --sidebar-border: #2e2d29;
+  --sidebar-ring: #7d95fa;
+}
+
+@theme inline {
+  --font-sans: var(--font-google-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), var(--font-google-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-google-sans-code), ui-monospace, SFMono-Regular, monospace;
+  --color-surface: var(--surface);
+  --color-cream-deep: var(--cream-deep);
+  --color-line: var(--line);
+  --color-highlight: var(--highlight);
+  --color-accent-green: var(--accent-green);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-green: var(--brand-green);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-tone-foreground: var(--tone-foreground);
+  --color-panel-sand-from: var(--panel-sand-from);
+  --color-panel-sand-to: var(--panel-sand-to);
+  --color-panel-warm-from: var(--panel-warm-from);
+  --color-panel-warm-to: var(--panel-warm-to);
+  --color-panel-sage-from: var(--panel-sage-from);
+  --color-panel-sage-to: var(--panel-sage-to);
+  --color-panel-sky-from: var(--panel-sky-from);
+  --color-panel-sky-to: var(--panel-sky-to);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Bord festonné sous le hero : demi-cercles qui se touchent sur la ligne de base. */
+  .scallop-edge {
+    background-image: radial-gradient(circle at 50% 0, var(--cream-deep) 47.5px, transparent 48px);
+    background-size: 96px 48px;
+    background-position: center top;
+    background-repeat: repeat-x;
+  }
+
+  @media (min-width: 768px) {
+    .scallop-edge {
+      background-image: radial-gradient(circle at 50% 0, var(--cream-deep) 79.5px, transparent 80px);
+      background-size: 160px 80px;
+    }
+  }
+}
