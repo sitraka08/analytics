@@ -38,6 +38,17 @@ export async function listSites(userId: string): Promise<SiteSummary[]> {
   return db.select(SITE_COLUMNS).from(site).where(eq(site.userId, userId)).orderBy(desc(site.createdAt)).limit(50);
 }
 
+/** Public collection lookup (no user involved): only what is needed to accept an event. */
+export async function findSiteForCollection(publicKey: string): Promise<{ id: string; domain: string } | null> {
+  const [found] = await db
+    .select({ id: site.id, domain: site.domain })
+    .from(site)
+    .where(eq(site.publicKey, publicKey))
+    .limit(1);
+
+  return found ?? null;
+}
+
 /**
  * The single ownership check: every service reading or writing a site's data calls it first.
  * A site owned by someone else is indistinguishable from a missing one.

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { requireSession } from "@/features/auth";
 import { SiteNotFoundError, getOwnedSite } from "@/features/sites";
+import { InstallSnippet } from "@/features/tracking";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Site" };
@@ -22,6 +23,9 @@ async function SiteContent({ params }: Pick<PageProps<"/dashboard/sites/[siteId]
     <>
       <h1 className="mt-6 text-3xl font-bold tracking-tight">{site.name}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{site.domain}</p>
+      <div className="mt-8">
+        <InstallSnippet publicKey={site.publicKey} />
+      </div>
     </>
   );
 }

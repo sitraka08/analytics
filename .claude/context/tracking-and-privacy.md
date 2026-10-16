@@ -6,9 +6,16 @@
 3. Duration is sent when the page is closed or hidden (`visibilitychange`).
 4. The server validates (Zod), filters bots, enriches (country, device), computes the visitor hash, then inserts the event. Response `202` with no body.
 
+## Script details
+- The script is skipped when Do Not Track is on or the browser is automated (webdriver).
+- Each pageview gets a random id generated in memory (never stored in the browser). The duration message carries the same id so the server can update that pageview. It identifies a page view, not a person.
+- Duration is the visible time of the page, reported when the tab is hidden and when the SPA navigates.
+- Payloads are sent as `text/plain` JSON, which avoids a CORS preflight.
+
 ## Cookie-less visitor identity
 `visitor_id = hash(daily_salt + site_id + IP + user-agent)`.
-- The salt changes every day and is not kept after rotation: a visitor cannot be linked from one day to the next.
+- The salt is `HMAC(VISITOR_SALT_SECRET, UTC date)`: it changes every day and nothing is stored, so a visitor cannot be linked from one day to the next.
+- A session continues while the visitor's last event is less than 30 minutes old (computed server-side from the hash).
 - The raw IP and user-agent are never stored.
 - Accepted consequence: a visitor returning on another day counts as new.
 
