@@ -6,7 +6,7 @@ import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { signInSchema, type SignInField } from "../schemas/sign-in";
 import type { FormState } from "@/lib/form-state";
-import { getAuthErrorMessage, getSafeRedirectPath } from "@/features/auth";
+import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE, getAuthErrorMessage, getSafeRedirectPath } from "@/features/auth";
 
 export async function signInAction(
   _previous: FormState<SignInField>,
@@ -21,6 +21,8 @@ export async function signInAction(
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors, values };
   }
+
+  if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
   const redirectTo = getSafeRedirectPath(formData.get("next"), ROUTES.dashboard);
   const supabase = await createClient();

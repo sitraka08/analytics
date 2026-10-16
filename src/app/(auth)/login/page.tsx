@@ -4,6 +4,7 @@ import {
   AuthPanel,
   AuthDivider,
   AuthFormFallback,
+  AUTH_UNAVAILABLE_MESSAGE,
   GoogleSignInButton,
   isGoogleEnabled,
 } from "@/features/auth";
@@ -30,7 +31,13 @@ async function LoginContent({
         notice={
           reset === "success" ? "Mot de passe modifié. Vous pouvez vous connecter." : undefined
         }
-        error={error === "google" ? "La connexion avec Google a échoué. Réessayez." : undefined}
+        error={
+          error === "google"
+            ? "La connexion avec Google a échoué. Réessayez."
+            : error === "unavailable"
+              ? AUTH_UNAVAILABLE_MESSAGE
+              : undefined
+        }
       />
     </div>
   );

@@ -6,7 +6,7 @@ import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { resendVerificationSchema, type ResendVerificationField } from "../schemas/verification";
 import type { FormState } from "@/lib/form-state";
-import { getAuthErrorMessage } from "@/features/auth";
+import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE, getAuthErrorMessage } from "@/features/auth";
 
 export async function resendVerificationAction(
   _previous: FormState<ResendVerificationField>,
@@ -17,6 +17,8 @@ export async function resendVerificationAction(
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
+
+  if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
   const origin = (await headers()).get("origin");
   const supabase = await createClient();

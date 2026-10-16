@@ -12,6 +12,7 @@ import {
   type ResetPasswordField,
 } from "../schemas/password";
 import type { FormState } from "@/lib/form-state";
+import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE } from "../constants/availability";
 import { getAuthErrorMessage } from "../utils/auth-error";
 
 export async function requestPasswordResetAction(
@@ -24,6 +25,8 @@ export async function requestPasswordResetAction(
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors, values };
   }
+
+  if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
   const origin = (await headers()).get("origin");
   const supabase = await createClient();
@@ -49,6 +52,8 @@ export async function resetPasswordAction(
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors };
   }
+
+  if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
   // The recovery link signed the user in (see /auth/callback): updating the password is enough.
   const supabase = await createClient();
