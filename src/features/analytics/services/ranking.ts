@@ -1,21 +1,12 @@
-import { and, countDistinct, desc, isNotNull } from "drizzle-orm";
-import { db } from "@/db";
-import { event } from "@/db/schema";
+import { createClient } from "@/db/server";
 import { getOwnedSite } from "@/features/sites";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { RankingDimension, RankingItem } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
-import { eventConditions } from "./event-conditions";
+import { filterParams } from "./filter-params";
 
 const DEFAULT_LIMIT = 8;
-
-const DIMENSION_COLUMN = {
-  pages: event.path,
-  referrers: event.referrerDomain,
-  countries: event.country,
-  devices: event.device,
-} as const;
 
 export async function getRanking(
   userId: string,
@@ -27,17 +18,17 @@ export async function getRanking(
 ): Promise<RankingItem[]> {
   await getOwnedSite(userId, siteId);
   const { from, to } = getPeriodRange(period);
-  const column = DIMENSION_COLUMN[dimension];
-  const visitors = countDistinct(event.visitorHash);
 
-  const rows = await db
-    .select({ label: column, visitors })
-    .from(event)
-    .where(and(eventConditions(siteId, from, to, filters), isNotNull(column)))
-    .groupBy(column)
-    .orderBy(desc(visitors))
-    .limit(limit);
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("analytics_ranking", {
+    p_site_id: siteId,
+    p_dimension: dimension,
+    p_from: from.toISOString(),
+    p_to: to.toISOString(),
+    p_limit: limit,
+    ...filterParams(filters),
+  });
 
-  // The `isNotNull` filter guarantees a label; the column types stay nullable.
-  return rows.map((row) => ({ label: row.label as string, visitors: row.visitors }));
+  if (error) throw error;
+  return data;
 }

@@ -1,39 +1,32 @@
-import { asc, count, countDistinct, sql } from "drizzle-orm";
-import { db } from "@/db";
-import { event } from "@/db/schema";
+import { createClient } from "@/db/server";
 import { getOwnedSite } from "@/features/sites";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { TimeseriesPoint } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
-import { eventConditions } from "./event-conditions";
-
-const BUCKET_MS = { hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 } as const;
+import { bucketDates } from "./bucket";
+import { filterParams } from "./filter-params";
 
 /** Visitors and pageviews per bucket (UTC), with empty buckets filled so the curve has no gap. */
 export async function getTimeseries(userId: string, siteId: string, period: Period, filters: Filters): Promise<TimeseriesPoint[]> {
   await getOwnedSite(userId, siteId);
   const { from, to, unit } = getPeriodRange(period);
 
-  // `unit` comes from a closed union, never from user input.
-  const bucket = sql<string>`to_char(date_trunc(${sql.raw(`'${unit}'`)}, ${event.createdAt} at time zone 'UTC'), 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`;
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("analytics_timeseries", {
+    p_site_id: siteId,
+    p_unit: unit,
+    p_from: from.toISOString(),
+    p_to: to.toISOString(),
+    ...filterParams(filters),
+  });
 
-  const rows = await db
-    .select({ date: bucket, visitors: countDistinct(event.visitorHash), pageviews: count() })
-    .from(event)
-    .where(eventConditions(siteId, from, to, filters))
-    .groupBy(bucket)
-    .orderBy(asc(bucket));
+  if (error) throw error;
+  const byDate = new Map(data.map((row) => [row.bucket, row]));
 
-  const byDate = new Map(rows.map((row) => [row.date, row]));
-  const step = BUCKET_MS[unit];
-  const first = Math.floor(from.getTime() / step) * step;
-  const points: TimeseriesPoint[] = [];
-
-  for (let time = first; time < to.getTime(); time += step) {
-    const date = new Date(time).toISOString().replace(/\.\d{3}Z$/, "Z");
-    points.push({ date, visitors: byDate.get(date)?.visitors ?? 0, pageviews: byDate.get(date)?.pageviews ?? 0 });
-  }
-
-  return points;
+  return bucketDates(from, to, unit).map((date) => ({
+    date,
+    visitors: byDate.get(date)?.visitors ?? 0,
+    pageviews: byDate.get(date)?.pageviews ?? 0,
+  }));
 }
