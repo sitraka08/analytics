@@ -1,13 +1,15 @@
-import { and, count, countDistinct, eq, gte, lt, sql, sum } from "drizzle-orm";
+import { count, countDistinct, sql, sum } from "drizzle-orm";
 import { db } from "@/db";
 import { event } from "@/db/schema";
 import { getOwnedSite } from "@/features/sites";
+import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { Overview, Totals } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
+import { eventConditions } from "./event-conditions";
 
-async function getTotals(siteId: string, from: Date, to: Date): Promise<Totals> {
-  const inRange = and(eq(event.siteId, siteId), gte(event.createdAt, from), lt(event.createdAt, to));
+async function getTotals(siteId: string, from: Date, to: Date, filters: Filters): Promise<Totals> {
+  const inRange = eventConditions(siteId, from, to, filters);
 
   // One row per session: its pageview count and its summed measured duration.
   const sessions = db
@@ -37,10 +39,10 @@ async function getTotals(siteId: string, from: Date, to: Date): Promise<Totals> 
   };
 }
 
-export async function getOverview(userId: string, siteId: string, period: Period): Promise<Overview> {
+export async function getOverview(userId: string, siteId: string, period: Period, filters: Filters): Promise<Overview> {
   await getOwnedSite(userId, siteId);
   const { from, to, previousFrom } = getPeriodRange(period);
 
-  const [current, previous] = await Promise.all([getTotals(siteId, from, to), getTotals(siteId, previousFrom, from)]);
+  const [current, previous] = await Promise.all([getTotals(siteId, from, to, filters), getTotals(siteId, previousFrom, from, filters)]);
   return { current, previous };
 }

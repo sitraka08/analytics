@@ -1,15 +1,17 @@
-import { and, asc, count, countDistinct, eq, gte, lt, sql } from "drizzle-orm";
+import { asc, count, countDistinct, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { event } from "@/db/schema";
 import { getOwnedSite } from "@/features/sites";
+import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { TimeseriesPoint } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
+import { eventConditions } from "./event-conditions";
 
 const BUCKET_MS = { hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 } as const;
 
 /** Visitors and pageviews per bucket (UTC), with empty buckets filled so the curve has no gap. */
-export async function getTimeseries(userId: string, siteId: string, period: Period): Promise<TimeseriesPoint[]> {
+export async function getTimeseries(userId: string, siteId: string, period: Period, filters: Filters): Promise<TimeseriesPoint[]> {
   await getOwnedSite(userId, siteId);
   const { from, to, unit } = getPeriodRange(period);
 
@@ -19,7 +21,7 @@ export async function getTimeseries(userId: string, siteId: string, period: Peri
   const rows = await db
     .select({ date: bucket, visitors: countDistinct(event.visitorHash), pageviews: count() })
     .from(event)
-    .where(and(eq(event.siteId, siteId), gte(event.createdAt, from), lt(event.createdAt, to)))
+    .where(eventConditions(siteId, from, to, filters))
     .groupBy(bucket)
     .orderBy(asc(bucket));
 

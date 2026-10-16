@@ -1,10 +1,12 @@
-import { and, countDistinct, desc, eq, gte, isNotNull, lt } from "drizzle-orm";
+import { and, countDistinct, desc, isNotNull } from "drizzle-orm";
 import { db } from "@/db";
 import { event } from "@/db/schema";
 import { getOwnedSite } from "@/features/sites";
+import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { RankingDimension, RankingItem } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
+import { eventConditions } from "./event-conditions";
 
 const RANKING_LIMIT = 8;
 
@@ -19,6 +21,7 @@ export async function getRanking(
   userId: string,
   siteId: string,
   period: Period,
+  filters: Filters,
   dimension: RankingDimension,
 ): Promise<RankingItem[]> {
   await getOwnedSite(userId, siteId);
@@ -29,7 +32,7 @@ export async function getRanking(
   const rows = await db
     .select({ label: column, visitors })
     .from(event)
-    .where(and(eq(event.siteId, siteId), gte(event.createdAt, from), lt(event.createdAt, to), isNotNull(column)))
+    .where(and(eventConditions(siteId, from, to, filters), isNotNull(column)))
     .groupBy(column)
     .orderBy(desc(visitors))
     .limit(RANKING_LIMIT);
