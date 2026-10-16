@@ -6,7 +6,7 @@ import type { ResetPasswordField } from "../schemas/password";
 import { resetPasswordAction } from "../services/password";
 import type { FormState } from "@/lib/form-state";
 import { FormMessage } from "@/components/shared/form-message";
-import { PasswordField } from "./password-field";
+import { PasswordField } from "@/components/shared/password-field";
 import { SubmitButton } from "@/components/shared/submit-button";
 
 const INITIAL_STATE: FormState<ResetPasswordField> = { ok: false };

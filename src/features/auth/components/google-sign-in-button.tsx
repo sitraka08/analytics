@@ -1,4 +1,4 @@
-import { signInWithGoogleAction } from "../services/sign-in";
+import { signInWithGoogleAction } from "../services/google";
 import { SubmitButton } from "@/components/shared/submit-button";
 
 function GoogleIcon() {
