@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { BackLink } from "@/components/shared/back-link";
 import {
   ActiveFilters,
   FilterBar,
@@ -110,9 +110,7 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
 export default function SitePage({ params, searchParams }: PageProps<"/dashboard/sites/[siteId]">) {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
-      <Link href={ROUTES.dashboard} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
-        ← Retour aux sites
-      </Link>
+      <BackLink href={ROUTES.dashboard}>Retour aux sites</BackLink>
       <Suspense fallback={<div className="mt-6 h-16 animate-pulse rounded-2xl bg-muted" />}>
         <SiteContent params={params} searchParams={searchParams} />
       </Suspense>

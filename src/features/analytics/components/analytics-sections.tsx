@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Tone } from "@/lib/tones";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import { getRanking } from "../services/ranking";
@@ -26,11 +27,11 @@ export async function VisitorsSection({ userId, siteId, period, filters }: Secti
   );
 }
 
-const RANKINGS: Record<RankingDimension, { title: string; emptyMessage: string; filterKey: keyof Filters }> = {
-  pages: { title: "Pages les plus vues", emptyMessage: "Aucune page vue sur cette période.", filterKey: "page" },
-  referrers: { title: "D'où viennent les visiteurs", emptyMessage: "Aucun site référent : les visites sont directes.", filterKey: "referrer" },
-  countries: { title: "Pays", emptyMessage: "Pays inconnu pour le moment.", filterKey: "country" },
-  devices: { title: "Appareils", emptyMessage: "Aucun appareil détecté.", filterKey: "device" },
+const RANKINGS: Record<RankingDimension, { title: string; emptyMessage: string; filterKey: keyof Filters; tone: Tone }> = {
+  pages: { title: "Pages les plus vues", emptyMessage: "Aucune page vue sur cette période.", filterKey: "page", tone: "blue" },
+  referrers: { title: "D'où viennent les visiteurs", emptyMessage: "Aucun site référent : les visites sont directes.", filterKey: "referrer", tone: "green" },
+  countries: { title: "Pays", emptyMessage: "Pays inconnu pour le moment.", filterKey: "country", tone: "orange" },
+  devices: { title: "Appareils", emptyMessage: "Aucun appareil détecté.", filterKey: "device", tone: "violet" },
 };
 
 export async function RankingSection({
@@ -38,7 +39,7 @@ export async function RankingSection({
   basePath,
   ...props
 }: SectionProps & { dimension: RankingDimension; basePath: string }) {
-  const { title, emptyMessage, filterKey } = RANKINGS[dimension];
+  const { title, emptyMessage, filterKey, tone } = RANKINGS[dimension];
   const items = await getRanking(props.userId, props.siteId, props.period, props.filters, dimension);
 
   const rows = items.map((item) => {
@@ -53,7 +54,7 @@ export async function RankingSection({
     };
   });
 
-  return <RankingList title={title} rows={rows} emptyMessage={emptyMessage} />;
+  return <RankingList title={title} rows={rows} emptyMessage={emptyMessage} tone={tone} />;
 }
 
 export function SectionSkeleton({ className }: { className?: string }) {

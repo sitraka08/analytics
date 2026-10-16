@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TONE_BG, type Tone } from "@/lib/tones";
 import { cn } from "@/lib/utils";
 import { formatInteger } from "../utils/format";
 
@@ -14,15 +15,19 @@ type RankingListProps = {
   title: string;
   rows: RankingRow[];
   emptyMessage: string;
+  tone: Tone;
 };
 
 /** Horizontal bars as a plain ordered list: it is its own text equivalent. */
-export function RankingList({ title, rows, emptyMessage }: RankingListProps) {
+export function RankingList({ title, rows, emptyMessage, tone }: RankingListProps) {
   const max = Math.max(...rows.map((row) => row.visitors), 1);
 
   return (
     <section className="rounded-3xl bg-surface p-5">
-      <h3 className="text-base font-bold">{title}</h3>
+      <h3 className="flex items-center gap-2 text-base font-bold">
+        <span aria-hidden className={cn("size-3 rounded-full", TONE_BG[tone])} />
+        {title}
+      </h3>
       {rows.length === 0 ? (
         <p className="mt-4 text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
@@ -41,7 +46,7 @@ export function RankingList({ title, rows, emptyMessage }: RankingListProps) {
               >
                 <span
                   aria-hidden
-                  className="absolute inset-y-0 left-0 rounded-lg bg-brand-blue/15"
+                  className={cn("absolute inset-y-0 left-0 rounded-lg opacity-25", TONE_BG[tone])}
                   style={{ width: `${(row.visitors / max) * 100}%` }}
                 />
                 <span className="relative min-w-0 truncate">{row.label}</span>
