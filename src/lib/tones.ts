@@ -2,7 +2,7 @@ export const TONE_BG = {
   blue: "bg-brand-blue",
   green: "bg-brand-green",
   orange: "bg-brand-orange",
-  yellow: "bg-brand-yellow",
+  violet: "bg-brand-violet",
 } as const;
 
 export const TONE_TEXT = "text-tone-foreground";

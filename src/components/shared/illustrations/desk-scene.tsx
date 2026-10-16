@@ -24,13 +24,13 @@ export function DeskScene({ className }: { className?: string }) {
       <path d="M128 200V180" stroke="var(--brand-blue)" strokeWidth="14" strokeLinecap="butt" />
       <path d="M154 200V160" stroke="var(--brand-green)" strokeWidth="14" strokeLinecap="butt" />
       <path d="M180 200V170" stroke="var(--brand-orange)" strokeWidth="14" strokeLinecap="butt" />
-      <path d="M206 200V142" stroke="var(--brand-yellow)" strokeWidth="14" strokeLinecap="butt" />
+      <path d="M206 200V142" stroke="var(--brand-violet)" strokeWidth="14" strokeLinecap="butt" />
       <path d="M120 202c40-1 80-1 112-2" strokeWidth="1.8" />
       <path d="M126 150c14-6 26 4 40-4s24-14 40-22" stroke="var(--brand-blue)" strokeDasharray="1 6" strokeWidth="3" />
       <circle cx="206" cy="124" r="4" fill="var(--brand-blue)" stroke="none" />
 
       {/* Sticky note stuck on the screen */}
-      <path d="M232 126l34-4 4 34-34 4Z" fill="var(--brand-yellow)" />
+      <path d="M232 126l34-4 4 34-34 4Z" fill="var(--brand-violet)" />
       <path d="M242 142l6 6 12-14" strokeWidth="2.2" />
 
       {/* Clavier */}

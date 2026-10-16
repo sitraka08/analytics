@@ -14,7 +14,7 @@
   --brand-blue: #4a6cf7;
   --brand-green: #7dd389;
   --brand-orange: #ff6633;
-  --brand-yellow: #ffde2e;
+  --brand-violet: #8b5cf6;
   /* Text placed on colored cards. */
   --tone-foreground: #ffffff;
   --panel-sand-from: #e9e2d4;
@@ -48,7 +48,7 @@
   --chart-1: #4a6cf7;
   --chart-2: #7dd389;
   --chart-3: #ff6633;
-  --chart-4: #ffde2e;
+  --chart-4: #8b5cf6;
   --chart-5: #121212;
   --radius: 0.75rem;
   --sidebar: #ffffff;
@@ -114,7 +114,7 @@
   --color-brand-blue: var(--brand-blue);
   --color-brand-green: var(--brand-green);
   --color-brand-orange: var(--brand-orange);
-  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-violet: var(--brand-violet);
   --color-tone-foreground: var(--tone-foreground);
   --color-panel-sand-from: var(--panel-sand-from);
   --color-panel-sand-to: var(--panel-sand-to);

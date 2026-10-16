@@ -29,13 +29,13 @@ export function GlobeScene({ className }: { className?: string }) {
       {/* Épingles */}
       <path d="M150 112c-10-12-14-18-14-24a14 14 0 0 1 28 0c0 6-4 12-14 24Z" fill="var(--brand-orange)" />
       <circle cx="150" cy="88" r="4.5" fill="var(--surface)" />
-      <path d="M252 92c-10-12-14-18-14-24a14 14 0 0 1 28 0c0 6-4 12-14 24Z" fill="var(--brand-yellow)" />
+      <path d="M252 92c-10-12-14-18-14-24a14 14 0 0 1 28 0c0 6-4 12-14 24Z" fill="var(--brand-violet)" />
       <circle cx="252" cy="68" r="4.5" fill="var(--surface)" />
       <path d="M226 194c-10-12-14-18-14-24a14 14 0 0 1 28 0c0 6-4 12-14 24Z" fill="var(--brand-blue)" />
       <circle cx="226" cy="170" r="4.5" fill="var(--surface)" />
 
       {/* Avion de papier */}
-      <path d="M318 74l44-16-18 42-8-16Z" fill="var(--brand-yellow)" />
+      <path d="M318 74l44-16-18 42-8-16Z" fill="var(--brand-violet)" />
       <path d="M336 84l26-26" strokeWidth="1.8" />
       <path d="M312 92c-14 8-26 6-36 14" strokeDasharray="4 6" strokeWidth="1.8" />
 

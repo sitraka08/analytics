@@ -23,7 +23,7 @@ const AVATAR_SIZE = 52;
 const TRAILS: Record<"left" | "right", { visitors: Visitor[]; paths: string[] }> = {
   left: {
     visitors: [
-      { city: "Antananarivo", flag: "mg", tone: "yellow", x: 40, y: 30, pill: "right", live: true },
+      { city: "Antananarivo", flag: "mg", tone: "violet", x: 40, y: 30, pill: "right", live: true },
       { city: "Paris", flag: "fr", tone: "green", x: 160, y: 160, pill: "left" },
       { city: "Bruxelles", flag: "be", tone: "blue", x: 40, y: 300, pill: "right" },
     ],
@@ -32,7 +32,7 @@ const TRAILS: Record<"left" | "right", { visitors: Visitor[]; paths: string[] }>
   right: {
     visitors: [
       { city: "Abidjan", flag: "ci", tone: "blue", x: 180, y: 30, pill: "left" },
-      { city: "Berlin", flag: "de", tone: "yellow", x: 60, y: 160, pill: "right" },
+      { city: "Berlin", flag: "de", tone: "violet", x: 60, y: 160, pill: "right" },
       { city: "Tokyo", flag: "jp", tone: "green", x: 180, y: 300, pill: "left", live: true },
     ],
     paths: ["M180 58 V150 Q180 160 170 160 H88", "M60 188 V290 Q60 300 70 300 H152"],

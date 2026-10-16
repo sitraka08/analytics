@@ -27,9 +27,9 @@ function ScriptVisual() {
   return (
     <pre className="w-full overflow-hidden rounded-xl bg-foreground p-4 text-[0.7rem] leading-relaxed text-background shadow-lg">
       <code>
-        <span className="text-brand-yellow">{"<script"}</span>
+        <span className="text-brand-violet">{"<script"}</span>
         {"\n  defer\n  src=\".../script.js\"\n  data-site=\"votre-cle\"\n"}
-        <span className="text-brand-yellow">{"></script>"}</span>
+        <span className="text-brand-violet">{"></script>"}</span>
       </code>
     </pre>
   );

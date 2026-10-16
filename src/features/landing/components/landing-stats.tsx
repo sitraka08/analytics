@@ -2,7 +2,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/shared/reveal";
 import { STATS_SECTION } from "../constants/content";
 import { StatCard } from "./stat-card";
 
-const [blueCard, greenCard, orangeCard, yellowCard] = STATS_SECTION.cards;
+const [blueCard, greenCard, orangeCard, violetCard] = STATS_SECTION.cards;
 
 function LiveTrafficPanel() {
   const { live } = STATS_SECTION;
@@ -88,7 +88,7 @@ export function LandingStats() {
           <StatCard {...orangeCard} className="h-full" />
         </RevealItem>
         <RevealItem lift className="md:col-start-3 md:row-start-2">
-          <StatCard {...yellowCard} className="h-full" />
+          <StatCard {...violetCard} className="h-full" />
         </RevealItem>
       </RevealGroup>
     </section>

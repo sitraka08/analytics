@@ -28,7 +28,7 @@ export const STATS_SECTION = {
     { value: "0", label: "Cookie déposé chez vos visiteurs", tone: "blue", shape: "capsules" },
     { value: "< 2 Ko", label: "Script ultra léger à installer", tone: "green", shape: "rounded" },
     { value: "1 ligne", label: "De code pour démarrer", tone: "orange", shape: "rounded" },
-    { value: "10+", label: "Dimensions suivies", tone: "yellow", shape: "capsules" },
+    { value: "10+", label: "Dimensions suivies", tone: "violet", shape: "capsules" },
   ],
   live: {
     label: "Visiteurs en direct",
@@ -54,7 +54,7 @@ export const PRIVACY_SECTION = {
   rows: [
     { label: "Cookies", value: "0", tone: "green" },
     { label: "Adresse IP", value: "Jamais stockée", tone: "orange" },
-    { label: "Empreinte", value: "Renouvelée chaque jour", tone: "yellow" },
+    { label: "Empreinte", value: "Renouvelée chaque jour", tone: "violet" },
   ],
   badge: "Conforme RGPD",
 } as const;
@@ -80,7 +80,7 @@ export const SHOWCASE_SECTION = {
     },
   ],
   sources: [
-    { label: "Google", values: ["4,2 k"], tone: "yellow" },
+    { label: "Google", values: ["4,2 k"], tone: "violet" },
     { label: "Direct", values: ["2,1 k", "+12 %"], tone: "green" },
     { label: "Newsletter", values: ["860"], tone: "orange" },
   ],

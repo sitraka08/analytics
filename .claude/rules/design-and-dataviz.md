@@ -1,10 +1,10 @@
 # Design and visualization
 
 ## Identity
-- Landing inspiration: warm cream background, large sections with very rounded corners, strong headings, dark pill CTAs, colored stat cards (blue, green, orange, yellow), sober photos/illustrations.
+- Landing inspiration: warm cream background, large sections with very rounded corners, strong headings, dark pill CTAs, colored stat cards (blue, green, orange, violet), sober photos/illustrations.
 - The product must feel hand-made, not "generated UI": avoid centered card + logo above + big shadow, blue focus halos, dark backgrounds with decorative circles. Prefer left-aligned editorial layouts, drawn details (`HandDrawnUnderline`, `bg-highlight` marker), warm text tone.
-- Reference palette (do not change without being asked): background `#f6f5f1`, cream `#efebe1`, text `#121212`, blue `#4a6cf7`, green `#7dd389`, orange `#ff6633`, yellow `#ffde2e`. Panel gradients via `panel-*` tokens (`bg-linear-160 from-panel-sand-from to-panel-sand-to`).
-- Colored cards and badges: background via `toneClass` from `src/lib/tones.ts`, text always white (`text-tone-foreground`), a deliberate choice even on yellow/green.
+- Reference palette (do not change without being asked): background `#f6f5f1`, cream `#efebe1`, text `#121212`, blue `#4a6cf7`, green `#7dd389`, orange `#ff6633`, violet `#8b5cf6`. Panel gradients via `panel-*` tokens (`bg-linear-160 from-panel-sand-from to-panel-sand-to`).
+- Colored cards and badges: background via `toneClass` from `src/lib/tones.ts`, text always white (`text-tone-foreground`), a deliberate choice even on violet/green.
 - Illustrations: inline SVG drawn in line style (outline `var(--foreground)`, fills `var(--brand-*)`), `aria-hidden`, no dependency or external image. Shared ones in `components/shared/illustrations/` (`DeskScene`), otherwise in the feature (`GlobeScene` of the landing).
 - Fonts via `next/font/google` in `src/app/layout.tsx`, mapped in `globals.css`:
   - `font-heading` → Manrope: `h1`–`h3` (applied globally), card titles, big numbers/KPIs.

@@ -21,7 +21,7 @@ export function LandingPrivacy() {
               ))}
             </RevealGroup>
             <span className="absolute -bottom-4 left-6 flex items-center gap-2 rounded-full bg-surface px-4 py-2 text-xs font-medium shadow-md">
-              <span className="grid size-5 place-items-center rounded-full bg-brand-yellow">✓</span>
+              <span className="grid size-5 place-items-center rounded-full bg-brand-violet">✓</span>
               {PRIVACY_SECTION.badge}
             </span>
           </div>
