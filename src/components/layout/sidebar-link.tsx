@@ -17,7 +17,10 @@ export function SidebarLink({ href, label, icon, exact }: SidebarLinkProps) {
   const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <SidebarMenuButton render={<Link href={href} />} isActive={isActive} tooltip={label}>
+    <SidebarMenuButton render={<Link href={href} />} isActive={isActive}
+      tooltip={label}
+      className="data-active:bg-sidebar-primary data-active:text-sidebar-primary-foreground data-active:hover:bg-sidebar-primary data-active:hover:text-sidebar-primary-foreground"
+    >
       {icon}
       <span>{label}</span>
     </SidebarMenuButton>

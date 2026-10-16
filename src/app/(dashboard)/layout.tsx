@@ -18,7 +18,7 @@ async function DashboardShell({ children }: { children: React.ReactNode }) {
       <SidebarProvider defaultOpen={defaultOpen}>
         <DashboardSidebar user={user} sites={sites} signOut={<SignOutMenuButton />} />
         <SidebarInset className="md:peer-data-[variant=inset]:rounded-3xl">
-          <header className="flex h-14 items-center gap-2 px-4">
+          <header className="sticky top-0 z-10 flex h-14 items-center gap-2 rounded-t-3xl bg-background px-4">
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-5" />
           </header>
