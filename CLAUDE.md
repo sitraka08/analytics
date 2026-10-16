@@ -31,6 +31,6 @@ Next.js moves fast: check `node_modules/next/dist/docs` before using an unfamili
 7. Server Components by default; `"use client"` only at the leaf, for interactivity.
 8. No new dependency without a clear need; reuse what exists.
 9. No empty folder or placeholder file.
-10. **Everything is in English** — code, identifiers, routes, comments, docs, `CLAUDE.md` and `.claude/` files, commit messages, PR descriptions. **Only the text displayed in the site UI is French**, kept in easy-to-extract constants. Fonts: Manrope (headings, big numbers), Google Sans (text/UI), Google Sans Code (code, aligned numbers).
+10. **Everything is in English** — code, identifiers, routes, comments, docs, `CLAUDE.md` and `.claude/` files, commit messages, PR descriptions. **Only the text displayed in the site UI is French**, written inline in components by default; extracted to a feature `constants/` file only for large content blocks (e.g. landing copy) or strings reused in several places. Fonts: Manrope (headings, big numbers), Google Sans (text/UI), Google Sans Code (code, aligned numbers).
 11. Ambiguous rule: state the assumption and ask before inventing.
 12. Before finishing: `pnpm lint` and `pnpm build` pass.

@@ -40,4 +40,4 @@ Every widget handles: loading (same-shape `Skeleton`), empty (message explaining
 Semantic HTML, labels on fields, keyboard-usable controls, visible focus, text equivalent or table for every chart.
 
 ## Text
-French only for displayed UI text, in a simple tone. Centralize labels (feature constants) so they can be extracted later. Code, comments and docs stay in English.
+French only for displayed UI text, in a simple tone. Write labels inline in components; use a feature constants file only for large content blocks (e.g. landing copy) or strings reused in several places. Code, comments and docs stay in English.
