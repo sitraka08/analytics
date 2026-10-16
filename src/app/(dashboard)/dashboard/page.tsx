@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SignOutButton, requireSession } from "@/features/auth";
+import { requireSession } from "@/features/auth";
 import { SiteList, listSites } from "@/features/sites";
 import { ROUTES } from "@/lib/routes";
 
@@ -31,14 +31,13 @@ async function Sites() {
       <div className="w-full">
         <SiteList sites={sites} />
       </div>
-      <SignOutButton />
     </div>
   );
 }
 
 export default function DashboardPage() {
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-16">
+    <main className="mx-auto w-full max-w-4xl px-4 py-8">
       <Suspense fallback={<div className="h-32 animate-pulse rounded-2xl bg-muted" />}>
         <Sites />
       </Suspense>

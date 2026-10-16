@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Ajouter un site" };
 
 export default function NewSitePage() {
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-16">
+    <main className="mx-auto w-full max-w-4xl px-4 py-8">
       <Link href={ROUTES.dashboard} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
         ← Retour aux sites
       </Link>
