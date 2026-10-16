@@ -5,7 +5,7 @@ Organize by business capability, then by technical responsibility.
 ```text
 src/
 ├── app/          # routing, layouts, page composition, metadata
-├── features/     # auth, sites, analytics, tracking, landing, settings
+├── features/     # auth, login, register, sites, analytics, tracking, landing, settings
 ├── components/   # ui/ (shadcn), shared/, layout/
 ├── db/           # Supabase clients (server, admin) and generated types; SQL migrations live in `supabase/`
 └── lib/          # truly shared utilities

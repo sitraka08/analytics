@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { AuthPanel, AuthFormFallback, ResendVerificationForm } from "@/features/auth";
+import { AuthPanel, AuthFormFallback } from "@/features/auth";
+import { ResendVerificationForm } from "@/features/register";
 
 export const metadata: Metadata = { title: "Vérifiez votre e-mail" };
 

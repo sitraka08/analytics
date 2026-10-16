@@ -5,9 +5,9 @@ import {
   AuthDivider,
   AuthFormFallback,
   GoogleSignInButton,
-  SignInForm,
   isGoogleEnabled,
 } from "@/features/auth";
+import { SignInForm } from "@/features/login";
 
 export const metadata: Metadata = { title: "Connexion" };
 

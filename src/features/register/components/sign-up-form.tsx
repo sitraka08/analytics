@@ -8,7 +8,7 @@ import type { SignUpField } from "../schemas/sign-up";
 import { signUpAction } from "../services/sign-up";
 import type { FormState } from "@/lib/form-state";
 import { FormMessage } from "@/components/shared/form-message";
-import { PasswordField } from "./password-field";
+import { PasswordField } from "@/components/shared/password-field";
 import { SubmitButton } from "@/components/shared/submit-button";
 import { TextField } from "@/components/shared/text-field";
 

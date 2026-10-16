@@ -7,7 +7,7 @@ import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { signUpSchema, type SignUpField } from "../schemas/sign-up";
 import type { FormState } from "@/lib/form-state";
-import { getAuthErrorMessage } from "../utils/auth-error";
+import { getAuthErrorMessage } from "@/features/auth";
 
 export async function signUpAction(
   _previous: FormState<SignUpField>,

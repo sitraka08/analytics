@@ -5,9 +5,9 @@ import {
   AuthDivider,
   AuthFormFallback,
   GoogleSignInButton,
-  SignUpForm,
   isGoogleEnabled,
 } from "@/features/auth";
+import { SignUpForm } from "@/features/register";
 
 export const metadata: Metadata = { title: "Créer un compte" };
 

@@ -4,15 +4,15 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
-import { forgotPasswordSchema, type ForgotPasswordField } from "../schemas/password";
+import { resendVerificationSchema, type ResendVerificationField } from "../schemas/verification";
 import type { FormState } from "@/lib/form-state";
-import { getAuthErrorMessage } from "../utils/auth-error";
+import { getAuthErrorMessage } from "@/features/auth";
 
 export async function resendVerificationAction(
-  _previous: FormState<ForgotPasswordField>,
+  _previous: FormState<ResendVerificationField>,
   formData: FormData,
-): Promise<FormState<ForgotPasswordField>> {
-  const parsed = forgotPasswordSchema.safeParse({ email: formData.get("email") });
+): Promise<FormState<ResendVerificationField>> {
+  const parsed = resendVerificationSchema.safeParse({ email: formData.get("email") });
 
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors };

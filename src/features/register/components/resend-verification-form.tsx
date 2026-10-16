@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
-import type { ForgotPasswordField } from "../schemas/password";
+import type { ResendVerificationField } from "../schemas/verification";
 import { resendVerificationAction } from "../services/verification";
 import type { FormState } from "@/lib/form-state";
 import { FormMessage } from "@/components/shared/form-message";
 import { SubmitButton } from "@/components/shared/submit-button";
 
-const INITIAL_STATE: FormState<ForgotPasswordField> = { ok: false };
+const INITIAL_STATE: FormState<ResendVerificationField> = { ok: false };
 
 export function ResendVerificationForm({ email }: { email?: string }) {
   const [state, formAction] = useActionState(resendVerificationAction, INITIAL_STATE);

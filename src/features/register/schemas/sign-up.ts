@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emailField, newPasswordField } from "./fields";
+import { emailField, newPasswordField } from "@/features/auth";
 
 export const signUpSchema = z.object({
   name: z

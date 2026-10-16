@@ -1,13 +1,12 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { signInSchema, type SignInField } from "../schemas/sign-in";
 import type { FormState } from "@/lib/form-state";
-import { getAuthErrorMessage, getSafeRedirectPath } from "../utils/auth-error";
+import { getAuthErrorMessage, getSafeRedirectPath } from "@/features/auth";
 
 export async function signInAction(
   _previous: FormState<SignInField>,
@@ -30,17 +29,4 @@ export async function signInAction(
   if (error) return { ok: false, message: getAuthErrorMessage(error), values };
 
   redirect(redirectTo);
-}
-
-export async function signInWithGoogleAction(formData: FormData) {
-  const redirectTo = getSafeRedirectPath(formData.get("next"), ROUTES.dashboard);
-  const origin = (await headers()).get("origin");
-  const supabase = await createClient();
-
-  const { data } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: `${origin}${ROUTES.authCallback}?next=${encodeURIComponent(redirectTo)}` },
-  });
-
-  redirect(data.url ?? `${ROUTES.login}?error=google`);
 }
