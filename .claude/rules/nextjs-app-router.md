@@ -7,7 +7,7 @@
 - Server Components by default. `"use client"` only for state, effects, events, browser APIs (interactive charts, sidebar, filters), at leaf level.
 - Data: read in Server Components through feature `services/`. TanStack Query only for client interactivity (filters, refresh).
 - Mutations: Server Actions returning `{ ok, ... }`.
-- Route Handlers (`app/api`) only for: `/api/collect` (public collection), the Better Auth endpoints, and the script served to sites.
+- Route Handlers (`app/api`) only for: `/api/collect` (public collection), the Supabase Auth callback (`/auth/callback`, outside `app/api`), and the script served to sites.
 - Dashboard route protection checks the session on the server; never rely on the UI alone.
 - Landing: careful SEO (metadata, Open Graph), statically rendered as much as possible.
 - A single router: do not mix with the Pages Router.

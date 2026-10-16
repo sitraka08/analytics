@@ -10,7 +10,7 @@ Existing dashboards are dense or cryptic. Here: few numbers per screen, titles i
 Independent developers, creators and small teams who want to track their sites without heavy setup.
 
 ## Model
-- **User**: account (Better Auth).
+- **User**: account (Supabase Auth).
 - **Site**: tracked domain, belongs to a user, has a public collection key.
 - **Event**: pageview (and custom events later): site, path, referrer, UTM, country, device, browser, OS, timestamp.
 - **Visitor**: anonymous identifier = salted daily hash (see tracking-and-privacy.md).
