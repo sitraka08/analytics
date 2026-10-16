@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { TextField } from "./text-field";
+import { TextField } from "@/components/shared/text-field";
 
 type PasswordFieldProps = Omit<React.ComponentProps<typeof TextField>, "type" | "trailing">;
 

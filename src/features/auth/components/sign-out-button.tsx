@@ -1,5 +1,5 @@
 import { signOutAction } from "../services/sign-out";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "@/components/shared/submit-button";
 
 export function SignOutButton() {
   return (

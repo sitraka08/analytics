@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { ROUTES } from "@/lib/routes";
 import { forgotPasswordSchema, type ForgotPasswordField } from "../schemas/password";
-import type { FormState } from "../types/form-state";
+import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage } from "../utils/auth-error";
 import { auth } from "./auth";
 

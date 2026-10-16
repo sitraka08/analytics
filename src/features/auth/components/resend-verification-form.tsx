@@ -6,9 +6,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
 import type { ForgotPasswordField } from "../schemas/password";
 import { resendVerificationAction } from "../services/verification";
-import type { FormState } from "../types/form-state";
-import { FormMessage } from "./form-message";
-import { SubmitButton } from "./submit-button";
+import type { FormState } from "@/lib/form-state";
+import { FormMessage } from "@/components/shared/form-message";
+import { SubmitButton } from "@/components/shared/submit-button";
 
 const INITIAL_STATE: FormState<ForgotPasswordField> = { ok: false };
 

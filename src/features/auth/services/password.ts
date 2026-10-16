@@ -10,7 +10,7 @@ import {
   type ForgotPasswordField,
   type ResetPasswordField,
 } from "../schemas/password";
-import type { FormState } from "../types/form-state";
+import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage } from "../utils/auth-error";
 import { auth } from "./auth";
 

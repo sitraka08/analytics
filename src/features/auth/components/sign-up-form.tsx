@@ -6,11 +6,11 @@ import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
 import type { SignUpField } from "../schemas/sign-up";
 import { signUpAction } from "../services/sign-up";
-import type { FormState } from "../types/form-state";
-import { FormMessage } from "./form-message";
+import type { FormState } from "@/lib/form-state";
+import { FormMessage } from "@/components/shared/form-message";
 import { PasswordField } from "./password-field";
-import { SubmitButton } from "./submit-button";
-import { TextField } from "./text-field";
+import { SubmitButton } from "@/components/shared/submit-button";
+import { TextField } from "@/components/shared/text-field";
 
 const INITIAL_STATE: FormState<SignUpField> = { ok: false };
 

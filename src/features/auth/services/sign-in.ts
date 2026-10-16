@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ROUTES } from "@/lib/routes";
 import { signInSchema, type SignInField } from "../schemas/sign-in";
-import type { FormState } from "../types/form-state";
+import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage, getSafeRedirectPath } from "../utils/auth-error";
 import { auth } from "./auth";
 

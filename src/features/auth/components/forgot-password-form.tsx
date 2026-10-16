@@ -7,10 +7,10 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
 import type { ForgotPasswordField } from "../schemas/password";
 import { requestPasswordResetAction } from "../services/password";
-import type { FormState } from "../types/form-state";
-import { FormMessage } from "./form-message";
-import { SubmitButton } from "./submit-button";
-import { TextField } from "./text-field";
+import type { FormState } from "@/lib/form-state";
+import { FormMessage } from "@/components/shared/form-message";
+import { SubmitButton } from "@/components/shared/submit-button";
+import { TextField } from "@/components/shared/text-field";
 
 const INITIAL_STATE: FormState<ForgotPasswordField> = { ok: false };
 

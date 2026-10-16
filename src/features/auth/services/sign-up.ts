@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ROUTES } from "@/lib/routes";
 import { signUpSchema, type SignUpField } from "../schemas/sign-up";
-import type { FormState } from "../types/form-state";
+import type { FormState } from "@/lib/form-state";
 import { getAuthErrorMessage } from "../utils/auth-error";
 import { auth, isEmailVerificationRequired } from "./auth";
 
