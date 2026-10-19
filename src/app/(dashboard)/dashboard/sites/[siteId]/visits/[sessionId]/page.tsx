@@ -24,8 +24,7 @@ async function VisitContent({ params }: Pick<PageProps<"/dashboard/sites/[siteId
     <>
       <BackLink href={ROUTES.siteVisits(siteId)}>Retour aux visites</BackLink>
       <h1 className="mt-6 mb-6 text-3xl font-bold tracking-tight">Détail d&apos;une visite</h1>
-      {/* Hours are shown in UTC: the visit has no browser time zone to refer to on the server. */}
-      <SessionDetail session={session} timeZone="UTC" />
+      <SessionDetail session={session} />
     </>
   );
 }

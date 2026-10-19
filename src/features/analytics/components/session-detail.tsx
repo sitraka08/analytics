@@ -1,9 +1,10 @@
 import type { SessionDetail as SessionDetailData } from "../types/session";
 import { formatDuration, formatInteger } from "../utils/format";
 import { formatPlace, placeFlag } from "../utils/place";
-import { formatClock, formatSessionDevice, formatSessionSource, formatSessionTime } from "../utils/session-label";
+import { formatSessionDevice, formatSessionSource } from "../utils/session-label";
+import { LocalTime } from "./local-time";
 
-type SessionDetailProps = { session: SessionDetailData; timeZone: string };
+type SessionDetailProps = { session: SessionDetailData };
 
 function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -16,7 +17,7 @@ function Fact({ label, children }: { label: string; children: React.ReactNode })
 
 const unknown = <span className="font-normal text-muted-foreground">Inconnu</span>;
 
-export function SessionDetail({ session, timeZone }: SessionDetailProps) {
+export function SessionDetail({ session }: SessionDetailProps) {
   const place = formatPlace(session);
   const device = formatSessionDevice(session.device, session.os);
   const campaign = [session.utmMedium, session.utmCampaign].filter(Boolean).join(" · ");
@@ -42,7 +43,7 @@ export function SessionDetail({ session, timeZone }: SessionDetailProps) {
           {formatSessionSource(session.utmSource, session.referrerDomain)}
           {campaign ? <span className="font-normal text-muted-foreground"> · {campaign}</span> : null}
         </Fact>
-        <Fact label="Début de la visite">{formatSessionTime(session.startedAt, timeZone, true)}</Fact>
+        <Fact label="Début de la visite"><LocalTime iso={session.startedAt} variant="long" /></Fact>
         <Fact label="Durée mesurée">{session.durationMs !== null ? formatDuration(session.durationMs) : unknown}</Fact>
       </dl>
 
@@ -64,7 +65,7 @@ export function SessionDetail({ session, timeZone }: SessionDetailProps) {
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-sm break-all">{view.path}</p>
                   <p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
-                    {formatClock(view.at, timeZone)}
+                    <LocalTime iso={view.at} variant="clock" />
                     {index > 0 ? ` · +${formatDuration(offsetSeconds * 1000)}` : ""}
                     {" · "}
                     {view.durationMs !== null ? `resté ${formatDuration(view.durationMs)}` : "durée inconnue"}
