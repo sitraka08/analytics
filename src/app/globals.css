@@ -10,6 +10,8 @@
   --cream-deep: #efebe1;
   --line: #e4e0d5;
   --highlight: #ffd6c7;
+  --active-row: #f7d3ca;
+  --active-row-edge: #3a2924;
   --accent-green: #2fb54f;
   --brand-blue: #4a6cf7;
   --brand-green: #7dd389;
@@ -66,6 +68,8 @@
   --cream-deep: #22211e;
   --line: #2e2d29;
   --highlight: #5a3a2e;
+  --active-row: #4a2f28;
+  --active-row-edge: #f0b5a6;
   --panel-sand-from: #2a2823;
   --panel-sand-to: #222019;
   --panel-warm-from: #2c2822;
@@ -110,6 +114,8 @@
   --color-cream-deep: var(--cream-deep);
   --color-line: var(--line);
   --color-highlight: var(--highlight);
+  --color-active-row: var(--active-row);
+  --color-active-row-edge: var(--active-row-edge);
   --color-accent-green: var(--accent-green);
   --color-brand-blue: var(--brand-blue);
   --color-brand-green: var(--brand-green);

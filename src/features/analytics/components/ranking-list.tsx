@@ -50,13 +50,13 @@ export function RankingList({ title, rows, emptyMessage, tone }: RankingListProp
                   aria-current={row.active ? "true" : undefined}
                   title={row.active ? "Retirer ce filtre" : "Filtrer sur cette valeur"}
                   className={cn(
-                    "relative flex items-center justify-between gap-4 rounded-lg px-3 py-1.5 text-sm hover:bg-cream-deep/60",
-                    row.active && "ring-2 ring-foreground",
+                    "relative flex items-center justify-between gap-4 rounded-xl border-b-[3px] border-transparent px-3 py-1.5 text-sm hover:bg-cream-deep/60",
+                    row.active && "border-active-row-edge bg-active-row font-medium hover:bg-active-row",
                   )}
                 >
                   <span
                     aria-hidden
-                    className={cn("absolute inset-y-0 left-0 rounded-lg opacity-25", TONE_BG[tone])}
+                    className={cn("absolute inset-y-0 left-0 rounded-xl opacity-25", TONE_BG[tone], row.active && "opacity-0")}
                     style={{ width: `${(row.visitors / max) * 100}%` }}
                   />
                   <span className="relative flex min-w-0 items-center gap-2">
