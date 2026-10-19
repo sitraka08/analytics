@@ -2,6 +2,7 @@ import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import { getRanking } from "../services/ranking";
 import type { RankingDimension } from "../types/analytics";
+import { countryFlag } from "../utils/country-flag";
 import { formatFilterValue } from "../utils/filter-label";
 import { FilterSelect, type FilterOption } from "./filter-select";
 
@@ -27,7 +28,10 @@ export async function FilterBar({ userId, siteId, period, filters, basePath }: F
         const selected = filters[field.filterKey];
         // A filter coming from the URL stays selectable even when it has no visit in this period.
         if (selected && !values.includes(selected)) values.unshift(selected);
-        const options: FilterOption[] = values.map((value) => ({ value, label: formatFilterValue(field.filterKey, value) }));
+        const options: FilterOption[] = values.map((value) => ({
+          value,
+          label: [field.filterKey === "country" ? countryFlag(value) : null, formatFilterValue(field.filterKey, value)].filter(Boolean).join(" "),
+        }));
 
         return (
           <FilterSelect

@@ -1,3 +1,4 @@
+import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Tone } from "@/lib/tones";
 import type { Filters } from "../schemas/filters";
@@ -5,7 +6,8 @@ import type { Period } from "../schemas/period";
 import { getRanking } from "../services/ranking";
 import { getTimeseries } from "../services/timeseries";
 import type { RankingDimension } from "../types/analytics";
-import { formatFilterValue } from "../utils/filter-label";
+import { countryFlag } from "../utils/country-flag";
+import { formatFilterValue, parseDevice } from "../utils/filter-label";
 import { getPeriodRange } from "../utils/period";
 import { buildDashboardHref } from "../utils/search-params";
 import { RankingList } from "./ranking-list";
@@ -34,6 +36,19 @@ const RANKINGS: Record<RankingDimension, { title: string; emptyMessage: string; 
   devices: { title: "Appareils", emptyMessage: "Aucun appareil détecté.", filterKey: "device", tone: "violet" },
 };
 
+const DEVICE_ICONS = { desktop: Monitor, mobile: Smartphone, tablet: Tablet } as const;
+
+function leadingFor(dimension: RankingDimension, value: string) {
+  if (dimension === "countries") return countryFlag(value);
+
+  if (dimension === "devices") {
+    const Icon = DEVICE_ICONS[parseDevice(value).type as keyof typeof DEVICE_ICONS];
+    return Icon ? <Icon className="size-4" /> : null;
+  }
+
+  return null;
+}
+
 export async function RankingSection({
   dimension,
   basePath,
@@ -48,6 +63,7 @@ export async function RankingSection({
 
     return {
       label: formatFilterValue(filterKey, item.label),
+      leading: leadingFor(dimension, item.label),
       visitors: item.visitors,
       href: buildDashboardHref(basePath, props.period, nextFilters),
       active,

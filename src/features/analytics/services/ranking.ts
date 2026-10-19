@@ -6,7 +6,7 @@ import type { RankingDimension, RankingItem } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
 import { filterParams } from "./filter-params";
 
-const DEFAULT_LIMIT = 8;
+const DEFAULT_LIMIT = 30;
 
 export async function getRanking(
   userId: string,
