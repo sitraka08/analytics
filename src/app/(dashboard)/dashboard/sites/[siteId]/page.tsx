@@ -13,7 +13,7 @@ import {
   filtersSchema,
   getOverview,
   hasActiveFilters,
-  periodSchema,
+  parsePeriod,
 } from "@/features/analytics";
 import { requireSession } from "@/features/auth";
 import { SiteNotFoundError, getOwnedSite } from "@/features/sites";
@@ -29,7 +29,7 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
   const { user } = await requireSession();
   const [{ siteId }, query] = await Promise.all([params, searchParams]);
   const first = (value: string | string[] | undefined) => (typeof value === "string" ? value : undefined);
-  const period = periodSchema.parse(first(query.period));
+  const period = parsePeriod(query);
   const filters = filtersSchema.parse({
     page: first(query.page),
     referrer: first(query.referrer),
@@ -103,6 +103,7 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
           <InstallSnippet publicKey={site.publicKey} />
         </div>
       )}
+
     </>
   );
 }

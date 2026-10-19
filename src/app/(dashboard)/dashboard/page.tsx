@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { PeriodTabs, SectionSkeleton, SitesOverview, periodSchema } from "@/features/analytics";
+import { PeriodTabs, SectionSkeleton, SitesOverview, parsePeriod } from "@/features/analytics";
 import { requireSession } from "@/features/auth";
 import { SiteList, listSites } from "@/features/sites";
 import { ROUTES } from "@/lib/routes";
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Vue d'ensemble" };
 async function Overview({ searchParams }: Pick<PageProps<"/dashboard">, "searchParams">) {
   const { user } = await requireSession();
   const query = await searchParams;
-  const period = periodSchema.parse(typeof query.period === "string" ? query.period : undefined);
+  const period = parsePeriod(query);
   const sites = await listSites(user.id);
 
   return (
