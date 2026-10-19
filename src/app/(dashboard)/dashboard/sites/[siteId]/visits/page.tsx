@@ -43,41 +43,41 @@ async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboar
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Visites</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold tracking-tight">Visites</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             {site.name} · {site.domain}
           </p>
         </div>
         <PeriodTabs current={period} basePath={basePath} filters={filters} />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <Suspense fallback={<SectionSkeleton className="h-16 rounded-3xl" />}>
           <FilterBar {...scope} basePath={basePath} />
         </Suspense>
       </div>
-      <div className="mt-4">
+      <div className="mt-3 empty:hidden">
         <ActiveFilters basePath={basePath} period={period} filters={filters} />
       </div>
 
-      <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
-        Une visite regroupe les pages vues d&apos;une même personne tant qu&apos;elle reste active. Les visiteurs sont anonymes : on ne peut pas
-        les reconnaître d&apos;un jour à l&apos;autre.
-      </p>
       <div className="mt-4">
         <SessionTable siteId={siteId} data={data} period={period} filters={filters} basePath={basePath} />
       </div>
+      <p className="mt-3 max-w-2xl px-2 text-xs text-muted-foreground">
+        Une visite regroupe les pages vues d&apos;une même personne tant qu&apos;elle reste active. Les visiteurs sont anonymes : on ne peut pas
+        les reconnaître d&apos;un jour à l&apos;autre.
+      </p>
     </>
   );
 }
 
 export default function VisitsPage({ params, searchParams }: PageProps<"/dashboard/sites/[siteId]/visits">) {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <main className="mx-auto w-full max-w-5xl px-4 py-6">
       {/* The back link needs the site id: resolved inside the Suspense boundary through the params promise. */}
-      <Suspense fallback={<div className="mt-6 h-16 animate-pulse rounded-2xl bg-muted" />}>
+      <Suspense fallback={<div className="mt-4 h-16 animate-pulse rounded-2xl bg-muted" />}>
         <VisitsBack params={params} />
         <VisitsContent params={params} searchParams={searchParams} />
       </Suspense>
