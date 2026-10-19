@@ -10,8 +10,10 @@ import {
   KpiGrid,
   PeriodTabs,
   RankingSection,
+  RecentVisitsSection,
   SectionSkeleton,
   VisitorsSection,
+  WorldMapSection,
   filtersSchema,
   getOverview,
   hasActiveFilters,
@@ -52,25 +54,27 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{site.name}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{site.domain}</p>
+          <h1 className="text-2xl font-bold tracking-tight">{site.name}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{site.domain}</p>
         </div>
-        <PeriodTabs current={period} basePath={basePath} filters={filters} />
+        <div className="flex flex-wrap items-center gap-3">
+          {hasData ? (
+            <Link
+              href={ROUTES.siteVisits(siteId)}
+              className="inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] border-foreground/15 bg-surface px-4 text-sm font-medium hover:border-foreground/35 hover:bg-cream-deep"
+            >
+              Toutes les visites
+              <ArrowRight aria-hidden className="size-4" />
+            </Link>
+          ) : null}
+          <PeriodTabs current={period} basePath={basePath} filters={filters} />
+        </div>
       </div>
-      {hasData ? (
-        <Link
-          href={ROUTES.siteVisits(siteId)}
-          className="mt-4 inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] border-foreground/15 bg-surface px-4 text-sm font-medium hover:border-foreground/35 hover:bg-cream-deep"
-        >
-          Voir les visites une par une
-          <ArrowRight aria-hidden className="size-4" />
-        </Link>
-      ) : null}
 
       {hasData || filtered ? (
-        <div className="mt-6">
+        <div className="mt-4">
           <Suspense fallback={<SectionSkeleton className="h-16 rounded-3xl" />}>
             <FilterBar {...scope} basePath={basePath} />
           </Suspense>
@@ -78,13 +82,13 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
       ) : null}
 
       {filtered ? (
-        <div className="mt-4">
+        <div className="mt-3">
           <ActiveFilters basePath={basePath} period={period} filters={filters} />
         </div>
       ) : null}
 
       {hasData ? (
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-5 flex flex-col gap-3">
           {overview.current.pageviews < LOW_DATA_PAGEVIEWS ? (
             <p className="rounded-2xl bg-cream-deep px-4 py-3 text-sm">
               Encore peu de données : les tendances seront plus fiables avec davantage de visites.
@@ -94,8 +98,20 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
           <Suspense fallback={<SectionSkeleton />}>
             <VisitorsSection {...scope} />
           </Suspense>
-          <div className="grid gap-4 lg:grid-cols-2">
-            {(["pages", "referrers", "countries", "cities", "devices"] as const).map((dimension) => (
+          <div className="grid gap-3 lg:grid-cols-5">
+            <div className="lg:col-span-3">
+              <Suspense fallback={<SectionSkeleton className="h-80 rounded-3xl" />}>
+                <WorldMapSection {...scope} basePath={basePath} />
+              </Suspense>
+            </div>
+            <div className="lg:col-span-2">
+              <Suspense fallback={<SectionSkeleton className="h-80 rounded-3xl" />}>
+                <RecentVisitsSection {...scope} />
+              </Suspense>
+            </div>
+          </div>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {(["pages", "referrers", "cities", "devices"] as const).map((dimension) => (
               <Suspense key={dimension} fallback={<SectionSkeleton className="h-56 rounded-3xl" />}>
                 <RankingSection {...scope} basePath={basePath} dimension={dimension} />
               </Suspense>
@@ -103,22 +119,18 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
           </div>
         </div>
       ) : filtered ? (
-        <p className="mt-8 max-w-xl rounded-2xl bg-cream-deep px-4 py-3 text-sm">
+        <p className="mt-5 max-w-xl rounded-2xl bg-cream-deep px-4 py-3 text-sm">
           Aucune visite ne correspond à ces filtres sur cette période. Retirez un filtre ou choisissez une période plus longue.
         </p>
       ) : (
-        <div className="mt-8">
-          <p className="mb-4 max-w-xl text-sm text-muted-foreground">
-            Aucune visite enregistrée pour l&apos;instant. Installez le script sur votre site, les premières statistiques
-            apparaîtront dès la première page vue.
-          </p>
-          <InstallSnippet publicKey={site.publicKey} />
+        <div className="mt-5">
+          <InstallSnippet publicKey={site.publicKey} domain={site.domain} />
         </div>
       )}
 
       <section
         aria-labelledby="danger-zone"
-        className="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-3xl border-[1.5px] border-destructive/30 p-5"
+        className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border-[1.5px] border-destructive/30 p-4"
       >
         <div className="max-w-md">
           <h2 id="danger-zone" className="text-base font-bold">
@@ -134,9 +146,9 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
 
 export default function SitePage({ params, searchParams }: PageProps<"/dashboard/sites/[siteId]">) {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <main className="mx-auto w-full max-w-5xl px-4 py-6">
       <BackLink href={ROUTES.dashboard}>Retour aux sites</BackLink>
-      <Suspense fallback={<div className="mt-6 h-16 animate-pulse rounded-2xl bg-muted" />}>
+      <Suspense fallback={<div className="mt-4 h-16 animate-pulse rounded-2xl bg-muted" />}>
         <SiteContent params={params} searchParams={searchParams} />
       </Suspense>
     </main>

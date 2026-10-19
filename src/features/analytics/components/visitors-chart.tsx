@@ -49,7 +49,7 @@ export function VisitorsChart({ points, unit }: VisitorsChartProps) {
           ))}
         </div>
       ) : null}
-      <ChartContainer config={config} className="h-64 w-full" aria-hidden>
+      <ChartContainer config={config} className="h-52 w-full" aria-hidden>
         <AreaChart data={points} margin={{ left: 0, right: 8, top: 8 }}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis

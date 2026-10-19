@@ -17,17 +17,17 @@ type KpiCardProps = {
 
 export function KpiCard({ label, value, change = null, note, lowerIsBetter = false, tone }: KpiCardProps) {
   return (
-    <div className={cn("rounded-3xl p-5", toneClass(tone))}>
+    <div className={cn("rounded-3xl p-4", toneClass(tone))}>
       <p className="text-sm text-tone-foreground/85">{label}</p>
-      <p className="mt-2 truncate font-heading text-3xl font-bold tracking-tight tabular-nums">{value}</p>
-      {note ? <p className="mt-2 text-xs text-tone-foreground/85">{note}</p> : <Change change={change} lowerIsBetter={lowerIsBetter} />}
+      <p className="mt-1 truncate font-heading text-2xl font-bold tracking-tight tabular-nums">{value}</p>
+      {note ? <p className="mt-1 text-xs text-tone-foreground/85">{note}</p> : <Change change={change} lowerIsBetter={lowerIsBetter} />}
     </div>
   );
 }
 
 function Change({ change, lowerIsBetter }: { change: number | null; lowerIsBetter: boolean }) {
   if (change === null) {
-    return <p className="mt-2 text-xs text-tone-foreground/85">Pas de comparaison possible</p>;
+    return <p className="mt-1 text-xs text-tone-foreground/85">Pas de comparaison possible</p>;
   }
 
   const Icon = change > 0 ? ArrowUpRight : change < 0 ? ArrowDownRight : Minus;
@@ -35,7 +35,7 @@ function Change({ change, lowerIsBetter }: { change: number | null; lowerIsBette
   const sign = change > 0 ? "+" : "";
 
   return (
-    <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs font-medium">
+    <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs font-medium">
       <span className="inline-flex items-center gap-1 rounded-full bg-black/20 px-2 py-0.5">
         <Icon className="size-3.5" aria-hidden />
         <span className="tabular-nums">

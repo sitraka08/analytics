@@ -25,21 +25,21 @@ export function RankingList({ title, rows, emptyMessage, tone }: RankingListProp
   const max = Math.max(...rows.map((row) => row.visitors), 1);
 
   return (
-    <section className="rounded-3xl bg-surface p-5">
+    <section className="rounded-3xl bg-surface p-4">
       <h3 className="flex items-center gap-2 text-base font-bold">
         <span aria-hidden className={cn("size-3 rounded-full", TONE_BG[tone])} />
         {title}
         {rows.length > 0 ? <span className="ml-auto text-xs font-normal text-muted-foreground tabular-nums">{formatInteger(rows.length)}</span> : null}
       </h3>
       {rows.length === 0 ? (
-        <p className="mt-4 text-sm text-muted-foreground">{emptyMessage}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
         // Long lists scroll inside the card; the scrollbar stays hidden and a fade at the bottom hints there is more.
         <div
           role="region"
           aria-label={title}
           tabIndex={0}
-          className="mt-4 max-h-72 overflow-y-auto overscroll-contain rounded-lg [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground [&::-webkit-scrollbar]:hidden"
+          className="mt-3 max-h-56 overflow-y-auto overscroll-contain rounded-lg [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground [&::-webkit-scrollbar]:hidden"
         >
           <ol className="flex flex-col gap-1.5 pb-4">
             {rows.map((row) => (
