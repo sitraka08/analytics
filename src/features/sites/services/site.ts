@@ -64,3 +64,13 @@ export async function getOwnedSite(userId: string, siteId: string): Promise<Site
   if (!data) throw new SiteNotFoundError();
   return toSummary(data);
 }
+
+/** Deletes a site the user owns; its events go with it (`on delete cascade`). */
+export async function deleteSite(userId: string, siteId: string): Promise<void> {
+  await getOwnedSite(userId, siteId);
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("site").delete().eq("id", siteId).eq("user_id", userId);
+
+  if (error) throw error;
+}

@@ -16,7 +16,7 @@ import {
   parsePeriod,
 } from "@/features/analytics";
 import { requireSession } from "@/features/auth";
-import { SiteNotFoundError, getOwnedSite } from "@/features/sites";
+import { DeleteSiteButton, SiteNotFoundError, getOwnedSite } from "@/features/sites";
 import { InstallSnippet } from "@/features/tracking";
 import { ROUTES } from "@/lib/routes";
 
@@ -104,6 +104,18 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
         </div>
       )}
 
+      <section
+        aria-labelledby="danger-zone"
+        className="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-3xl border-[1.5px] border-destructive/30 p-5"
+      >
+        <div className="max-w-md">
+          <h2 id="danger-zone" className="text-base font-bold">
+            Zone dangereuse
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">Supprimer ce site efface définitivement toutes ses statistiques.</p>
+        </div>
+        <DeleteSiteButton siteId={site.id} name={site.name} domain={site.domain} />
+      </section>
     </>
   );
 }

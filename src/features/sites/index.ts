@@ -2,3 +2,4 @@ export { findSiteForCollection, getOwnedSite, listSites, SiteNotFoundError } fro
 export { CreateSiteForm } from "./components/create-site-form";
 export { SiteList } from "./components/site-list";
 export type { SiteSummary } from "./types/site";
+export { DeleteSiteButton } from "./components/delete-site-button";
