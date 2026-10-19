@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, Plus } from "lucide-react";
+import { Globe, LayoutDashboard, Plus, Settings } from "lucide-react";
 import Link from "next/link";
 import { BrandMark } from "@/components/shared/brand-logo";
 import {
@@ -73,7 +73,11 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
 
       <SidebarFooter>
         <SidebarSeparator />
-        <div className="flex items-center gap-3 px-2 py-1 group-data-[collapsible=icon]:hidden">
+        <Link
+          href={ROUTES.settings}
+          title="Paramètres du compte"
+          className="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-sidebar-accent group-data-[collapsible=icon]:hidden"
+        >
           <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-cream-deep text-sm font-bold">
             {initials(user.name)}
           </span>
@@ -81,8 +85,11 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
             <span className="block truncate text-sm font-medium">{user.name}</span>
             <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
           </span>
-        </div>
+        </Link>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarLink href={ROUTES.settings} label="Paramètres" icon={<Settings aria-hidden />} exact />
+          </SidebarMenuItem>
           <SidebarMenuItem>{signOut}</SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

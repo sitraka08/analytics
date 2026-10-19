@@ -11,5 +11,6 @@ export const ROUTES = {
   authCallback: "/auth/callback",
   dashboard: "/dashboard",
   newSite: "/dashboard/sites/new",
+  settings: "/dashboard/settings",
   site: (siteId: string) => `/dashboard/sites/${siteId}`,
 } as const;
