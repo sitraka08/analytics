@@ -50,7 +50,7 @@ export type Database = {
         Returns: { label: string; visitors: number }[];
       };
       analytics_timeseries: {
-        Args: { p_site_id: string; p_unit: string; p_from: string; p_to: string } & Filters;
+        Args: { p_site_id: string; p_unit: string; p_from: string; p_to: string; p_tz?: string } & Filters;
         Returns: { bucket: string; visitors: number; pageviews: number }[];
       };
       analytics_sites_totals: {
@@ -60,6 +60,10 @@ export type Database = {
       analytics_sites_series: {
         Args: { p_site_ids: string[]; p_unit: string; p_from: string; p_to: string };
         Returns: { site_id: string; bucket: string; visitors: number; pageviews: number }[];
+      };
+      delete_my_account: {
+        Args: Record<string, never>;
+        Returns: undefined;
       };
     };
     Enums: Record<string, never>;
