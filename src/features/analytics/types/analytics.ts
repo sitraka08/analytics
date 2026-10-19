@@ -39,4 +39,4 @@ export type RankingItem = {
   visitors: number;
 };
 
-export type RankingDimension = "pages" | "referrers" | "countries" | "devices";
+export type RankingDimension = "pages" | "referrers" | "countries" | "cities" | "devices";

@@ -9,3 +9,7 @@ export { KpiGrid } from "./components/kpi-grid";
 export { RankingSection, SectionSkeleton, VisitorsSection } from "./components/analytics-sections";
 export type { Period } from "./schemas/period";
 export { SitesOverview } from "./components/sites-overview";
+export { SessionTable } from "./components/session-table";
+export { SessionDetail } from "./components/session-detail";
+export { getSession, getSessions, SessionNotFoundError } from "./services/sessions";
+export { pageNumberSchema, sessionIdSchema } from "./schemas/session";

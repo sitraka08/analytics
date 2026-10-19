@@ -13,6 +13,8 @@ type EventRow = {
   utm_medium: string | null;
   utm_campaign: string | null;
   country: string | null;
+  region: string | null;
+  city: string | null;
   device: string | null;
   browser: string | null;
   os: string | null;
@@ -21,7 +23,13 @@ type EventRow = {
   duration_ms: number | null;
 };
 
-type Filters = { p_page?: string | null; p_referrer?: string | null; p_country?: string | null; p_device?: string | null };
+type Filters = {
+  p_page?: string | null;
+  p_referrer?: string | null;
+  p_country?: string | null;
+  p_device?: string | null;
+  p_city?: string | null;
+};
 
 export type Database = {
   public: {
@@ -52,6 +60,43 @@ export type Database = {
       analytics_timeseries: {
         Args: { p_site_id: string; p_unit: string; p_from: string; p_to: string; p_tz?: string } & Filters;
         Returns: { bucket: string; visitors: number; pageviews: number }[];
+      };
+      analytics_sessions: {
+        Args: { p_site_id: string; p_from: string; p_to: string; p_limit?: number; p_offset?: number } & Filters;
+        Returns: {
+          session_id: string;
+          started_at: string;
+          country: string | null;
+          region: string | null;
+          city: string | null;
+          device: string | null;
+          browser: string | null;
+          os: string | null;
+          referrer_domain: string | null;
+          utm_source: string | null;
+          entry_path: string;
+          pageviews: number;
+          duration_ms: number | null;
+          total_count: number;
+        }[];
+      };
+      analytics_session_events: {
+        Args: { p_site_id: string; p_session_id: string };
+        Returns: {
+          created_at: string;
+          path: string;
+          duration_ms: number | null;
+          referrer_domain: string | null;
+          utm_source: string | null;
+          utm_medium: string | null;
+          utm_campaign: string | null;
+          country: string | null;
+          region: string | null;
+          city: string | null;
+          device: string | null;
+          browser: string | null;
+          os: string | null;
+        }[];
       };
       analytics_sites_totals: {
         Args: { p_site_ids: string[]; p_previous_from: string; p_from: string; p_to: string };

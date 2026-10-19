@@ -4,7 +4,7 @@
 1. The client site loads a tiny script (`/script.js`, served by the app) with its site key.
 2. The script sends a `POST /api/collect` (`navigator.sendBeacon` or keepalive `fetch`) on each navigation, SPA included (History API).
 3. Duration is sent when the page is closed or hidden (`visibilitychange`).
-4. The server validates (Zod), filters bots, enriches (country, device), computes the visitor hash, then inserts the event. Response `202` with no body.
+4. The server validates (Zod), filters bots, enriches (country, region, city, device), computes the visitor hash, then inserts the event. Response `202` with no body.
 
 ## Script details
 - The script is skipped when Do Not Track is on or the browser is automated (webdriver).
@@ -20,7 +20,8 @@
 - Accepted consequence: a visitor returning on another day counts as new.
 
 ## Enrichment
-- Country: Vercel headers (`x-vercel-ip-country`); region/city only if useful and not precise.
+- Country: Vercel headers (`x-vercel-ip-country`); region (`x-vercel-ip-country-region`) and city (`x-vercel-ip-city`) are stored as text, computed at Vercel's edge: the IP is never read or stored by us. No coordinates, no postal code. City is justified by the "where do visitors come from" widget and the per-visit view; it is not precise enough to identify a person alone, and the daily-rotating hash still prevents linking visits across days.
+- Owner opt-out: opening the site with `?no-track` stores a local flag (`statly_ignore`) so the script sends nothing from that browser; `?no-track=0` removes it.
 - Device, browser, OS: parsed from the user-agent, then the user-agent is discarded.
 - Referrer: domain only by default; UTM from the page URL.
 

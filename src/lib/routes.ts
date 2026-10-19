@@ -13,4 +13,6 @@ export const ROUTES = {
   newSite: "/dashboard/sites/new",
   settings: "/dashboard/settings",
   site: (siteId: string) => `/dashboard/sites/${siteId}`,
+  siteVisits: (siteId: string) => `/dashboard/sites/${siteId}/visits`,
+  siteVisit: (siteId: string, sessionId: string) => `/dashboard/sites/${siteId}/visits/${sessionId}`,
 } as const;

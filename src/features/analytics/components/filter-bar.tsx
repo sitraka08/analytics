@@ -12,6 +12,7 @@ const FIELDS: { label: string; filterKey: keyof Filters; dimension: RankingDimen
   { label: "Page", filterKey: "page", dimension: "pages" },
   { label: "Source", filterKey: "referrer", dimension: "referrers" },
   { label: "Pays", filterKey: "country", dimension: "countries" },
+  { label: "Ville", filterKey: "city", dimension: "cities" },
   { label: "Appareil", filterKey: "device", dimension: "devices" },
 ];
 

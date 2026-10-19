@@ -30,7 +30,7 @@ export const PRIVACY: LegalDocument = {
       title: "Les visiteurs de vos sites",
       paragraphs: [
         "Vous êtes responsable du traitement de ces données, Statly est votre sous-traitant. À chaque page vue, nous recevons l'adresse de la page, le site d'origine du visiteur, la durée de visite et un identifiant aléatoire de page vue, jamais stocké dans le navigateur.",
-        "Le serveur en déduit le pays, l'appareil, le navigateur et le système, puis abandonne l'adresse IP et le user-agent : ils ne sont ni enregistrés ni écrits dans les journaux. Un hachage salé, dont le sel change chaque jour, compte les visiteurs sur une journée sans jamais pouvoir les relier d'un jour à l'autre. Le script s'arrête si « Ne pas suivre » est activé.",
+        "Le serveur en déduit le pays, la région, la ville, l'appareil, le navigateur et le système, puis abandonne l'adresse IP et le user-agent : ils ne sont ni enregistrés ni écrits dans les journaux. Un hachage salé, dont le sel change chaque jour, compte les visiteurs sur une journée sans jamais pouvoir les relier d'un jour à l'autre. Le script s'arrête si « Ne pas suivre » est activé, ainsi que dans le navigateur d'un propriétaire de site qui a ouvert son site avec l'option « no-track » (un simple drapeau local, sans identifiant, qui n'est jamais envoyé).",
         "Les événements sont conservés " + PUBLISHER.eventRetentionMonths + " mois, puis supprimés.",
       ],
     },

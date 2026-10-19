@@ -17,6 +17,8 @@ type CollectRequest = {
   ip: string;
   userAgent: string | null;
   country: string | null;
+  region: string | null;
+  city: string | null;
 };
 
 export type CollectResult =
@@ -26,7 +28,7 @@ export type CollectResult =
   | { status: "forbidden" }
   | { status: "rate-limited" };
 
-export async function collectEvent({ payload, origin, ip, userAgent, country }: CollectRequest): Promise<CollectResult> {
+export async function collectEvent({ payload, origin, ip, userAgent, country, region, city }: CollectRequest): Promise<CollectResult> {
   if (isRateLimited(`${ip}:${payload.key}`)) return { status: "rate-limited" };
 
   const site = await findSiteForCollection(payload.key);
@@ -70,6 +72,8 @@ export async function collectEvent({ payload, origin, ip, userAgent, country }: 
       utm_medium: page.utmMedium,
       utm_campaign: page.utmCampaign,
       country,
+      region,
+      city,
       device,
       browser,
       os,

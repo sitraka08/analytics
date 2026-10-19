@@ -6,7 +6,7 @@ import type { Period } from "../schemas/period";
 import { buildDashboardHref } from "../utils/search-params";
 import { formatFilterValue } from "../utils/filter-label";
 
-const FILTER_LABELS = { page: "Page", referrer: "Source", country: "Pays", device: "Appareil" } as const;
+const FILTER_LABELS = { page: "Page", referrer: "Source", country: "Pays", city: "Ville", device: "Appareil" } as const;
 
 type ActiveFiltersProps = { basePath: string; period: Period; filters: Filters };
 

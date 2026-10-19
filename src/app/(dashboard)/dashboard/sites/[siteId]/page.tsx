@@ -1,4 +1,6 @@
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BackLink } from "@/components/shared/back-link";
@@ -34,6 +36,7 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
     page: first(query.page),
     referrer: first(query.referrer),
     country: first(query.country),
+    city: first(query.city),
     device: first(query.device),
   });
 
@@ -56,6 +59,15 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
         </div>
         <PeriodTabs current={period} basePath={basePath} filters={filters} />
       </div>
+      {hasData ? (
+        <Link
+          href={ROUTES.siteVisits(siteId)}
+          className="mt-4 inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] border-foreground/15 bg-surface px-4 text-sm font-medium hover:border-foreground/35 hover:bg-cream-deep"
+        >
+          Voir les visites une par une
+          <ArrowRight aria-hidden className="size-4" />
+        </Link>
+      ) : null}
 
       {hasData || filtered ? (
         <div className="mt-6">
@@ -83,7 +95,7 @@ async function SiteContent({ params, searchParams }: Pick<PageProps<"/dashboard/
             <VisitorsSection {...scope} />
           </Suspense>
           <div className="grid gap-4 lg:grid-cols-2">
-            {(["pages", "referrers", "countries", "devices"] as const).map((dimension) => (
+            {(["pages", "referrers", "countries", "cities", "devices"] as const).map((dimension) => (
               <Suspense key={dimension} fallback={<SectionSkeleton className="h-56 rounded-3xl" />}>
                 <RankingSection {...scope} basePath={basePath} dimension={dimension} />
               </Suspense>

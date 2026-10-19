@@ -33,6 +33,8 @@ export async function POST(request: Request) {
       ip: getClientIp(request.headers),
       userAgent: request.headers.get("user-agent"),
       country: parseCountry(request.headers.get("x-vercel-ip-country")),
+      region: parseRegion(request.headers.get("x-vercel-ip-country-region")),
+      city: parseCity(request.headers.get("x-vercel-ip-city")),
     });
 
     switch (result.status) {
@@ -54,4 +56,19 @@ export async function POST(request: Request) {
 
 function parseCountry(value: string | null): string | null {
   return value && /^[A-Za-z]{2}$/.test(value) ? value.toUpperCase() : null;
+}
+
+function parseRegion(value: string | null): string | null {
+  return value && /^[A-Za-z0-9-]{1,3}$/.test(value) ? value.toUpperCase() : null;
+}
+
+// Vercel sends the city URL-encoded ("S%C3%A3o%20Paulo").
+function parseCity(value: string | null): string | null {
+  if (!value) return null;
+  try {
+    const city = decodeURIComponent(value).trim();
+    return city.length > 0 && city.length <= 100 ? city : null;
+  } catch {
+    return null;
+  }
 }

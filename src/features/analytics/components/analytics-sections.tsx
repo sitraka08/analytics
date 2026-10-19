@@ -33,6 +33,7 @@ const RANKINGS: Record<RankingDimension, { title: string; emptyMessage: string; 
   pages: { title: "Pages les plus vues", emptyMessage: "Aucune page vue sur cette période.", filterKey: "page", tone: "blue" },
   referrers: { title: "D'où viennent les visiteurs", emptyMessage: "Aucun site référent : les visites sont directes.", filterKey: "referrer", tone: "green" },
   countries: { title: "Pays", emptyMessage: "Pays inconnu pour le moment.", filterKey: "country", tone: "orange" },
+  cities: { title: "Villes", emptyMessage: "Ville inconnue pour le moment.", filterKey: "city", tone: "green" },
   devices: { title: "Appareils", emptyMessage: "Aucun appareil détecté.", filterKey: "device", tone: "violet" },
 };
 
