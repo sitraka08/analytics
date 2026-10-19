@@ -3,7 +3,7 @@
 Flow details: `.claude/context/tracking-and-privacy.md`.
 
 ## Forbidden
-- Cookies, `localStorage`, `sessionStorage` or any browser storage from the tracking script.
+- Cookies, `localStorage`, `sessionStorage` or any browser storage from the tracking script. Single exception: the owner opt-out flag (`statly_ignore`), written only when the site is opened with `?no-track`; it holds no identifier and is never sent.
 - Storing the raw IP or user-agent, in the database as well as in logs.
 - Fingerprinting (canvas, fonts, etc.) or any identifier persisting across days.
 - Collecting form fields, page text or personal data.

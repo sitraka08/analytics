@@ -1,9 +1,15 @@
 // Source of the script served at /script.js. It runs on third-party sites: no dependency, no storage,
-// no cookie, and it must never throw or log on the host page.
+// no cookie, and it must never throw or log on the host page. The only thing it ever writes to
+// localStorage is the owner's opt-out flag, set by visiting the site once with ?no-track.
 export const TRACKING_SCRIPT = `(function(){
 try{
 var d=document,w=window,n=navigator,s=d.currentScript;
 if(!s||n.doNotTrack==="1"||n.webdriver)return;
+try{
+var o=new URLSearchParams(location.search).get("no-track"),ls=w.localStorage;
+if(o!==null){if(o==="0")ls.removeItem("statly_ignore");else ls.setItem("statly_ignore","1")}
+if(ls.getItem("statly_ignore"))return;
+}catch(e){}
 var key=s.getAttribute("data-key");
 if(!key)return;
 var endpoint=new URL("/api/collect",s.src).href;

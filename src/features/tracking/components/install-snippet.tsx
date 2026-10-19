@@ -13,6 +13,10 @@ export function InstallSnippet({ publicKey }: { publicKey: string }) {
         Collez cette ligne dans le <code className="font-mono">&lt;head&gt;</code> de chaque page du site. Le script n&apos;utilise ni
         cookie ni stockage : aucun bandeau de consentement n&apos;est nécessaire.
       </p>
+      <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+        Pour ne plus compter vos propres visites, ouvrez une fois votre site avec <code className="font-mono">?no-track</code> à la fin
+        de l&apos;adresse. Ce navigateur sera ignoré ; <code className="font-mono">?no-track=0</code> réactive le suivi.
+      </p>
       <div className="mt-5 flex flex-col gap-3 rounded-2xl bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
         <code className="min-w-0 overflow-x-auto whitespace-nowrap font-mono text-sm">{snippet}</code>
         <CopyButton value={snippet} />
