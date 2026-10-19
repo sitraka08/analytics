@@ -2,6 +2,8 @@
 
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { cn } from "@/lib/utils";
+import { useHourFormat, type HourFormat } from "../hooks/use-hour-format";
 import type { TimeseriesPoint } from "../types/analytics";
 import { formatCompact, formatInteger } from "../utils/format";
 
@@ -15,12 +17,38 @@ type VisitorsChartProps = {
   unit: "hour" | "day";
 };
 
+const HOUR_FORMATS: { value: HourFormat; label: string }[] = [
+  { value: "24h", label: "24 h" },
+  { value: "12h", label: "AM/PM" },
+];
+
 export function VisitorsChart({ points, unit }: VisitorsChartProps) {
-  const axisFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? { hour: "2-digit", minute: "2-digit" } : { day: "numeric", month: "short" });
-  const tooltipFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" } : { weekday: "long", day: "numeric", month: "long" });
+  const [hourFormat, setHourFormat] = useHourFormat();
+  const hour12 = hourFormat === "12h";
+  const hours = { hour: hour12 ? "numeric" : "2-digit", minute: "2-digit", hour12 } as const;
+  const axisFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? hours : { day: "numeric", month: "short" });
+  const tooltipFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? { day: "numeric", month: "long", ...hours } : { weekday: "long", day: "numeric", month: "long" });
 
   return (
     <>
+      {unit === "hour" ? (
+        <div role="group" aria-label="Format des heures" className="mb-3 flex w-fit rounded-full bg-cream-deep p-0.5 text-xs font-medium">
+          {HOUR_FORMATS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={hourFormat === option.value}
+              onClick={() => setHourFormat(option.value)}
+              className={cn(
+                "rounded-full px-3 py-1 transition-colors",
+                hourFormat === option.value ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <ChartContainer config={config} className="h-64 w-full" aria-hidden>
         <AreaChart data={points} margin={{ left: 0, right: 8, top: 8 }}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
