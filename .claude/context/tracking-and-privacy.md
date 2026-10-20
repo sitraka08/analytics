@@ -2,7 +2,7 @@
 
 ## Collection flow
 1. The client site loads a tiny script (`/script.js`, served by the app) with its site key.
-2. The script sends a `POST /api/collect` (`navigator.sendBeacon` or keepalive `fetch`) on each navigation, SPA included (History API).
+2. The script sends a `POST /api/p` (neutral path: ad blockers block `/api/collect` on third-party sites; `/api/collect` is kept as a legacy alias) (`navigator.sendBeacon` or keepalive `fetch`) on each navigation, SPA included (History API).
 3. Duration is sent when the page is closed or hidden (`visibilitychange`).
 4. The server validates (Zod), filters bots, enriches (country, region, city, device), computes the visitor hash, then inserts the event. Response `202` with no body.
 

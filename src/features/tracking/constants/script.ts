@@ -12,7 +12,7 @@ if(ls.getItem("statly_ignore"))return;
 }catch(e){}
 var key=s.getAttribute("data-key");
 if(!key)return;
-var endpoint=new URL("/api/collect",s.src).href;
+var endpoint=new URL("/api/p",s.src).href;
 var id,url,ref=d.referrer,acc=0,shownAt=0;
 
 function send(body){
