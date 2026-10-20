@@ -1,6 +1,8 @@
 // Source of the script served at /script.js. It runs on third-party sites: no dependency, no storage,
 // no cookie, and it must never throw or log on the host page. The only thing it ever writes to
 // localStorage is the owner's opt-out flag, set by visiting the site once with ?no-track.
+// Events go through fetch+keepalive, not sendBeacon: browsers tag beacons as "ping" requests, which
+// blockers (uBlock "hyperlink auditing", Brave) drop whatever the URL. sendBeacon is only a fallback.
 export const TRACKING_SCRIPT = `(function(){
 try{
 var d=document,w=window,n=navigator,s=d.currentScript;
@@ -18,8 +20,8 @@ var id,url,ref=d.referrer,acc=0,shownAt=0;
 function send(body){
   try{
     var data=JSON.stringify(body);
-    if(n.sendBeacon&&n.sendBeacon(endpoint,new Blob([data],{type:"text/plain"})))return;
-    fetch(endpoint,{method:"POST",body:data,keepalive:true,credentials:"omit",headers:{"Content-Type":"text/plain"}}).catch(function(){});
+    if(w.fetch){fetch(endpoint,{method:"POST",body:data,keepalive:true,credentials:"omit",headers:{"Content-Type":"text/plain"}}).catch(function(){});return}
+    if(n.sendBeacon)n.sendBeacon(endpoint,new Blob([data],{type:"text/plain"}));
   }catch(e){}
 }
 function newId(){
