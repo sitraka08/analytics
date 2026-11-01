@@ -1,4 +1,5 @@
-import { createClient } from "@/db/server";
+import { sql } from "drizzle-orm";
+import { db } from "@/db";
 import { listSites } from "@/features/sites";
 import type { Period } from "../schemas/period";
 import type { SitesOverview, TimeseriesPoint } from "../types/analytics";
@@ -16,22 +17,19 @@ export async function getSitesOverview(userId: string, period: Period): Promise<
   if (sites.length === 0) return { sites: [], points: empty };
 
   const siteIds = sites.map((item) => item.id);
-  const supabase = await createClient();
+  const siteIdsArg = sql`${sql.raw("array[")}${sql.join(siteIds.map((id) => sql`${id}::uuid`), sql`, `)}${sql.raw("]")}`;
 
   const [totalsResult, seriesResult] = await Promise.all([
-    supabase.rpc("analytics_sites_totals", {
-      p_site_ids: siteIds,
-      p_previous_from: previousFrom.toISOString(),
-      p_from: from.toISOString(),
-      p_to: to.toISOString(),
-    }),
-    supabase.rpc("analytics_sites_series", { p_site_ids: siteIds, p_unit: unit, p_from: from.toISOString(), p_to: to.toISOString() }),
+    db.execute<{ site_id: string; visitors: number; pageviews: number; previous_visitors: number }>(
+      sql`select * from analytics_sites_totals(p_user_id => ${userId}::text, p_site_ids => ${siteIdsArg}, p_previous_from => ${previousFrom.toISOString()}::timestamptz, p_from => ${from.toISOString()}::timestamptz, p_to => ${to.toISOString()}::timestamptz)`,
+    ),
+    db.execute<{ site_id: string; bucket: string; visitors: number; pageviews: number }>(
+      sql`select * from analytics_sites_series(p_user_id => ${userId}::text, p_site_ids => ${siteIdsArg}, p_unit => ${unit}::text, p_from => ${from.toISOString()}::timestamptz, p_to => ${to.toISOString()}::timestamptz)`,
+    ),
   ]);
 
-  if (totalsResult.error) throw totalsResult.error;
-  if (seriesResult.error) throw seriesResult.error;
-  const { data: totals } = totalsResult;
-  const { data: series } = seriesResult;
+  const totals = totalsResult.rows;
+  const series = seriesResult.rows;
 
   const totalsBySite = new Map(totals.map((row) => [row.site_id, row]));
   const seriesBySite = new Map<string, Map<string, { visitors: number; pageviews: number }>>();

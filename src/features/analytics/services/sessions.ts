@@ -1,12 +1,39 @@
-import { createClient } from "@/db/server";
+import { sql } from "drizzle-orm";
+import { db } from "@/db";
 import { getOwnedSite } from "@/features/sites";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { SessionDetail, SessionsPage } from "../types/session";
 import { getPeriodRange } from "../utils/period";
-import { filterParams } from "./filter-params";
+import { filterArgs } from "./filter-params";
 
 export const SESSIONS_PAGE_SIZE = 25;
+
+type Place = { country: string | null; region: string | null; city: string | null };
+type Device = { device: string | null; browser: string | null; os: string | null };
+
+type SessionRow = Place &
+  Device & {
+    session_id: string;
+    started_at: Date;
+    referrer_domain: string | null;
+    utm_source: string | null;
+    entry_path: string;
+    pageviews: number;
+    duration_ms: string | null;
+    total_count: number;
+  };
+
+type SessionEventRow = Place &
+  Device & {
+    created_at: Date;
+    path: string;
+    duration_ms: number | null;
+    referrer_domain: string | null;
+    utm_source: string | null;
+    utm_medium: string | null;
+    utm_campaign: string | null;
+  };
 
 export class SessionNotFoundError extends Error {
   constructor() {
@@ -20,21 +47,14 @@ export async function getSessions(userId: string, siteId: string, period: Period
   await getOwnedSite(userId, siteId);
   const { from, to } = getPeriodRange(period);
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("analytics_sessions", {
-    p_site_id: siteId,
-    p_from: from.toISOString(),
-    p_to: to.toISOString(),
-    p_limit: SESSIONS_PAGE_SIZE,
-    p_offset: (page - 1) * SESSIONS_PAGE_SIZE,
-    ...filterParams(filters),
-  });
-  if (error) throw error;
+  const { rows: data } = await db.execute<SessionRow>(
+    sql`select * from analytics_sessions(p_user_id => ${userId}::text, p_site_id => ${siteId}::uuid, p_from => ${from.toISOString()}::timestamptz, p_to => ${to.toISOString()}::timestamptz, p_limit => ${SESSIONS_PAGE_SIZE}::integer, p_offset => ${(page - 1) * SESSIONS_PAGE_SIZE}::integer, ${filterArgs(filters)})`,
+  );
 
   return {
     sessions: data.map((row) => ({
       id: row.session_id,
-      startedAt: row.started_at,
+      startedAt: row.started_at.toISOString(),
       country: row.country,
       region: row.region,
       city: row.city,
@@ -45,7 +65,8 @@ export async function getSessions(userId: string, siteId: string, period: Period
       utmSource: row.utm_source,
       entryPath: row.entry_path,
       pageviews: row.pageviews,
-      durationMs: row.duration_ms,
+      // `bigint` comes back from the driver as a string.
+      durationMs: row.duration_ms === null ? null : Number(row.duration_ms),
     })),
     total: data[0]?.total_count ?? 0,
     page,
@@ -57,9 +78,9 @@ export async function getSessions(userId: string, siteId: string, period: Period
 export async function getSession(userId: string, siteId: string, sessionId: string): Promise<SessionDetail> {
   await getOwnedSite(userId, siteId);
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("analytics_session_events", { p_site_id: siteId, p_session_id: sessionId });
-  if (error) throw error;
+  const { rows: data } = await db.execute<SessionEventRow>(
+    sql`select * from analytics_session_events(p_user_id => ${userId}::text, p_site_id => ${siteId}::uuid, p_session_id => ${sessionId}::text)`,
+  );
 
   const first = data[0];
   if (!first) throw new SessionNotFoundError();
@@ -68,7 +89,7 @@ export async function getSession(userId: string, siteId: string, sessionId: stri
 
   return {
     id: sessionId,
-    startedAt: first.created_at,
+    startedAt: first.created_at.toISOString(),
     country: first.country,
     region: first.region,
     city: first.city,
@@ -80,6 +101,6 @@ export async function getSession(userId: string, siteId: string, sessionId: stri
     utmMedium: first.utm_medium,
     utmCampaign: first.utm_campaign,
     durationMs: measured.length > 0 ? measured.reduce((total, row) => total + (row.duration_ms ?? 0), 0) : null,
-    pageviews: data.map((row) => ({ at: row.created_at, path: row.path, durationMs: row.duration_ms })),
+    pageviews: data.map((row) => ({ at: row.created_at.toISOString(), path: row.path, durationMs: row.duration_ms })),
   };
 }

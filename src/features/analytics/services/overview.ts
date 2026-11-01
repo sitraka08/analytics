@@ -1,18 +1,19 @@
-import { createClient } from "@/db/server";
+import { sql } from "drizzle-orm";
+import { db } from "@/db";
 import { getOwnedSite } from "@/features/sites";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import type { Overview, Totals } from "../types/analytics";
 import { getPeriodRange } from "../utils/period";
-import { filterParams } from "./filter-params";
+import { filterArgs } from "./filter-params";
 
-async function getTotals(siteId: string, from: Date, to: Date, filters: Filters): Promise<Totals> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .rpc("analytics_totals", { p_site_id: siteId, p_from: from.toISOString(), p_to: to.toISOString(), ...filterParams(filters) })
-    .single();
+type TotalsRow = { visitors: number; sessions: number; pageviews: number; bounces: number; avg_duration_ms: number | null };
 
-  if (error) throw error;
+async function getTotals(userId: string, siteId: string, from: Date, to: Date, filters: Filters): Promise<Totals> {
+  const { rows } = await db.execute<TotalsRow>(
+    sql`select * from analytics_totals(p_user_id => ${userId}::text, p_site_id => ${siteId}::uuid, p_from => ${from.toISOString()}::timestamptz, p_to => ${to.toISOString()}::timestamptz, ${filterArgs(filters)})`,
+  );
+  const data = rows[0];
 
   return {
     visitors: data.visitors,
@@ -26,6 +27,6 @@ export async function getOverview(userId: string, siteId: string, period: Period
   await getOwnedSite(userId, siteId);
   const { from, to, previousFrom } = getPeriodRange(period);
 
-  const [current, previous] = await Promise.all([getTotals(siteId, from, to, filters), getTotals(siteId, previousFrom, from, filters)]);
+  const [current, previous] = await Promise.all([getTotals(userId, siteId, from, to, filters), getTotals(userId, siteId, previousFrom, from, filters)]);
   return { current, previous };
 }
