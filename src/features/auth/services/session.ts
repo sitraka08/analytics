@@ -1,20 +1,18 @@
 import { cache } from "react";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
+import { auth } from "./auth";
 
 export type SessionUser = { id: string; name: string; email: string };
 
-// Validates the token with the Supabase Auth server (unlike getSession, which only trusts the cookie).
+// Validates the session cookie against the database on every request (the proxy only checks it exists).
 export const getSession = cache(async (): Promise<{ user: SessionUser } | null> => {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) return null;
 
-  const { id, email, user_metadata } = data.user;
-  const name = typeof user_metadata.name === "string" ? user_metadata.name : typeof user_metadata.full_name === "string" ? user_metadata.full_name : "";
-
-  return { user: { id, email: email ?? "", name: name || (email ?? "").split("@")[0] } };
+  const { id, email, name } = session.user;
+  return { user: { id, email, name: name || email.split("@")[0] } };
 });
 
 /** Required session: redirects to the login page otherwise. Call it in a component under <Suspense>. */

@@ -1,3 +1,4 @@
+export { auth } from "./services/auth";
 export { getSession, requireSession } from "./services/session";
 export { isGoogleEnabled } from "./utils/providers";
 export { getSafeRedirectPath, getAuthErrorMessage } from "./utils/auth-error";

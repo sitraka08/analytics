@@ -11,12 +11,13 @@ import { SubmitButton } from "@/components/shared/submit-button";
 
 const INITIAL_STATE: FormState<ResetPasswordField> = { ok: false };
 
-export function ResetPasswordForm() {
+export function ResetPasswordForm({ token }: { token: string }) {
   const [state, formAction] = useActionState(resetPasswordAction, INITIAL_STATE);
 
   return (
     <form action={formAction} noValidate>
       <FieldGroup className="gap-5">
+        <input type="hidden" name="token" value={token} />
         <FormMessage message={state.message} />
 
         <PasswordField

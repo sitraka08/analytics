@@ -3,7 +3,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import {
   forgotPasswordSchema,
@@ -14,6 +13,7 @@ import {
 import type { FormState } from "@/lib/form-state";
 import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE } from "../constants/availability";
 import { getAuthErrorMessage } from "../utils/auth-error";
+import { auth } from "./auth";
 
 export async function requestPasswordResetAction(
   _previous: FormState<ForgotPasswordField>,
@@ -28,13 +28,11 @@ export async function requestPasswordResetAction(
 
   if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
-  const origin = (await headers()).get("origin");
-  const supabase = await createClient();
-  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${origin}${ROUTES.authCallback}?next=${encodeURIComponent(ROUTES.resetPassword)}`,
-  });
-
-  if (error) return { ok: false, message: getAuthErrorMessage(error), values };
+  try {
+    await auth.api.requestPasswordReset({ body: { email: parsed.data.email, redirectTo: ROUTES.resetPassword }, headers: await headers() });
+  } catch (error) {
+    return { ok: false, message: getAuthErrorMessage(error), values };
+  }
 
   // Same response whether the account exists or not, so registered addresses are not revealed.
   return { ok: true, message: "Si un compte existe pour cette adresse, un e-mail vient d'être envoyé. Pensez à vérifier vos spams.", values };
@@ -48,6 +46,7 @@ export async function resetPasswordAction(
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
   });
+  const token = String(formData.get("token") ?? "");
 
   if (!parsed.success) {
     return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors };
@@ -55,12 +54,12 @@ export async function resetPasswordAction(
 
   if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
-  // The recovery link signed the user in (see /auth/callback): updating the password is enough.
-  const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  // The token comes from the emailed link (forwarded by the reset page); Better Auth validates and consumes it.
+  try {
+    await auth.api.resetPassword({ body: { newPassword: parsed.data.password, token } });
+  } catch (error) {
+    return { ok: false, message: getAuthErrorMessage(error) };
+  }
 
-  if (error) return { ok: false, message: getAuthErrorMessage(error) };
-
-  await supabase.auth.signOut();
   redirect(`${ROUTES.login}?reset=success`);
 }

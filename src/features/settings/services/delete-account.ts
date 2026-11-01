@@ -1,9 +1,12 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createClient } from "@/db/server";
-import { requireSession } from "@/features/auth";
+import { db } from "@/db";
+import { user as userTable } from "@/db/schema/auth";
+import { auth, requireSession } from "@/features/auth";
 import { ROUTES } from "@/lib/routes";
 import { deleteAccountSchema } from "../schemas/delete-account";
 
@@ -17,16 +20,16 @@ export async function deleteAccountAction(confirmation: string): Promise<{ ok: f
     return { ok: false, message: "L'adresse saisie ne correspond pas à celle de votre compte." };
   }
 
-  const supabase = await createClient();
-  // SQL function limited to the caller's own user: sites and events follow through `on delete cascade`.
-  const { error } = await supabase.rpc("delete_my_account");
-
-  if (error) {
-    console.error("deleteAccount failed", error.code ?? "unknown error");
+  try {
+    // Only ever the signed-in user's row: sessions, accounts, sites and events follow through `on delete cascade`.
+    await db.delete(userTable).where(eq(userTable.id, user.id));
+  } catch (error) {
+    console.error("deleteAccount failed", error instanceof Error ? error.message : "unknown error");
     return { ok: false, message: "Le compte n'a pas pu être supprimé. Réessayez dans un instant." };
   }
 
-  await supabase.auth.signOut();
+  // The session row is gone with the user; this clears the browser cookie. Ignore a "no session" answer.
+  await auth.api.signOut({ headers: await headers() }).catch(() => undefined);
   revalidatePath(ROUTES.home, "layout");
   redirect(ROUTES.home);
 }

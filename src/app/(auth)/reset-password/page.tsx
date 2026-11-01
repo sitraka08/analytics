@@ -3,14 +3,15 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { FormMessage } from "@/components/shared/form-message";
 import { buttonVariants } from "@/components/ui/button";
-import { AuthPanel, AuthFormFallback, ResetPasswordForm, getSession } from "@/features/auth";
+import { AuthPanel, AuthFormFallback, ResetPasswordForm } from "@/features/auth";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Nouveau mot de passe" };
 
-// The recovery link signs the user in through /auth/callback; without that session the link is invalid or expired.
-async function ResetPasswordContent() {
-  if (await getSession()) return <ResetPasswordForm />;
+// Better Auth redirects here with `?token=` when the emailed link is valid, or `?error=INVALID_TOKEN` when it is not.
+async function ResetPasswordContent({ searchParams }: Pick<PageProps<"/reset-password">, "searchParams">) {
+  const { token, error } = await searchParams;
+  if (typeof token === "string" && token && !error) return <ResetPasswordForm token={token} />;
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,7 +23,7 @@ async function ResetPasswordContent() {
   );
 }
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPage({ searchParams }: PageProps<"/reset-password">) {
   return (
     <AuthPanel
       title="Nouveau mot de passe"
@@ -30,7 +31,7 @@ export default function ResetPasswordPage() {
       description="Choisissez un mot de passe d'au moins 8 caractères."
     >
       <Suspense fallback={<AuthFormFallback />}>
-        <ResetPasswordContent />
+        <ResetPasswordContent searchParams={searchParams} />
       </Suspense>
     </AuthPanel>
   );

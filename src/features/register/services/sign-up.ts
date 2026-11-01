@@ -1,13 +1,11 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createClient } from "@/db/server";
 import { ROUTES } from "@/lib/routes";
 import { signUpSchema, type SignUpField } from "../schemas/sign-up";
 import type { FormState } from "@/lib/form-state";
-import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE, getAuthErrorMessage } from "@/features/auth";
+import { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE, auth, getAuthErrorMessage } from "@/features/auth";
 
 export async function signUpAction(
   _previous: FormState<SignUpField>,
@@ -31,18 +29,14 @@ export async function signUpAction(
 
   if (!AUTH_ENABLED) return { ok: false, message: AUTH_UNAVAILABLE_MESSAGE };
 
-  const origin = (await headers()).get("origin");
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email: parsed.data.email,
-    password: parsed.data.password,
-    options: { data: { name: parsed.data.name }, emailRedirectTo: `${origin}${ROUTES.authCallback}` },
-  });
+  try {
+    await auth.api.signUpEmail({
+      body: { name: parsed.data.name, email: parsed.data.email, password: parsed.data.password, callbackURL: ROUTES.dashboard },
+    });
+  } catch (error) {
+    return { ok: false, message: getAuthErrorMessage(error), values };
+  }
 
-  if (error) return { ok: false, message: getAuthErrorMessage(error), values };
-
-  // No session means the project requires a confirmed email (Supabase Auth setting).
-  if (data.session) redirect(ROUTES.dashboard);
-
+  // Email verification is required: no session is created until the link is opened.
   redirect(`${ROUTES.verifyEmail}?email=${encodeURIComponent(parsed.data.email)}`);
 }
