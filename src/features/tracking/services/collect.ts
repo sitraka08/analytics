@@ -1,5 +1,7 @@
 import { randomUUID } from "node:crypto";
-import { createAdminClient } from "@/db/admin";
+import { and, desc, eq, gte } from "drizzle-orm";
+import { db } from "@/db";
+import { event } from "@/db/schema/event";
 import { findSiteForCollection } from "@/features/sites";
 import type { CollectPayload } from "../schemas/collect";
 import { isBot } from "../utils/bot-filter";
@@ -36,11 +38,8 @@ export async function collectEvent({ payload, origin, ip, userAgent, country, re
   if (!origin || !isAllowedOrigin(origin, site.domain)) return { status: "forbidden" };
   if (isBot(userAgent) || !userAgent) return { status: "ignored" };
 
-  const supabase = createAdminClient();
-
   if (payload.type === "duration") {
-    const { error } = await supabase.from("event").update({ duration_ms: payload.duration }).eq("id", payload.id).eq("site_id", site.id);
-    if (error) throw error;
+    await db.update(event).set({ durationMs: payload.duration }).where(and(eq(event.id, payload.id), eq(event.siteId, site.id)));
     return { status: "accepted", allowOrigin: origin };
   }
 
@@ -50,39 +49,34 @@ export async function collectEvent({ payload, origin, ip, userAgent, country, re
   const { device, browser, os } = parseUserAgent(userAgent);
 
   // A session continues while the visitor's last event is less than 30 minutes old.
-  const { data: recent, error: recentError } = await supabase
-    .from("event")
-    .select("session_id")
-    .eq("site_id", site.id)
-    .eq("visitor_hash", visitorHash)
-    .gte("created_at", new Date(now.getTime() - SESSION_INACTIVITY_MS).toISOString())
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (recentError) throw recentError;
+  const [recent] = await db
+    .select({ sessionId: event.sessionId })
+    .from(event)
+    .where(and(eq(event.siteId, site.id), eq(event.visitorHash, visitorHash), gte(event.createdAt, new Date(now.getTime() - SESSION_INACTIVITY_MS))))
+    .orderBy(desc(event.createdAt))
+    .limit(1);
 
-  const { error } = await supabase.from("event").upsert(
-    {
+  await db
+    .insert(event)
+    .values({
       id: payload.id,
-      site_id: site.id,
-      created_at: now.toISOString(),
+      siteId: site.id,
+      createdAt: now,
       path: page.path,
-      referrer_domain: getReferrerDomain(payload.referrer, site.domain),
-      utm_source: page.utmSource,
-      utm_medium: page.utmMedium,
-      utm_campaign: page.utmCampaign,
+      referrerDomain: getReferrerDomain(payload.referrer, site.domain),
+      utmSource: page.utmSource,
+      utmMedium: page.utmMedium,
+      utmCampaign: page.utmCampaign,
       country,
       region,
       city,
       device,
       browser,
       os,
-      visitor_hash: visitorHash,
-      session_id: recent?.session_id ?? randomUUID(),
-    },
-    { onConflict: "id", ignoreDuplicates: true },
-  );
-  if (error) throw error;
+      visitorHash,
+      sessionId: recent?.sessionId ?? randomUUID(),
+    })
+    .onConflictDoNothing({ target: event.id });
 
   return { status: "accepted", allowOrigin: origin };
 }
