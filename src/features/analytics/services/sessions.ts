@@ -15,7 +15,8 @@ type Device = { device: string | null; browser: string | null; os: string | null
 type SessionRow = Place &
   Device & {
     session_id: string;
-    started_at: Date;
+    // Drizzle returns timestamps from `db.execute` as text ("2026-11-01 09:36:57.414+00").
+    started_at: string;
     referrer_domain: string | null;
     utm_source: string | null;
     entry_path: string;
@@ -26,7 +27,7 @@ type SessionRow = Place &
 
 type SessionEventRow = Place &
   Device & {
-    created_at: Date;
+    created_at: string;
     path: string;
     duration_ms: number | null;
     referrer_domain: string | null;
@@ -54,7 +55,7 @@ export async function getSessions(userId: string, siteId: string, period: Period
   return {
     sessions: data.map((row) => ({
       id: row.session_id,
-      startedAt: row.started_at.toISOString(),
+      startedAt: new Date(row.started_at).toISOString(),
       country: row.country,
       region: row.region,
       city: row.city,
@@ -89,7 +90,7 @@ export async function getSession(userId: string, siteId: string, sessionId: stri
 
   return {
     id: sessionId,
-    startedAt: first.created_at.toISOString(),
+    startedAt: new Date(first.created_at).toISOString(),
     country: first.country,
     region: first.region,
     city: first.city,
@@ -101,6 +102,6 @@ export async function getSession(userId: string, siteId: string, sessionId: stri
     utmMedium: first.utm_medium,
     utmCampaign: first.utm_campaign,
     durationMs: measured.length > 0 ? measured.reduce((total, row) => total + (row.duration_ms ?? 0), 0) : null,
-    pageviews: data.map((row) => ({ at: row.created_at.toISOString(), path: row.path, durationMs: row.duration_ms })),
+    pageviews: data.map((row) => ({ at: new Date(row.created_at).toISOString(), path: row.path, durationMs: row.duration_ms })),
   };
 }
