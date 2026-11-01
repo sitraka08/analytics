@@ -1,35 +1,44 @@
+"use client";
+
 import { Monitor, Smartphone, Tablet } from "lucide-react";
-import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
-import type { Tone } from "@/lib/tones";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+import { MAP_COUNTRIES, RANKING_LIMIT } from "../constants/ranking";
+import { useRankingQuery, useSessionsQuery, useTimeseriesQuery } from "../hooks/use-analytics-queries";
+import { useDashboardParams } from "../hooks/use-dashboard-params";
 import type { Filters } from "../schemas/filters";
-import type { Period } from "../schemas/period";
-import { getRanking } from "../services/ranking";
-import { getSessions } from "../services/sessions";
-import { getTimeseries } from "../services/timeseries";
 import type { RankingDimension } from "../types/analytics";
 import { countryFlag } from "../utils/country-flag";
 import { formatInteger } from "../utils/format";
 import { formatFilterValue, parseDevice } from "../utils/filter-label";
 import { getPeriodRange } from "../utils/period";
-import { buildDashboardHref } from "../utils/search-params";
+import { DashboardLink } from "./dashboard-link";
 import { RankingList } from "./ranking-list";
 import { RecentVisits } from "./recent-visits";
+import { SectionError } from "./section-error";
+import { SectionSkeleton } from "./section-skeleton";
 import { VisitorsChart } from "./visitors-chart";
-import { WorldMap } from "./world-map";
+import type { Tone } from "@/lib/tones";
 
-type SectionProps = { userId: string; siteId: string; period: Period; filters: Filters };
+// The map ships the world geometry (~100 KB): load it on its own so the rest of the dashboard is not held back.
+const WorldMap = dynamic(() => import("./world-map").then((module) => module.WorldMap), {
+  loading: () => <SectionSkeleton className="h-52 rounded-2xl" />,
+});
 
-export async function VisitorsSection({ userId, siteId, period, filters }: SectionProps) {
-  const points = await getTimeseries(userId, siteId, period, filters);
+type SectionProps = { siteId: string };
+
+export function VisitorsSection({ siteId }: SectionProps) {
+  const { period, filters } = useDashboardParams();
+  const query = useTimeseriesQuery(siteId, period, filters);
+
+  if (!query.data) return query.isError ? <SectionError onRetry={() => query.refetch()} /> : <SectionSkeleton />;
   const { unit } = getPeriodRange(period);
 
   return (
-    <section className="rounded-3xl bg-surface p-4">
+    <section aria-busy={query.isPlaceholderData} className={cn("rounded-3xl bg-surface p-4 transition-opacity", query.isPlaceholderData && "opacity-60")}>
       <h2 className="text-base font-bold">Visiteurs par {unit === "hour" ? "heure" : "jour"}</h2>
       <div className="mt-3">
-        <VisitorsChart points={points} unit={unit} />
+        <VisitorsChart points={query.data} unit={unit} />
       </div>
     </section>
   );
@@ -56,44 +65,51 @@ function leadingFor(dimension: RankingDimension, value: string) {
   return null;
 }
 
-export async function RankingSection({
-  dimension,
-  basePath,
-  ...props
-}: SectionProps & { dimension: RankingDimension; basePath: string }) {
+export function RankingSection({ siteId, basePath, dimension }: SectionProps & { basePath: string; dimension: RankingDimension }) {
+  const { period, filters } = useDashboardParams();
+  const query = useRankingQuery(siteId, dimension, period, filters, RANKING_LIMIT);
   const { title, emptyMessage, filterKey, tone } = RANKINGS[dimension];
-  const items = await getRanking(props.userId, props.siteId, props.period, props.filters, dimension);
 
-  const rows = items.map((item) => {
-    const active = props.filters[filterKey] === item.label;
-    const nextFilters = { ...props.filters, [filterKey]: active ? undefined : item.label };
+  if (!query.data) return query.isError ? <SectionError className="h-56" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-56 rounded-3xl" />;
+
+  const rows = query.data.map((item) => {
+    const active = filters[filterKey] === item.label;
 
     return {
       label: formatFilterValue(filterKey, item.label),
       leading: leadingFor(dimension, item.label),
       visitors: item.visitors,
-      href: buildDashboardHref(basePath, props.period, nextFilters),
+      filters: { ...filters, [filterKey]: active ? undefined : item.label },
       active,
     };
   });
 
-  return <RankingList title={title} rows={rows} emptyMessage={emptyMessage} tone={tone} />;
+  return (
+    <div aria-busy={query.isPlaceholderData} className={cn("transition-opacity", query.isPlaceholderData && "opacity-60")}>
+      <RankingList title={title} rows={rows} emptyMessage={emptyMessage} tone={tone} basePath={basePath} period={period} />
+    </div>
+  );
 }
 
-const MAP_COUNTRIES = 100;
 const TOP_COUNTRIES = 4;
 
-export async function WorldMapSection({ basePath, ...props }: SectionProps & { basePath: string }) {
-  const items = await getRanking(props.userId, props.siteId, props.period, props.filters, "countries", MAP_COUNTRIES);
-  const countries = items.map((item) => {
-    const active = props.filters.country === item.label;
-    const href = buildDashboardHref(basePath, props.period, { ...props.filters, country: active ? undefined : item.label });
+export function WorldMapSection({ siteId, basePath }: SectionProps & { basePath: string }) {
+  const { period, filters } = useDashboardParams();
+  const query = useRankingQuery(siteId, "countries", period, filters, MAP_COUNTRIES);
 
-    return { code: item.label, visitors: item.visitors, href, active };
+  if (!query.data) return query.isError ? <SectionError className="h-80" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-80 rounded-3xl" />;
+
+  const countries = query.data.map((item) => {
+    const active = filters.country === item.label;
+    return { code: item.label, visitors: item.visitors, filters: { ...filters, country: active ? undefined : item.label }, active };
   });
 
   return (
-    <section aria-labelledby="world-map-title" className="rounded-3xl bg-surface p-4">
+    <section
+      aria-labelledby="world-map-title"
+      aria-busy={query.isPlaceholderData}
+      className={cn("rounded-3xl bg-surface p-4 transition-opacity", query.isPlaceholderData && "opacity-60")}
+    >
       <h2 id="world-map-title" className="text-base font-bold">
         Visiteurs dans le monde
       </h2>
@@ -102,21 +118,22 @@ export async function WorldMapSection({ basePath, ...props }: SectionProps & { b
       ) : (
         <>
           <div className="mt-2">
-            <WorldMap countries={countries} />
+            <WorldMap countries={countries} basePath={basePath} period={period} />
           </div>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
             {countries.slice(0, TOP_COUNTRIES).map((country) => (
               <li key={country.code}>
-                <Link
-                  href={country.href}
-                  scroll={false}
+                <DashboardLink
+                  basePath={basePath}
+                  period={period}
+                  filters={country.filters}
                   aria-current={country.active ? "true" : undefined}
                   className={cn("underline-offset-4 hover:underline", country.active && "font-bold")}
                 >
                   <span aria-hidden>{countryFlag(country.code)} </span>
                   {formatFilterValue("country", country.code)}{" "}
                   <span className="font-mono text-muted-foreground tabular-nums">{formatInteger(country.visitors)}</span>
-                </Link>
+                </DashboardLink>
               </li>
             ))}
           </ul>
@@ -126,12 +143,15 @@ export async function WorldMapSection({ basePath, ...props }: SectionProps & { b
   );
 }
 
-export async function RecentVisitsSection({ userId, siteId, period, filters }: SectionProps) {
-  const { sessions } = await getSessions(userId, siteId, period, filters, 1);
+export function RecentVisitsSection({ siteId }: SectionProps) {
+  const { period, filters } = useDashboardParams();
+  const query = useSessionsQuery(siteId, period, filters);
 
-  return <RecentVisits siteId={siteId} sessions={sessions.slice(0, 6)} />;
-}
+  if (!query.data) return query.isError ? <SectionError className="h-80" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-80 rounded-3xl" />;
 
-export function SectionSkeleton({ className }: { className?: string }) {
-  return <Skeleton className={className ?? "h-64 rounded-3xl"} />;
+  return (
+    <div aria-busy={query.isPlaceholderData} className={cn("transition-opacity", query.isPlaceholderData && "opacity-60")}>
+      <RecentVisits siteId={siteId} sessions={query.data.sessions.slice(0, 6)} />
+    </div>
+  );
 }

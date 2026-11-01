@@ -1,8 +1,8 @@
 import { DEFAULT_PERIOD, type Period } from "../schemas/period";
 import { FILTER_KEYS, type Filters } from "../schemas/filters";
 
-/** Dashboard URL for a period and a set of filters; defaults are left out to keep links short. */
-export function buildDashboardHref(basePath: string, period: Period, filters: Filters) {
+/** Query string for a period and a set of filters; defaults are left out to keep it short. Also used for the API calls. */
+export function buildDashboardQuery(period: Period, filters: Filters) {
   const params = new URLSearchParams();
   if (period.preset !== DEFAULT_PERIOD.preset) params.set("period", period.preset);
   if (period.preset === "custom") {
@@ -15,7 +15,12 @@ export function buildDashboardHref(basePath: string, period: Period, filters: Fi
     if (value) params.set(key, value);
   }
 
-  const query = params.toString();
+  return params.toString();
+}
+
+/** Dashboard URL for a period and a set of filters. */
+export function buildDashboardHref(basePath: string, period: Period, filters: Filters) {
+  const query = buildDashboardQuery(period, filters);
   return query ? `${basePath}?${query}` : basePath;
 }
 

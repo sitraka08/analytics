@@ -1,3 +1,4 @@
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -6,15 +7,15 @@ import {
   ActiveFilters,
   FilterBar,
   PeriodTabs,
-  SectionSkeleton,
   SessionTable,
-  filtersSchema,
   getSessions,
   pageNumberSchema,
-  parsePeriod,
+  parseDashboardQuery,
+  prefetchFilterOptions,
 } from "@/features/analytics";
 import { requireSession } from "@/features/auth";
 import { SiteNotFoundError, getOwnedSite } from "@/features/sites";
+import { getServerQueryClient } from "@/lib/query/get-server-query-client";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Visites" };
@@ -22,24 +23,19 @@ export const metadata: Metadata = { title: "Visites" };
 async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboard/sites/[siteId]/visits">, "params" | "searchParams">) {
   const { user } = await requireSession();
   const [{ siteId }, query] = await Promise.all([params, searchParams]);
-  const first = (value: string | string[] | undefined) => (typeof value === "string" ? value : undefined);
-  const period = parsePeriod(query);
-  const filters = filtersSchema.parse({
-    page: first(query.page),
-    referrer: first(query.referrer),
-    country: first(query.country),
-    city: first(query.city),
-    device: first(query.device),
-  });
-  const pageNumber = pageNumberSchema.parse(first(query.p));
+  const { period, filters } = parseDashboardQuery(query);
+  const pageNumber = pageNumberSchema.parse(typeof query.p === "string" ? query.p : undefined);
 
   const site = await getOwnedSite(user.id, siteId).catch((error: unknown) => {
     if (error instanceof SiteNotFoundError) notFound();
     throw error;
   });
   const basePath = ROUTES.siteVisits(siteId);
-  const scope = { userId: user.id, siteId, period, filters };
   const data = await getSessions(user.id, siteId, period, filters, pageNumber);
+
+  // The filter menus read their options through queries: start them now, they stream in.
+  const queryClient = getServerQueryClient();
+  prefetchFilterOptions(queryClient, user.id, siteId, period);
 
   return (
     <>
@@ -54,9 +50,9 @@ async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboar
       </div>
 
       <div className="mt-4">
-        <Suspense fallback={<SectionSkeleton className="h-16 rounded-3xl" />}>
-          <FilterBar {...scope} basePath={basePath} />
-        </Suspense>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} />
+        </HydrationBoundary>
       </div>
       <div className="mt-3 empty:hidden">
         <ActiveFilters basePath={basePath} period={period} filters={filters} />

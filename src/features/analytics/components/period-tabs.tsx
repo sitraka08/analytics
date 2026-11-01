@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { Filters } from "../schemas/filters";
 import { DEFAULT_PERIOD, PRESETS, type Period, type Preset } from "../schemas/period";
-import { buildDashboardHref } from "../utils/search-params";
+import { DashboardLink } from "./dashboard-link";
 import { DateRangePicker, TodayButton } from "./date-range-picker";
 
 const LABELS: Record<Exclude<Preset, "today">, string> = {
@@ -20,10 +19,11 @@ export function PeriodTabs({ current, basePath, filters }: { current: Period; ba
         const active = preset === current.preset;
 
         return (
-          <Link
+          <DashboardLink
             key={preset}
-            href={buildDashboardHref(basePath, { preset, tz: DEFAULT_PERIOD.tz }, filters)}
-            scroll={false}
+            basePath={basePath}
+            period={{ preset, tz: DEFAULT_PERIOD.tz }}
+            filters={filters}
             aria-current={active ? "page" : undefined}
             className={cn(
               "inline-flex h-9 items-center rounded-full border-[1.5px] px-4 text-sm font-medium transition-colors",
@@ -31,7 +31,7 @@ export function PeriodTabs({ current, basePath, filters }: { current: Period; ba
             )}
           >
             {LABELS[preset as Exclude<Preset, "today">]}
-          </Link>
+          </DashboardLink>
         );
       })}
       <DateRangePicker current={current} basePath={basePath} filters={filters} />

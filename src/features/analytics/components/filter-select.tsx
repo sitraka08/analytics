@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   Combobox,
   ComboboxContent,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/combobox";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
-import { buildDashboardHref } from "../utils/search-params";
+import { useDashboardNavigate } from "../hooks/use-dashboard-params";
 
 export type FilterOption = { value: string; label: string };
 
@@ -27,7 +26,7 @@ type FilterSelectProps = {
 const ALL_OPTION: FilterOption = { value: "", label: "Tous" };
 
 export function FilterSelect({ label, filterKey, options, basePath, period, filters }: FilterSelectProps) {
-  const router = useRouter();
+  const { go } = useDashboardNavigate(basePath);
   const items = [ALL_OPTION, ...options];
   const selected = items.find((item) => item.value === (filters[filterKey] ?? "")) ?? ALL_OPTION;
 
@@ -39,11 +38,7 @@ export function FilterSelect({ label, filterKey, options, basePath, period, filt
         value={selected}
         itemToStringLabel={(item: FilterOption) => item.label}
         isItemEqualToValue={(item: FilterOption, value: FilterOption) => item.value === value.value}
-        onValueChange={(next: FilterOption | null) =>
-          router.push(buildDashboardHref(basePath, period, { ...filters, [filterKey]: next?.value || undefined }), {
-            scroll: false,
-          })
-        }
+        onValueChange={(next: FilterOption | null) => go(period, { ...filters, [filterKey]: next?.value || undefined })}
       >
         <ComboboxInput
           aria-label={label}

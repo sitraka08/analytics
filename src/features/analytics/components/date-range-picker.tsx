@@ -1,7 +1,6 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { fr } from "react-day-picker/locale";
@@ -11,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
-import { buildDashboardHref } from "../utils/search-params";
+import { useDashboardNavigate } from "../hooks/use-dashboard-params";
 
 const pill = "inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] px-4 text-sm font-medium transition-colors";
 const pillActive = "border-foreground bg-foreground text-background";
@@ -36,13 +35,13 @@ type ControlProps = { basePath: string; filters: Filters };
 
 /** "Today" depends on the viewer's time zone, which only the browser knows. */
 export function TodayButton({ active, basePath, filters }: ControlProps & { active: boolean }) {
-  const router = useRouter();
+  const { go } = useDashboardNavigate(basePath);
 
   return (
     <button
       type="button"
       aria-pressed={active}
-      onClick={() => router.push(buildDashboardHref(basePath, { preset: "today", tz: browserTimeZone() }, filters), { scroll: false })}
+      onClick={() => go({ preset: "today", tz: browserTimeZone() }, filters)}
       className={cn(pill, active ? pillActive : pillIdle)}
     >
       Aujourd&apos;hui
@@ -51,7 +50,7 @@ export function TodayButton({ active, basePath, filters }: ControlProps & { acti
 }
 
 export function DateRangePicker({ current, basePath, filters }: ControlProps & { current: Period }) {
-  const router = useRouter();
+  const { go } = useDashboardNavigate(basePath);
   const [open, setOpen] = useState(false);
   const [range, setRange] = useState<DateRange | undefined>(
     current.preset === "custom" ? { from: fromYmd(current.from), to: fromYmd(current.to) } : undefined,
@@ -70,7 +69,7 @@ export function DateRangePicker({ current, basePath, filters }: ControlProps & {
     const from = toYmd(range.from);
     const to = toYmd(range.to ?? range.from);
 
-    router.push(buildDashboardHref(basePath, { preset: "custom", from, to, tz: browserTimeZone() }, filters), { scroll: false });
+    go({ preset: "custom", from, to, tz: browserTimeZone() }, filters);
     setOpen(false);
   }
 

@@ -1,12 +1,14 @@
 import { geoNaturalEarth1, geoPath } from "d3-geo";
 import type { FeatureCollection, Geometry } from "geojson";
-import Link from "next/link";
 import { feature } from "topojson-client";
 import topology from "world-atlas/countries-110m.json";
 import { cn } from "@/lib/utils";
 import { COUNTRY_ALPHA2_BY_NUMERIC } from "../constants/country-numeric-codes";
 import { formatFilterValue } from "../utils/filter-label";
+import type { Filters } from "../schemas/filters";
+import type { Period } from "../schemas/period";
 import { formatInteger } from "../utils/format";
+import { DashboardLink } from "./dashboard-link";
 
 const WIDTH = 960;
 const HEIGHT = 480;
@@ -28,12 +30,12 @@ const SHAPES = land.features.flatMap((item) => {
   return d ? [{ code: code?.toUpperCase() ?? null, name: item.properties.name, d }] : [];
 });
 
-export type MapCountry = { code: string; visitors: number; href: string; active: boolean };
+export type MapCountry = { code: string; visitors: number; filters: Filters; active: boolean };
 
-type WorldMapProps = { countries: MapCountry[] };
+type WorldMapProps = { countries: MapCountry[]; basePath: string; period: Period };
 
-/** Choropleth rendered on the server: countries with visitors are links that apply the country filter. */
-export function WorldMap({ countries: rows }: WorldMapProps) {
+/** Choropleth: countries with visitors are links that apply the country filter. */
+export function WorldMap({ countries: rows, basePath, period }: WorldMapProps) {
   const byCode = new Map(rows.map((row) => [row.code.toUpperCase(), row]));
   const max = Math.max(...rows.map((row) => row.visitors), 1);
 
@@ -45,7 +47,7 @@ export function WorldMap({ countries: rows }: WorldMapProps) {
 
         const label = `${formatFilterValue("country", row.code)} : ${formatInteger(row.visitors)} ${row.visitors > 1 ? "visiteurs" : "visiteur"}`;
         return (
-          <Link key={shape.name} href={row.href} scroll={false} aria-label={label} aria-current={row.active ? "true" : undefined}>
+          <DashboardLink key={shape.name} basePath={basePath} period={period} filters={row.filters} aria-label={label} aria-current={row.active ? "true" : undefined}>
             <path
               d={shape.d}
               strokeWidth={row.active ? 1.5 : 0.5}
@@ -54,7 +56,7 @@ export function WorldMap({ countries: rows }: WorldMapProps) {
             >
               <title>{label}</title>
             </path>
-          </Link>
+          </DashboardLink>
         );
       })}
     </svg>

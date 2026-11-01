@@ -1,13 +1,15 @@
-import Link from "next/link";
 import { TONE_BG, type Tone } from "@/lib/tones";
 import { cn } from "@/lib/utils";
+import type { Filters } from "../schemas/filters";
+import type { Period } from "../schemas/period";
 import { formatInteger } from "../utils/format";
+import { DashboardLink } from "./dashboard-link";
 
 export type RankingRow = {
   label: string;
   visitors: number;
-  /** Link that applies this value as a filter, or removes it when already active. */
-  href: string;
+  /** Filters after clicking this row: it applies this value, or removes it when already active. */
+  filters: Filters;
   active: boolean;
   /** Flag or icon shown before the label. */
   leading?: React.ReactNode;
@@ -18,10 +20,12 @@ type RankingListProps = {
   rows: RankingRow[];
   emptyMessage: string;
   tone: Tone;
+  basePath: string;
+  period: Period;
 };
 
 /** Horizontal bars as a plain ordered list: it is its own text equivalent. */
-export function RankingList({ title, rows, emptyMessage, tone }: RankingListProps) {
+export function RankingList({ title, rows, emptyMessage, tone, basePath, period }: RankingListProps) {
   const max = Math.max(...rows.map((row) => row.visitors), 1);
 
   return (
@@ -44,9 +48,10 @@ export function RankingList({ title, rows, emptyMessage, tone }: RankingListProp
           <ol className="flex flex-col gap-1.5 pb-4">
             {rows.map((row) => (
               <li key={row.label}>
-                <Link
-                  href={row.href}
-                  scroll={false}
+                <DashboardLink
+                  basePath={basePath}
+                  period={period}
+                  filters={row.filters}
                   aria-current={row.active ? "true" : undefined}
                   title={row.active ? "Retirer ce filtre" : "Filtrer sur cette valeur"}
                   className={cn(
@@ -68,7 +73,7 @@ export function RankingList({ title, rows, emptyMessage, tone }: RankingListProp
                     <span className="truncate">{row.label}</span>
                   </span>
                   <span className="relative font-mono tabular-nums">{formatInteger(row.visitors)}</span>
-                </Link>
+                </DashboardLink>
               </li>
             ))}
           </ol>

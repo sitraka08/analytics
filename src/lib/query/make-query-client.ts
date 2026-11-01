@@ -1,7 +1,6 @@
-import { QueryClient, defaultShouldDehydrateQuery, isServer } from "@tanstack/react-query";
-import { cache } from "react";
+import { QueryClient, defaultShouldDehydrateQuery } from "@tanstack/react-query";
 
-function makeQueryClient() {
+export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
@@ -15,13 +14,4 @@ function makeQueryClient() {
       },
     },
   });
-}
-
-// One client per request on the server (never shared between users); one for the whole tab in the browser.
-const getServerQueryClient = cache(makeQueryClient);
-let browserQueryClient: QueryClient | undefined;
-
-export function getQueryClient() {
-  if (isServer) return getServerQueryClient();
-  return (browserQueryClient ??= makeQueryClient());
 }

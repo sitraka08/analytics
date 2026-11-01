@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { X } from "lucide-react";
 import type { Filters } from "../schemas/filters";
 import { FILTER_KEYS } from "../schemas/filters";
 import type { Period } from "../schemas/period";
-import { buildDashboardHref } from "../utils/search-params";
+import { DashboardLink } from "./dashboard-link";
 import { formatFilterValue } from "../utils/filter-label";
 
 const FILTER_LABELS = { page: "Page", referrer: "Source", country: "Pays", city: "Ville", device: "Appareil" } as const;
@@ -17,10 +16,11 @@ export function ActiveFilters({ basePath, period, filters }: ActiveFiltersProps)
   return (
     <div className="flex flex-wrap items-center gap-2" aria-label="Filtres actifs" role="group">
       {active.map((key) => (
-        <Link
+        <DashboardLink
           key={key}
-          href={buildDashboardHref(basePath, period, { ...filters, [key]: undefined })}
-          scroll={false}
+          basePath={basePath}
+          period={period}
+          filters={{ ...filters, [key]: undefined }}
           className="inline-flex h-8 items-center gap-1.5 rounded-full bg-foreground pr-2 pl-3 text-sm text-background"
         >
           <span>
@@ -28,15 +28,16 @@ export function ActiveFilters({ basePath, period, filters }: ActiveFiltersProps)
           </span>
           <X className="size-3.5" aria-hidden />
           <span className="sr-only">Retirer le filtre</span>
-        </Link>
+        </DashboardLink>
       ))}
-      <Link
-        href={buildDashboardHref(basePath, period, {})}
-        scroll={false}
+      <DashboardLink
+        basePath={basePath}
+        period={period}
+        filters={{}}
         className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
       >
         Tout effacer
-      </Link>
+      </DashboardLink>
     </div>
   );
 }
