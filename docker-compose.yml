@@ -1,6 +1,8 @@
 services:
   db:
     image: postgres:17
+    container_name: statly
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
