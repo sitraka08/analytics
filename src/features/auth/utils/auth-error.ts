@@ -19,6 +19,7 @@ export function getAuthErrorMessage(error: unknown) {
     const code = error.body?.code;
     if (code && MESSAGES_BY_CODE[code]) return MESSAGES_BY_CODE[code];
   }
+  console.error("Unexpected auth error:", error instanceof Error ? error.message : error);
   return "Une erreur est survenue. Réessayez dans un instant.";
 }
 
