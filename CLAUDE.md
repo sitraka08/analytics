@@ -3,13 +3,13 @@
 Web analytics SaaS (countries, pages, durations, devices, sources…) with **readable** charts: the clear alternative to Vercel Analytics. Fullstack Next.js, no separate backend.
 
 ## Stack
-Next.js (latest, App Router) · React · strict TypeScript · Tailwind CSS 4 · shadcn/ui · Supabase (Postgres, Auth, RLS) via `@supabase/supabase-js` + `@supabase/ssr` · Zod · TanStack Query (client interactivity only) · pnpm · Vercel. Alias `@/*` → `src/*`.
+Next.js (latest, App Router) · React · strict TypeScript · Tailwind CSS 4 · shadcn/ui · Postgres (Neon in production, Docker locally) via Drizzle ORM + `pg` · Better Auth · Zod · TanStack Query (dashboard reads: server prefetch + hydration, refetch through API Routes) · pnpm · Vercel. Alias `@/*` → `src/*`.
 
 Next.js moves fast: check `node_modules/next/dist/docs` before using an unfamiliar API.
 
 ## Commands
 - `pnpm dev` · `pnpm build` · `pnpm lint`
-- `pnpm db:start` · `pnpm db:reset` · `pnpm db:push` · `pnpm db:types` (Supabase CLI; migrations in `supabase/migrations/`)
+- `pnpm db:start` · `pnpm db:stop` · `pnpm db:generate` · `pnpm db:migrate` · `pnpm db:reset` · `pnpm db:studio` (Docker Postgres + drizzle-kit; migrations in `drizzle/`, schema in `src/db/schema/`)
 
 ## Context (read before changing anything)
 - `.claude/context/product-and-domain.md` — vision, model, metrics

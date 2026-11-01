@@ -7,7 +7,7 @@ src/
 ├── app/          # routing, layouts, page composition, metadata
 ├── features/     # auth, login, register, sites, analytics, tracking, landing, settings
 ├── components/   # ui/ (shadcn), shared/, layout/
-├── db/           # Supabase clients (server, admin) and generated types; SQL migrations live in `supabase/`
+├── db/           # Drizzle client and schema (`schema/`); SQL migrations live in `drizzle/`
 └── lib/          # truly shared utilities
 ```
 
@@ -28,7 +28,7 @@ The folder already carries the role: no suffix.
 
 ## Responsibilities
 - Pages compose; presentation components receive props.
-- `services/`: data access (Supabase) and server logic, no UI.
+- `services/`: data access (Drizzle) and server logic, no UI.
 - `schemas/`: Zod validation only. `utils/`: pure functions.
 - Hooks: the feature's client state and queries, nothing else.
 
