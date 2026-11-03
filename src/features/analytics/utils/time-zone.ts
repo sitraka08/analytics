@@ -50,3 +50,8 @@ export function zonedStartOfDay(ymd: string, timeZone: string) {
   // The offset can differ at `first` (daylight saving change): settle on the second pass.
   return new Date(guess - offsetAt(new Date(first), timeZone));
 }
+
+/** The viewer's time zone; browser only ("today" and custom ranges follow it). */
+export function browserTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}

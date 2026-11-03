@@ -21,23 +21,25 @@ export function ActiveFilters({ basePath, period, filters }: ActiveFiltersProps)
           basePath={basePath}
           period={period}
           filters={{ ...filters, [key]: undefined }}
-          className="inline-flex h-8 items-center gap-1.5 rounded-full bg-foreground pr-2 pl-3 text-sm text-background"
+          className="inline-flex h-9 max-w-full items-center gap-1.5 rounded-full bg-foreground pr-2.5 pl-3.5 text-sm text-background transition-opacity hover:opacity-85"
         >
-          <span>
-            {FILTER_LABELS[key]} : <strong>{formatFilterValue(key, filters[key] as string)}</strong>
+          <span className="truncate">
+            {FILTER_LABELS[key]} : <strong className="font-medium">{formatFilterValue(key, filters[key] as string)}</strong>
           </span>
-          <X className="size-3.5" aria-hidden />
+          <X className="size-3.5 shrink-0" aria-hidden />
           <span className="sr-only">Retirer le filtre</span>
         </DashboardLink>
       ))}
-      <DashboardLink
-        basePath={basePath}
-        period={period}
-        filters={{}}
-        className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
-      >
-        Tout effacer
-      </DashboardLink>
+      {active.length > 1 ? (
+        <DashboardLink
+          basePath={basePath}
+          period={period}
+          filters={{}}
+          className="px-1 text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+        >
+          Tout effacer
+        </DashboardLink>
+      ) : null}
     </div>
   );
 }

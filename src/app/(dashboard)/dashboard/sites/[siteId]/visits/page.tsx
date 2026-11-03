@@ -1,21 +1,11 @@
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { BackLink } from "@/components/shared/back-link";
-import {
-  ActiveFilters,
-  FilterBar,
-  PeriodTabs,
-  SessionTable,
-  getSessions,
-  pageNumberSchema,
-  parseDashboardQuery,
-  prefetchFilterOptions,
-} from "@/features/analytics";
+import { HeaderActions } from "@/components/layout/header-actions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { FilterBar, PeriodTabs, SessionTable, getSessions, pageNumberSchema, parseDashboardQuery } from "@/features/analytics";
 import { requireSession } from "@/features/auth";
-import { SiteNotFoundError, getOwnedSite } from "@/features/sites";
-import { getServerQueryClient } from "@/lib/query/get-server-query-client";
+import { SiteHeader, SiteHeaderSkeleton, SiteNotFoundError, getOwnedSite } from "@/features/sites";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Visites" };
@@ -33,29 +23,15 @@ async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboar
   const basePath = ROUTES.siteVisits(siteId);
   const data = await getSessions(user.id, siteId, period, filters, pageNumber);
 
-  // The filter menus read their options through queries: start them now, they stream in.
-  const queryClient = getServerQueryClient();
-  prefetchFilterOptions(queryClient, user.id, siteId, period);
-
   return (
     <>
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Visites</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {site.name} · {site.domain}
-          </p>
-        </div>
+      <HeaderActions>
         <PeriodTabs current={period} basePath={basePath} filters={filters} />
-      </div>
+      </HeaderActions>
+      <SiteHeader site={site} current="visits" />
 
-      <div className="mt-4">
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} />
-        </HydrationBoundary>
-      </div>
-      <div className="mt-3 empty:hidden">
-        <ActiveFilters basePath={basePath} period={period} filters={filters} />
+      <div className="mt-6">
+        <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} />
       </div>
 
       <div className="mt-4">
@@ -71,17 +47,18 @@ async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboar
 
 export default function VisitsPage({ params, searchParams }: PageProps<"/dashboard/sites/[siteId]/visits">) {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-6">
-      {/* The back link needs the site id: resolved inside the Suspense boundary through the params promise. */}
-      <Suspense fallback={<div className="mt-4 h-16 animate-pulse rounded-2xl bg-muted" />}>
-        <VisitsBack params={params} />
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <Suspense
+        fallback={
+          <>
+            <SiteHeaderSkeleton />
+            <Skeleton className="mt-6 h-9 w-28 rounded-full" />
+            <Skeleton className="mt-4 h-96 rounded-3xl" />
+          </>
+        }
+      >
         <VisitsContent params={params} searchParams={searchParams} />
       </Suspense>
-    </main>
+    </div>
   );
-}
-
-async function VisitsBack({ params }: Pick<PageProps<"/dashboard/sites/[siteId]/visits">, "params">) {
-  const { siteId } = await params;
-  return <BackLink href={ROUTES.site(siteId)}>Retour aux statistiques</BackLink>;
 }

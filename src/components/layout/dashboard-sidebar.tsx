@@ -1,4 +1,4 @@
-import { Globe, LayoutDashboard, Plus, Settings } from "lucide-react";
+import { LayoutDashboard, Plus } from "lucide-react";
 import Link from "next/link";
 import { BrandMark } from "@/components/shared/brand-logo";
 import {
@@ -12,11 +12,13 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
+import { TONE_BG, type Tone, toneClass } from "@/lib/tones";
+import { cn } from "@/lib/utils";
 import { SidebarLink } from "./sidebar-link";
+import { UserMenu } from "./user-menu";
 
 type DashboardSidebarProps = {
   user: { name: string; email: string };
@@ -25,12 +27,18 @@ type DashboardSidebarProps = {
   signOut: React.ReactNode;
 };
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
+const TONES = Object.keys(TONE_BG) as Tone[];
+
+/** Letter badge so sites tell apart at a glance, even with the sidebar collapsed to icons. */
+function SiteBadge({ name, index }: { name: string; index: number }) {
+  return (
+    <span
+      aria-hidden
+      className={cn("grid size-5 shrink-0 place-items-center rounded-md font-heading text-[11px] leading-none font-bold", toneClass(TONES[index % TONES.length]))}
+    >
+      {name.trim()[0]?.toUpperCase() ?? "?"}
+    </span>
+  );
 }
 
 export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps) {
@@ -58,9 +66,9 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
           <SidebarGroupLabel>Mes sites</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {sites.map((site) => (
+              {sites.map((site, index) => (
                 <SidebarMenuItem key={site.id}>
-                  <SidebarLink href={ROUTES.site(site.id)} label={site.name} icon={<Globe aria-hidden />} />
+                  <SidebarLink href={ROUTES.site(site.id)} label={site.name} icon={<SiteBadge name={site.name} index={index} />} />
                 </SidebarMenuItem>
               ))}
               <SidebarMenuItem>
@@ -72,25 +80,10 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarSeparator />
-        <Link
-          href={ROUTES.settings}
-          title="Paramètres du compte"
-          className="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-sidebar-accent group-data-[collapsible=icon]:hidden"
-        >
-          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-cream-deep text-sm font-bold">
-            {initials(user.name)}
-          </span>
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-medium">{user.name}</span>
-            <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
-          </span>
-        </Link>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarLink href={ROUTES.settings} label="Paramètres" icon={<Settings aria-hidden />} exact />
+            <UserMenu user={user} signOut={signOut} />
           </SidebarMenuItem>
-          <SidebarMenuItem>{signOut}</SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />

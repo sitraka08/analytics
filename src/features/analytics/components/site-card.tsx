@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
 import type { SiteOverview } from "../types/analytics";
-import { computeChange, formatInteger, formatPercent } from "../utils/format";
+import { computeChange, formatInteger } from "../utils/format";
+import { ChangeBadge } from "./change-badge";
 import { Sparkline } from "./sparkline";
 
 export function SiteCard({ site }: { site: SiteOverview }) {
@@ -11,7 +12,7 @@ export function SiteCard({ site }: { site: SiteOverview }) {
   return (
     <Link
       href={ROUTES.site(site.id)}
-      className="flex h-full flex-col gap-4 rounded-3xl border-2 border-foreground/15 bg-surface p-5 transition-colors hover:border-foreground/35"
+      className="flex h-full flex-col gap-4 rounded-3xl border border-border/70 bg-surface p-5 transition-colors hover:border-foreground/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
     >
       <span className="min-w-0">
         <span className="block truncate font-heading font-bold">{site.name}</span>
@@ -24,9 +25,8 @@ export function SiteCard({ site }: { site: SiteOverview }) {
             <span className="font-heading text-3xl font-bold tabular-nums">{formatInteger(site.visitors)}</span>
             <span className="text-sm text-muted-foreground">visiteurs</span>
             {change === null ? null : (
-              <span className="ml-auto text-xs font-medium tabular-nums">
-                {change > 0 ? "▲ +" : change < 0 ? "▼ " : "= "}
-                {formatPercent(change)}
+              <span className="ml-auto">
+                <ChangeBadge change={change} />
               </span>
             )}
           </span>

@@ -1,19 +1,18 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ROUTES } from "@/lib/routes";
+import { Info } from "lucide-react";
+import { useState } from "react";
+import { HeaderActions } from "@/components/layout/header-actions";
 import { useOverviewQuery } from "../hooks/use-analytics-queries";
 import { DashboardNavigationProvider, useDashboardParams } from "../hooks/use-dashboard-params";
+import type { ChartMetric } from "../types/analytics";
 import { hasActiveFilters } from "../utils/search-params";
-import { ActiveFilters } from "./active-filters";
 import { RankingSection, RecentVisitsSection, VisitorsSection, WorldMapSection } from "./analytics-sections";
 import { FilterBar } from "./filter-bar";
 import { KpiGrid } from "./kpi-grid";
 import { PeriodTabs } from "./period-tabs";
 import { SectionError } from "./section-error";
-import { SectionSkeleton } from "./section-skeleton";
+import { DashboardSkeleton } from "./section-skeleton";
 
 // Below this many pageviews the numbers are too thin to read trends into.
 const LOW_DATA_PAGEVIEWS = 20;
@@ -21,73 +20,46 @@ const LOW_DATA_PAGEVIEWS = 20;
 type SiteDashboardProps = {
   siteId: string;
   basePath: string;
-  /** Title block of the page (server-rendered). */
-  title: React.ReactNode;
   /** Shown instead of the stats while the site has not received any visit yet. */
   installSnippet: React.ReactNode;
-  dangerZone: React.ReactNode;
 };
 
-function Dashboard({ siteId, basePath, title, installSnippet, dangerZone }: SiteDashboardProps) {
+function Dashboard({ siteId, basePath, installSnippet }: SiteDashboardProps) {
   const { period, filters } = useDashboardParams();
   const overview = useOverviewQuery(siteId, period, filters);
+  const [metric, setMetric] = useState<ChartMetric>("visitors");
   const filtered = hasActiveFilters(filters);
   const data = overview.data;
   const hasData = data ? data.current.pageviews > 0 || data.previous.pageviews > 0 : false;
 
   return (
     <>
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-        {title}
-        <div className="flex flex-wrap items-center gap-3">
-          {hasData ? (
-            <Link
-              href={ROUTES.siteVisits(siteId)}
-              className="inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] border-foreground/15 bg-surface px-4 text-sm font-medium hover:border-foreground/35 hover:bg-cream-deep"
-            >
-              Toutes les visites
-              <ArrowRight aria-hidden className="size-4" />
-            </Link>
-          ) : null}
-          <PeriodTabs current={period} basePath={basePath} filters={filters} />
-        </div>
-      </div>
+      <HeaderActions>
+        <PeriodTabs current={period} basePath={basePath} filters={filters} />
+      </HeaderActions>
 
       {!data ? (
         overview.isError ? (
-          <div className="mt-5">
-            <SectionError onRetry={() => overview.refetch()} />
-          </div>
+          <SectionError onRetry={() => overview.refetch()} />
         ) : (
-          <div className="mt-5 flex flex-col gap-3">
-            <SectionSkeleton className="h-16 rounded-3xl" />
-            <SectionSkeleton className="h-28 rounded-3xl" />
-            <SectionSkeleton />
-          </div>
+          <DashboardSkeleton />
         )
       ) : (
-        <>
-          {hasData || filtered ? (
-            <div className="mt-4">
-              <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} />
-            </div>
-          ) : null}
-
-          {filtered ? (
-            <div className="mt-3">
-              <ActiveFilters basePath={basePath} period={period} filters={filters} />
-            </div>
-          ) : null}
+        <div className="flex flex-col gap-4">
+          {hasData || filtered ? <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} /> : null}
 
           {hasData ? (
-            <div className={cn("mt-5 flex flex-col gap-3 transition-opacity", overview.isPlaceholderData && "opacity-60")} aria-busy={overview.isPlaceholderData}>
+            <div className="flex flex-col gap-3">
               {data.current.pageviews < LOW_DATA_PAGEVIEWS ? (
-                <p className="rounded-2xl bg-cream-deep px-4 py-3 text-sm">
+                <p className="flex items-center gap-2 rounded-2xl bg-cream-deep px-4 py-3 text-sm">
+                  <Info aria-hidden className="size-4 shrink-0" />
                   Encore peu de données : les tendances seront plus fiables avec davantage de visites.
                 </p>
               ) : null}
-              <KpiGrid overview={data} />
-              <VisitorsSection siteId={siteId} />
+              <div aria-busy={overview.isPlaceholderData || undefined} className={overview.isPlaceholderData ? "opacity-60 transition-opacity" : "transition-opacity"}>
+                <KpiGrid overview={data} metric={metric} onMetricChange={setMetric} />
+              </div>
+              <VisitorsSection siteId={siteId} metric={metric} />
               <div className="grid gap-3 lg:grid-cols-5">
                 <div className="lg:col-span-3">
                   <WorldMapSection siteId={siteId} basePath={basePath} />
@@ -98,21 +70,19 @@ function Dashboard({ siteId, basePath, title, installSnippet, dangerZone }: Site
               </div>
               <div className="grid gap-3 lg:grid-cols-2">
                 {(["pages", "referrers", "cities", "devices"] as const).map((dimension) => (
-                  <RankingSection key={dimension} siteId={siteId} basePath={basePath} dimension={dimension} />
+                  <RankingSection key={dimension} siteId={siteId} basePath={basePath} dimension={dimension} total={data.current.visitors} />
                 ))}
               </div>
             </div>
           ) : filtered ? (
-            <p className="mt-5 max-w-xl rounded-2xl bg-cream-deep px-4 py-3 text-sm">
+            <p className="max-w-xl rounded-2xl bg-cream-deep px-4 py-3 text-sm">
               Aucune visite ne correspond à ces filtres sur cette période. Retirez un filtre ou choisissez une période plus longue.
             </p>
           ) : (
-            <div className="mt-5">{installSnippet}</div>
+            installSnippet
           )}
-        </>
+        </div>
       )}
-
-      {dangerZone}
     </>
   );
 }

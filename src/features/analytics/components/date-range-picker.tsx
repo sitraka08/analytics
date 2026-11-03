@@ -11,12 +11,11 @@ import { cn } from "@/lib/utils";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import { useDashboardNavigate } from "../hooks/use-dashboard-params";
+import { browserTimeZone } from "../utils/time-zone";
 
-const pill = "inline-flex h-9 items-center gap-2 rounded-full border-[1.5px] px-4 text-sm font-medium transition-colors";
+const pill = "inline-flex h-10 items-center gap-2 rounded-full border px-3 text-sm font-medium transition-colors sm:px-4";
 const pillActive = "border-foreground bg-foreground text-background";
-const pillIdle = "border-input bg-surface hover:bg-cream-deep";
-
-const browserTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
+const pillIdle = "border-border bg-surface hover:border-foreground/35";
 
 /** "YYYY-MM-DD" of a calendar day picked in the browser (local time). */
 function toYmd(date: Date) {
@@ -34,7 +33,7 @@ const longDate = new Intl.DateTimeFormat("fr", { day: "numeric", month: "short",
 type ControlProps = { basePath: string; filters: Filters };
 
 /** "Today" depends on the viewer's time zone, which only the browser knows. */
-export function TodayButton({ active, basePath, filters }: ControlProps & { active: boolean }) {
+export function TodayButton({ active, basePath, filters, className }: ControlProps & { active: boolean; className?: string }) {
   const { go } = useDashboardNavigate(basePath);
 
   return (
@@ -42,7 +41,7 @@ export function TodayButton({ active, basePath, filters }: ControlProps & { acti
       type="button"
       aria-pressed={active}
       onClick={() => go({ preset: "today", tz: browserTimeZone() }, filters)}
-      className={cn(pill, active ? pillActive : pillIdle)}
+      className={className}
     >
       Aujourd&apos;hui
     </button>
@@ -77,7 +76,7 @@ export function DateRangePicker({ current, basePath, filters }: ControlProps & {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className={cn(pill, active ? pillActive : pillIdle)} aria-label="Choisir une période personnalisée">
         <CalendarDays aria-hidden className="size-4" />
-        {label}
+        <span className={cn("hidden", active ? "sm:inline" : "xl:inline")}>{label}</span>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-auto gap-3 rounded-2xl p-3">
         <Calendar

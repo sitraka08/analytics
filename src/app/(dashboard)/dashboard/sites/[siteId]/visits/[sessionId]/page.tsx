@@ -23,7 +23,7 @@ async function VisitContent({ params }: Pick<PageProps<"/dashboard/sites/[siteId
   return (
     <>
       <BackLink href={ROUTES.siteVisits(siteId)}>Retour aux visites</BackLink>
-      <h1 className="mt-6 mb-6 text-3xl font-bold tracking-tight">Détail d&apos;une visite</h1>
+      <h1 className="mt-6 mb-6 text-2xl font-bold tracking-tight">Détail d&apos;une visite</h1>
       <SessionDetail session={session} />
     </>
   );
@@ -31,10 +31,10 @@ async function VisitContent({ params }: Pick<PageProps<"/dashboard/sites/[siteId
 
 export default function VisitPage({ params }: PageProps<"/dashboard/sites/[siteId]/visits/[sessionId]">) {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 md:px-6 md:py-8">
       <Suspense fallback={<div className="h-40 animate-pulse rounded-3xl bg-muted" />}>
         <VisitContent params={params} />
       </Suspense>
-    </main>
+    </div>
   );
 }

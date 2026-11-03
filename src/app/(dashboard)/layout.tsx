@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { Suspense } from "react";
+import { DashboardBreadcrumb } from "@/components/layout/dashboard-breadcrumb";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
+import { HeaderSlot, HeaderSlotProvider } from "@/components/layout/header-actions";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,14 +20,18 @@ async function DashboardShell({ children }: { children: React.ReactNode }) {
     <QueryProvider>
       <TooltipProvider>
         <SidebarProvider defaultOpen={defaultOpen}>
-          <DashboardSidebar user={user} sites={sites} signOut={<SignOutMenuButton />} />
-          <SidebarInset className="md:peer-data-[variant=inset]:rounded-3xl">
-            <header className="sticky top-0 z-10 flex h-14 items-center gap-2 rounded-t-3xl bg-background px-4">
-              <SidebarTrigger />
-              <Separator orientation="vertical" className="h-5" />
-            </header>
-            {children}
-          </SidebarInset>
+          <HeaderSlotProvider>
+            <DashboardSidebar user={user} sites={sites} signOut={<SignOutMenuButton />} />
+            <SidebarInset className="md:peer-data-[variant=inset]:rounded-3xl">
+              <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-border/70 bg-background/90 px-4 backdrop-blur md:rounded-t-3xl md:px-6">
+                <SidebarTrigger className="-ml-1.5" />
+                <Separator orientation="vertical" className="h-5" />
+                <DashboardBreadcrumb sites={sites} />
+                <HeaderSlot className="ml-auto flex shrink-0 items-center gap-2" />
+              </header>
+              {children}
+            </SidebarInset>
+          </HeaderSlotProvider>
         </SidebarProvider>
       </TooltipProvider>
     </QueryProvider>

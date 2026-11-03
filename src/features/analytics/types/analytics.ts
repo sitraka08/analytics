@@ -40,3 +40,6 @@ export type RankingItem = {
 };
 
 export type RankingDimension = "pages" | "referrers" | "countries" | "cities" | "devices";
+
+/** Series drawn by the dashboard's main chart, picked from the KPI cards. */
+export type ChartMetric = "visitors" | "pageviews";

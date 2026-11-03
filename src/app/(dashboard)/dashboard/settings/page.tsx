@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { BackLink } from "@/components/shared/back-link";
 import { requireSession } from "@/features/auth";
 import { DeleteAccountButton } from "@/features/settings";
-import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Paramètres" };
 
@@ -12,9 +10,9 @@ async function SettingsContent() {
 
   return (
     <>
-      <h1 className="mt-6 text-3xl font-bold tracking-tight">Paramètres</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Paramètres du compte</h1>
 
-      <section className="mt-8 rounded-3xl bg-surface p-5">
+      <section className="mt-6 rounded-3xl border border-border/70 bg-surface p-5">
         <h2 className="text-base font-bold">Votre compte</h2>
         <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-[8rem_1fr]">
           <dt className="text-muted-foreground">Nom</dt>
@@ -22,6 +20,19 @@ async function SettingsContent() {
           <dt className="text-muted-foreground">Adresse e-mail</dt>
           <dd className="break-all">{user.email}</dd>
         </dl>
+      </section>
+
+      <section aria-labelledby="plan" className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border/70 bg-surface p-5">
+        <div>
+          <h2 id="plan" className="text-base font-bold">
+            Votre offre
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">Toutes les fonctionnalités actuelles sont incluses, sans limite de sites.</p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-cream-deep px-3 py-1 text-sm font-medium">
+          <span aria-hidden className="size-2 rounded-full bg-accent-green" />
+          Plan gratuit
+        </span>
       </section>
 
       <section
@@ -44,11 +55,10 @@ async function SettingsContent() {
 
 export default function SettingsPage() {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
-      <BackLink href={ROUTES.dashboard}>Retour aux sites</BackLink>
-      <Suspense fallback={<div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted" />}>
+    <div className="mx-auto w-full max-w-3xl px-4 py-6 md:px-6 md:py-8">
+      <Suspense fallback={<div className="h-32 animate-pulse rounded-2xl bg-muted" />}>
         <SettingsContent />
       </Suspense>
-    </main>
+    </div>
   );
 }

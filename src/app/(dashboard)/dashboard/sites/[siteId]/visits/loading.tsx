@@ -1,11 +1,12 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { SiteHeaderSkeleton } from "@/features/sites";
 
 export default function VisitsLoading() {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
-      <Skeleton className="h-9 w-48 rounded-full" />
-      <Skeleton className="mt-6 h-10 w-64 rounded-2xl" />
-      <Skeleton className="mt-8 h-96 rounded-3xl" />
-    </main>
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <SiteHeaderSkeleton />
+      <Skeleton className="mt-6 h-9 w-28 rounded-full" />
+      <Skeleton className="mt-4 h-96 rounded-3xl" />
+    </div>
   );
 }
