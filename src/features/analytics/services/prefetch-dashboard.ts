@@ -10,7 +10,6 @@ import { getRanking } from "./ranking";
 import { getSessions } from "./sessions";
 import { getTimeseries } from "./timeseries";
 
-const FILTER_DIMENSIONS: RankingDimension[] = ["pages", "referrers", "countries", "cities", "devices"];
 const CARD_DIMENSIONS: RankingDimension[] = ["pages", "referrers", "cities", "devices"];
 
 /**
@@ -33,16 +32,5 @@ export function prefetchSiteDashboard(queryClient: QueryClient, userId: string, 
   });
   void ranking("countries", filters, MAP_COUNTRIES);
   for (const dimension of CARD_DIMENSIONS) void ranking(dimension, filters, RANKING_LIMIT);
-
-  prefetchFilterOptions(queryClient, userId, siteId, period);
 }
 
-/** The filter menus list the period's own values, unfiltered, so a value can always be swapped for another. */
-export function prefetchFilterOptions(queryClient: QueryClient, userId: string, siteId: string, period: Period) {
-  for (const dimension of FILTER_DIMENSIONS) {
-    void queryClient.prefetchQuery({
-      queryKey: analyticsKeys.ranking(siteId, dimension, period, {}, RANKING_LIMIT),
-      queryFn: () => getRanking(userId, siteId, period, {}, dimension, RANKING_LIMIT),
-    });
-  }
-}

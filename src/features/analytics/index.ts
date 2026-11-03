@@ -1,12 +1,11 @@
 export { filtersSchema } from "./schemas/filters";
 export { hasActiveFilters } from "./utils/search-params";
-export { ActiveFilters } from "./components/active-filters";
 export { FilterBar } from "./components/filter-bar";
 export { parsePeriod } from "./schemas/period";
 export { PeriodTabs } from "./components/period-tabs";
-export { SectionSkeleton } from "./components/section-skeleton";
+export { DashboardSkeleton } from "./components/section-skeleton";
 export { SiteDashboard } from "./components/site-dashboard";
-export { prefetchSiteDashboard, prefetchFilterOptions } from "./services/prefetch-dashboard";
+export { prefetchSiteDashboard } from "./services/prefetch-dashboard";
 export type { Period } from "./schemas/period";
 export { SitesOverview } from "./components/sites-overview";
 export { SessionTable } from "./components/session-table";
