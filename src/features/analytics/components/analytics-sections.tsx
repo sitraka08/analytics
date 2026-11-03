@@ -4,7 +4,11 @@ import { Monitor, Smartphone, Tablet } from "lucide-react";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { MAP_COUNTRIES, RANKING_LIMIT } from "../constants/ranking";
-import { useRankingQuery, useSessionsQuery, useTimeseriesQuery } from "../hooks/use-analytics-queries";
+import {
+  useRankingQuery,
+  useSessionsQuery,
+  useTimeseriesQuery,
+} from "../hooks/use-analytics-queries";
 import { useDashboardParams } from "../hooks/use-dashboard-params";
 import type { Filters } from "../schemas/filters";
 import type { ChartMetric, RankingDimension } from "../types/analytics";
@@ -22,19 +26,33 @@ import { HourFormatToggle, VisitorsChart } from "./visitors-chart";
 import type { Tone } from "@/lib/tones";
 
 // The map ships the world geometry (~100 KB): load it on its own so the rest of the dashboard is not held back.
-const WorldMap = dynamic(() => import("./world-map").then((module) => module.WorldMap), {
-  loading: () => <SectionSkeleton className="h-52 rounded-2xl" />,
-});
+const WorldMap = dynamic(
+  () => import("./world-map").then((module) => module.WorldMap),
+  {
+    loading: () => <SectionSkeleton className="h-52 rounded-2xl" />,
+  },
+);
 
 type SectionProps = { siteId: string };
 
-const METRIC_TITLES: Record<ChartMetric, string> = { visitors: "Visiteurs", pageviews: "Pages vues" };
+const METRIC_TITLES: Record<ChartMetric, string> = {
+  visitors: "Visiteurs",
+  pageviews: "Pages vues",
+};
 
-export function VisitorsSection({ siteId, metric }: SectionProps & { metric: ChartMetric }) {
+export function VisitorsSection({
+  siteId,
+  metric,
+}: SectionProps & { metric: ChartMetric }) {
   const { period, filters } = useDashboardParams();
   const query = useTimeseriesQuery(siteId, period, filters);
 
-  if (!query.data) return query.isError ? <SectionError className="h-80" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-80 rounded-3xl sm:h-96" />;
+  if (!query.data)
+    return query.isError ? (
+      <SectionError className="h-80" onRetry={() => query.refetch()} />
+    ) : (
+      <SectionSkeleton className="h-80 rounded-3xl sm:h-96" />
+    );
   const { unit } = getPeriodRange(period);
 
   return (
@@ -49,8 +67,23 @@ export function VisitorsSection({ siteId, metric }: SectionProps & { metric: Cha
   );
 }
 
-const RANKINGS: Record<RankingDimension, { title: string; columnLabel: string; emptyMessage: string; filterKey: keyof Filters; tone: Tone }> = {
-  pages: { title: "Pages les plus vues", columnLabel: "Page", emptyMessage: "Aucune page vue sur cette période.", filterKey: "page", tone: "blue" },
+const RANKINGS: Record<
+  RankingDimension,
+  {
+    title: string;
+    columnLabel: string;
+    emptyMessage: string;
+    filterKey: keyof Filters;
+    tone: Tone;
+  }
+> = {
+  pages: {
+    title: "Pages les plus vues",
+    columnLabel: "Page",
+    emptyMessage: "Aucune page vue sur cette période.",
+    filterKey: "page",
+    tone: "blue",
+  },
   referrers: {
     title: "D'où viennent les visiteurs",
     columnLabel: "Source",
@@ -58,32 +91,76 @@ const RANKINGS: Record<RankingDimension, { title: string; columnLabel: string; e
     filterKey: "referrer",
     tone: "green",
   },
-  countries: { title: "Pays", columnLabel: "Pays", emptyMessage: "Pays inconnu pour le moment.", filterKey: "country", tone: "orange" },
-  cities: { title: "Villes", columnLabel: "Ville", emptyMessage: "Ville inconnue pour le moment.", filterKey: "city", tone: "orange" },
-  devices: { title: "Appareils", columnLabel: "Appareil", emptyMessage: "Aucun appareil détecté.", filterKey: "device", tone: "violet" },
+  countries: {
+    title: "Pays",
+    columnLabel: "Pays",
+    emptyMessage: "Pays inconnu pour le moment.",
+    filterKey: "country",
+    tone: "orange",
+  },
+  cities: {
+    title: "Villes",
+    columnLabel: "Ville",
+    emptyMessage: "Ville inconnue pour le moment.",
+    filterKey: "city",
+    tone: "orange",
+  },
+  devices: {
+    title: "Appareils",
+    columnLabel: "Appareil",
+    emptyMessage: "Aucun appareil détecté.",
+    filterKey: "device",
+    tone: "violet",
+  },
 };
 
-const DEVICE_ICONS = { desktop: Monitor, mobile: Smartphone, tablet: Tablet } as const;
+const DEVICE_ICONS = {
+  desktop: Monitor,
+  mobile: Smartphone,
+  tablet: Tablet,
+} as const;
 
 function leadingFor(dimension: RankingDimension, value: string) {
   if (dimension === "countries") return countryFlag(value);
 
   if (dimension === "devices") {
-    const Icon = DEVICE_ICONS[parseDevice(value).type as keyof typeof DEVICE_ICONS];
+    const Icon =
+      DEVICE_ICONS[parseDevice(value).type as keyof typeof DEVICE_ICONS];
     return Icon ? <Icon className="size-4" /> : null;
   }
 
   return null;
 }
 
-type RankingSectionProps = SectionProps & { basePath: string; dimension: RankingDimension; total: number };
+type RankingSectionProps = SectionProps & {
+  basePath: string;
+  dimension: RankingDimension;
+  total: number;
+};
 
-export function RankingSection({ siteId, basePath, dimension, total }: RankingSectionProps) {
+export function RankingSection({
+  siteId,
+  basePath,
+  dimension,
+  total,
+}: RankingSectionProps) {
   const { period, filters } = useDashboardParams();
-  const query = useRankingQuery(siteId, dimension, period, filters, RANKING_LIMIT);
-  const { title, columnLabel, emptyMessage, filterKey, tone } = RANKINGS[dimension];
+  const query = useRankingQuery(
+    siteId,
+    dimension,
+    period,
+    filters,
+    RANKING_LIMIT,
+  );
+  const { title, columnLabel, emptyMessage, filterKey, tone } =
+    RANKINGS[dimension];
 
-  if (!query.data) return query.isError ? <SectionError className="h-72" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-72 rounded-3xl" />;
+  if (!query.data)
+    return query.isError ? (
+      <SectionError className="h-72" onRetry={() => query.refetch()} />
+    ) : (
+      <SectionSkeleton className="h-72 rounded-3xl" />
+    );
 
   const rows = query.data.map((item) => {
     const active = filters[filterKey] === item.label;
@@ -114,21 +191,47 @@ export function RankingSection({ siteId, basePath, dimension, total }: RankingSe
 
 const TOP_COUNTRIES = 4;
 
-export function WorldMapSection({ siteId, basePath }: SectionProps & { basePath: string }) {
+export function WorldMapSection({
+  siteId,
+  basePath,
+}: SectionProps & { basePath: string }) {
   const { period, filters } = useDashboardParams();
-  const query = useRankingQuery(siteId, "countries", period, filters, MAP_COUNTRIES);
+  const query = useRankingQuery(
+    siteId,
+    "countries",
+    period,
+    filters,
+    MAP_COUNTRIES,
+  );
 
-  if (!query.data) return query.isError ? <SectionError className="h-80" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-80 rounded-3xl" />;
+  if (!query.data)
+    return query.isError ? (
+      <SectionError className="h-80" onRetry={() => query.refetch()} />
+    ) : (
+      <SectionSkeleton className="h-80 rounded-3xl" />
+    );
 
   const countries = query.data.map((item) => {
     const active = filters.country === item.label;
-    return { code: item.label, visitors: item.visitors, filters: { ...filters, country: active ? undefined : item.label }, active };
+    return {
+      code: item.label,
+      visitors: item.visitors,
+      filters: { ...filters, country: active ? undefined : item.label },
+      active,
+    };
   });
 
   return (
-    <Panel busy={query.isPlaceholderData} title="Visiteurs dans le monde" description="Cliquez sur un pays pour filtrer." className="h-full">
+    <Panel
+      busy={query.isPlaceholderData}
+      title="Visiteurs dans le monde"
+      description="Cliquez sur un pays pour filtrer."
+      className="h-full"
+    >
       {countries.length === 0 ? (
-        <p className="rounded-2xl bg-cream-deep px-4 py-3 text-sm text-muted-foreground">Pays inconnu pour le moment.</p>
+        <p className="rounded-2xl bg-cream-deep px-4 py-3 text-sm text-muted-foreground">
+          Pays inconnu pour le moment.
+        </p>
       ) : (
         <>
           <WorldMap countries={countries} basePath={basePath} period={period} />
@@ -140,11 +243,16 @@ export function WorldMapSection({ siteId, basePath }: SectionProps & { basePath:
                   period={period}
                   filters={country.filters}
                   aria-current={country.active ? "true" : undefined}
-                  className={cn("underline-offset-4 hover:underline", country.active && "font-bold")}
+                  className={cn(
+                    "underline-offset-4 hover:underline",
+                    country.active && "font-bold",
+                  )}
                 >
                   <span aria-hidden>{countryFlag(country.code)} </span>
                   {formatFilterValue("country", country.code)}{" "}
-                  <span className="font-mono text-muted-foreground tabular-nums">{formatInteger(country.visitors)}</span>
+                  <span className="font-mono text-muted-foreground tabular-nums">
+                    {formatInteger(country.visitors)}
+                  </span>
                 </DashboardLink>
               </li>
             ))}
@@ -159,7 +267,18 @@ export function RecentVisitsSection({ siteId }: SectionProps) {
   const { period, filters } = useDashboardParams();
   const query = useSessionsQuery(siteId, period, filters);
 
-  if (!query.data) return query.isError ? <SectionError className="h-80" onRetry={() => query.refetch()} /> : <SectionSkeleton className="h-80 rounded-3xl" />;
+  if (!query.data)
+    return query.isError ? (
+      <SectionError className="h-80" onRetry={() => query.refetch()} />
+    ) : (
+      <SectionSkeleton className="h-80 rounded-3xl" />
+    );
 
-  return <RecentVisits siteId={siteId} sessions={query.data.sessions.slice(0, 6)} busy={query.isPlaceholderData} />;
+  return (
+    <RecentVisits
+      siteId={siteId}
+      sessions={query.data.sessions.slice(0, 6)}
+      busy={query.isPlaceholderData}
+    />
+  );
 }

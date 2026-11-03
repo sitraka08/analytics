@@ -14,13 +14,15 @@ export const INSTALL_GUIDES: InstallGuide[] = [
     label: "HTML",
     target: "index.html",
     instruction: "Collez cette ligne dans le <head> de chaque page du site.",
-    code: (src, key) => `<script defer src="${src}" data-key="${key}"></script>`,
+    code: (src, key) =>
+      `<script defer src="${src}" data-key="${key}"></script>`,
   },
   {
     id: "nextjs",
     label: "Next.js",
     target: "app/layout.tsx",
-    instruction: "Ajoutez le composant Script dans votre layout racine (App Router).",
+    instruction:
+      "Ajoutez le composant Script dans votre layout racine (App Router).",
     code: (src, key) => `import Script from "next/script";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -38,7 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     id: "react",
     label: "React / Vite",
     target: "index.html",
-    instruction: "Placez la ligne dans le <head> du fichier index.html à la racine du projet, pas dans un composant.",
+    instruction:
+      "Placez la ligne dans le <head> du fichier index.html à la racine du projet, pas dans un composant.",
     code: (src, key) => `<head>
   <!-- … -->
   <script defer src="${src}" data-key="${key}"></script>
@@ -48,7 +51,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     id: "vue",
     label: "Vue / Nuxt",
     target: "nuxt.config.ts",
-    instruction: "Avec Nuxt, déclarez le script dans la configuration. Avec Vue + Vite, utilisez l'onglet React / Vite.",
+    instruction:
+      "Avec Nuxt, déclarez le script dans la configuration. Avec Vue + Vite, utilisez l'onglet React / Vite.",
     code: (src, key) => `export default defineNuxtConfig({
   app: {
     head: {
@@ -71,7 +75,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     id: "wordpress",
     label: "WordPress",
     target: "functions.php",
-    instruction: "Ajoutez ce code au functions.php de votre thème (ou collez la ligne script dans un plugin d'en-têtes).",
+    instruction:
+      "Ajoutez ce code au functions.php de votre thème (ou collez la ligne script dans un plugin d'en-têtes).",
     code: (src, key) => `add_action('wp_head', function () {
   echo '<script defer src="${src}" data-key="${key}"></script>';
 });`,
@@ -80,8 +85,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     id: "gtm",
     label: "Google Tag Manager",
     target: "Balise HTML personnalisée",
-    instruction: "Créez une balise « HTML personnalisé » déclenchée sur « All Pages » et collez la ligne.",
-    code: (src, key) => `<script defer src="${src}" data-key="${key}"></script>`,
+    instruction:
+      "Créez une balise « HTML personnalisé » déclenchée sur « All Pages » et collez la ligne.",
+    code: (src, key) =>
+      `<script defer src="${src}" data-key="${key}"></script>`,
   },
 ];
 

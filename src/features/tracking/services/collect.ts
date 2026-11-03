@@ -30,16 +30,28 @@ export type CollectResult =
   | { status: "forbidden" }
   | { status: "rate-limited" };
 
-export async function collectEvent({ payload, origin, ip, userAgent, country, region, city }: CollectRequest): Promise<CollectResult> {
+export async function collectEvent({
+  payload,
+  origin,
+  ip,
+  userAgent,
+  country,
+  region,
+  city,
+}: CollectRequest): Promise<CollectResult> {
   if (isRateLimited(`${ip}:${payload.key}`)) return { status: "rate-limited" };
 
   const site = await findSiteForCollection(payload.key);
   if (!site) return { status: "ignored" };
-  if (!origin || !isAllowedOrigin(origin, site.domain)) return { status: "forbidden" };
+  if (!origin || !isAllowedOrigin(origin, site.domain))
+    return { status: "forbidden" };
   if (isBot(userAgent) || !userAgent) return { status: "ignored" };
 
   if (payload.type === "duration") {
-    await db.update(event).set({ durationMs: payload.duration }).where(and(eq(event.id, payload.id), eq(event.siteId, site.id)));
+    await db
+      .update(event)
+      .set({ durationMs: payload.duration })
+      .where(and(eq(event.id, payload.id), eq(event.siteId, site.id)));
     return { status: "accepted", allowOrigin: origin };
   }
 
@@ -52,7 +64,13 @@ export async function collectEvent({ payload, origin, ip, userAgent, country, re
   const [recent] = await db
     .select({ sessionId: event.sessionId })
     .from(event)
-    .where(and(eq(event.siteId, site.id), eq(event.visitorHash, visitorHash), gte(event.createdAt, new Date(now.getTime() - SESSION_INACTIVITY_MS))))
+    .where(
+      and(
+        eq(event.siteId, site.id),
+        eq(event.visitorHash, visitorHash),
+        gte(event.createdAt, new Date(now.getTime() - SESSION_INACTIVITY_MS)),
+      ),
+    )
     .orderBy(desc(event.createdAt))
     .limit(1);
 

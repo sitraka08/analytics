@@ -3,7 +3,11 @@
 import { ChevronsUpDown, Settings } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { ROUTES } from "@/lib/routes";
 
@@ -26,22 +30,39 @@ export function UserMenu({ user, signOut }: UserMenuProps) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger render={<SidebarMenuButton size="lg" />} aria-label="Menu du compte">
-        <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-cream-deep font-heading text-xs font-bold text-foreground">
+      <PopoverTrigger
+        render={<SidebarMenuButton size="lg" />}
+        aria-label="Menu du compte"
+      >
+        <span
+          aria-hidden
+          className="grid size-8 shrink-0 place-items-center rounded-full bg-cream-deep font-heading text-xs font-bold text-foreground"
+        >
           {initials(user.name)}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-medium">{user.name}</span>
-          <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
+          <span className="block truncate text-sm font-medium">
+            {user.name}
+          </span>
+          <span className="block truncate text-xs text-muted-foreground">
+            {user.email}
+          </span>
         </span>
         <ChevronsUpDown aria-hidden className="ml-auto text-muted-foreground" />
       </PopoverTrigger>
-      <PopoverContent side="top" align="start" className="w-64 gap-1 rounded-2xl p-1.5">
+      <PopoverContent
+        side="top"
+        align="start"
+        className="w-64 gap-1 rounded-2xl p-1.5"
+      >
         <div className="px-2.5 pt-1.5 pb-2">
           <p className="truncate font-medium">{user.name}</p>
           <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-cream-deep px-2.5 py-0.5 text-xs font-medium">
-            <span aria-hidden className="size-1.5 rounded-full bg-accent-green" />
+            <span
+              aria-hidden
+              className="size-1.5 rounded-full bg-accent-green"
+            />
             Plan gratuit
           </p>
         </div>

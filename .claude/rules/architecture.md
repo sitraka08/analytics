@@ -12,6 +12,7 @@ src/
 ```
 
 ## Inside a feature (create only what is needed)
+
 ```text
 features/<name>/
 ├── components/  hooks/  schemas/  services/  types/  utils/  constants/
@@ -19,7 +20,9 @@ features/<name>/
 ```
 
 ## Naming
+
 The folder already carries the role: no suffix.
+
 - `schemas/site.ts`, `types/site.ts`, `services/site.ts`, `utils/period.ts`, `constants/periods.ts`.
 - Components: kebab-case file, PascalCase declaration (`StatCard` in `components/stat-card.tsx`).
 - Hooks: `use-` prefix kept (`hooks/use-sites-query.ts`, `useSitesQuery`).
@@ -27,12 +30,14 @@ The folder already carries the role: no suffix.
 - Avoid generic names (`helpers.ts`, `data.ts`). Variables and functions in camelCase.
 
 ## Responsibilities
+
 - Pages compose; presentation components receive props.
 - `services/`: data access (Drizzle) and server logic, no UI.
 - `schemas/`: Zod validation only. `utils/`: pure functions.
 - Hooks: the feature's client state and queries, nothing else.
 
 ## Dependencies
+
 - A feature imports another only through its `index.ts`, never its internals.
 - No circular dependency: extract the neutral part to a shared folder.
 - Share only from two truly consuming features.

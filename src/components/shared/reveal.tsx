@@ -17,8 +17,16 @@ type RevealProps = {
   trigger?: "view" | "mount";
 };
 
-export function Reveal({ children, className, delay = 0, trigger = "view" }: RevealProps) {
-  const play = trigger === "mount" ? { animate: "visible" } : { whileInView: "visible", viewport: { once: true, amount: 0.2 } };
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  trigger = "view",
+}: RevealProps) {
+  const play =
+    trigger === "mount"
+      ? { animate: "visible" }
+      : { whileInView: "visible", viewport: { once: true, amount: 0.2 } };
 
   return (
     <m.div
@@ -38,16 +46,28 @@ type RevealGroupProps = Omit<RevealProps, "delay"> & {
   as?: "div" | "ul";
 };
 
-export function RevealGroup({ children, className, trigger = "view", stagger = 0.08, as = "div" }: RevealGroupProps) {
+export function RevealGroup({
+  children,
+  className,
+  trigger = "view",
+  stagger = 0.08,
+  as = "div",
+}: RevealGroupProps) {
   const Component = as === "ul" ? m.ul : m.div;
-  const play = trigger === "mount" ? { animate: "visible" } : { whileInView: "visible", viewport: { once: true, amount: 0.15 } };
+  const play =
+    trigger === "mount"
+      ? { animate: "visible" }
+      : { whileInView: "visible", viewport: { once: true, amount: 0.15 } };
 
   return (
     <Component
       className={className}
       initial="hidden"
       {...play}
-      variants={{ hidden: {}, visible: { transition: { staggerChildren: stagger } } }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: stagger } },
+      }}
     >
       {children}
     </Component>
@@ -62,14 +82,23 @@ type RevealItemProps = {
   lift?: boolean;
 };
 
-export function RevealItem({ children, className, as = "div", lift = false }: RevealItemProps) {
+export function RevealItem({
+  children,
+  className,
+  as = "div",
+  lift = false,
+}: RevealItemProps) {
   const Component = as === "li" ? m.li : m.div;
 
   return (
     <Component
       className={className}
       variants={itemVariants}
-      whileHover={lift ? { y: -6, transition: { duration: 0.25, ease: EASE_OUT } } : undefined}
+      whileHover={
+        lift
+          ? { y: -6, transition: { duration: 0.25, ease: EASE_OUT } }
+          : undefined
+      }
     >
       {children}
     </Component>

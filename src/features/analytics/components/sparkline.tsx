@@ -12,8 +12,19 @@ const config = {
 export function Sparkline({ points }: { points: TimeseriesPoint[] }) {
   return (
     <ChartContainer config={config} className="h-14 w-full" aria-hidden>
-      <AreaChart data={points} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
-        <Area dataKey="visitors" type="monotone" stroke="var(--color-visitors)" fill="var(--color-visitors)" fillOpacity={0.2} strokeWidth={2} isAnimationActive={false} />
+      <AreaChart
+        data={points}
+        margin={{ top: 4, right: 0, bottom: 0, left: 0 }}
+      >
+        <Area
+          dataKey="visitors"
+          type="monotone"
+          stroke="var(--color-visitors)"
+          fill="var(--color-visitors)"
+          fillOpacity={0.2}
+          strokeWidth={2}
+          isAnimationActive={false}
+        />
       </AreaChart>
     </ChartContainer>
   );

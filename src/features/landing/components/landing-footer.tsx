@@ -20,7 +20,10 @@ export function LandingFooter() {
           <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1">
             {LEGAL_LINKS.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="underline-offset-4 transition-colors hover:text-foreground hover:underline">
+                <Link
+                  href={link.href}
+                  className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                >
                   {link.label}
                 </Link>
               </li>

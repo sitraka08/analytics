@@ -4,10 +4,18 @@ import { Info } from "lucide-react";
 import { useState } from "react";
 import { HeaderActions } from "@/components/layout/header-actions";
 import { useOverviewQuery } from "../hooks/use-analytics-queries";
-import { DashboardNavigationProvider, useDashboardParams } from "../hooks/use-dashboard-params";
+import {
+  DashboardNavigationProvider,
+  useDashboardParams,
+} from "../hooks/use-dashboard-params";
 import type { ChartMetric } from "../types/analytics";
 import { hasActiveFilters } from "../utils/search-params";
-import { RankingSection, RecentVisitsSection, VisitorsSection, WorldMapSection } from "./analytics-sections";
+import {
+  RankingSection,
+  RecentVisitsSection,
+  VisitorsSection,
+  WorldMapSection,
+} from "./analytics-sections";
 import { FilterBar } from "./filter-bar";
 import { KpiGrid } from "./kpi-grid";
 import { PeriodTabs } from "./period-tabs";
@@ -30,7 +38,9 @@ function Dashboard({ siteId, basePath, installSnippet }: SiteDashboardProps) {
   const [metric, setMetric] = useState<ChartMetric>("visitors");
   const filtered = hasActiveFilters(filters);
   const data = overview.data;
-  const hasData = data ? data.current.pageviews > 0 || data.previous.pageviews > 0 : false;
+  const hasData = data
+    ? data.current.pageviews > 0 || data.previous.pageviews > 0
+    : false;
 
   return (
     <>
@@ -46,18 +56,37 @@ function Dashboard({ siteId, basePath, installSnippet }: SiteDashboardProps) {
         )
       ) : (
         <div className="flex flex-col gap-4">
-          {hasData || filtered ? <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} /> : null}
+          {hasData || filtered ? (
+            <FilterBar
+              siteId={siteId}
+              period={period}
+              filters={filters}
+              basePath={basePath}
+            />
+          ) : null}
 
           {hasData ? (
             <div className="flex flex-col gap-3">
               {data.current.pageviews < LOW_DATA_PAGEVIEWS ? (
                 <p className="flex items-center gap-2 rounded-2xl bg-cream-deep px-4 py-3 text-sm">
                   <Info aria-hidden className="size-4 shrink-0" />
-                  Encore peu de données : les tendances seront plus fiables avec davantage de visites.
+                  Encore peu de données : les tendances seront plus fiables avec
+                  davantage de visites.
                 </p>
               ) : null}
-              <div aria-busy={overview.isPlaceholderData || undefined} className={overview.isPlaceholderData ? "opacity-60 transition-opacity" : "transition-opacity"}>
-                <KpiGrid overview={data} metric={metric} onMetricChange={setMetric} />
+              <div
+                aria-busy={overview.isPlaceholderData || undefined}
+                className={
+                  overview.isPlaceholderData
+                    ? "opacity-60 transition-opacity"
+                    : "transition-opacity"
+                }
+              >
+                <KpiGrid
+                  overview={data}
+                  metric={metric}
+                  onMetricChange={setMetric}
+                />
               </div>
               <VisitorsSection siteId={siteId} metric={metric} />
               <div className="grid gap-3 lg:grid-cols-5">
@@ -69,14 +98,23 @@ function Dashboard({ siteId, basePath, installSnippet }: SiteDashboardProps) {
                 </div>
               </div>
               <div className="grid gap-3 lg:grid-cols-2">
-                {(["pages", "referrers", "cities", "devices"] as const).map((dimension) => (
-                  <RankingSection key={dimension} siteId={siteId} basePath={basePath} dimension={dimension} total={data.current.visitors} />
-                ))}
+                {(["pages", "referrers", "cities", "devices"] as const).map(
+                  (dimension) => (
+                    <RankingSection
+                      key={dimension}
+                      siteId={siteId}
+                      basePath={basePath}
+                      dimension={dimension}
+                      total={data.current.visitors}
+                    />
+                  ),
+                )}
               </div>
             </div>
           ) : filtered ? (
             <p className="max-w-xl rounded-2xl bg-cream-deep px-4 py-3 text-sm">
-              Aucune visite ne correspond à ces filtres sur cette période. Retirez un filtre ou choisissez une période plus longue.
+              Aucune visite ne correspond à ces filtres sur cette période.
+              Retirez un filtre ou choisissez une période plus longue.
             </p>
           ) : (
             installSnippet

@@ -24,17 +24,35 @@ export type PeriodRange = {
 export function getPeriodRange(period: Period, now = new Date()): PeriodRange {
   if (period.preset === "today" || period.preset === "custom") {
     const { tz } = period;
-    const firstDay = period.preset === "custom" ? period.from : ymdInZone(now, tz);
+    const firstDay =
+      period.preset === "custom" ? period.from : ymdInZone(now, tz);
     const lastDay = period.preset === "custom" ? period.to : firstDay;
     const from = zonedStartOfDay(firstDay, tz);
-    const to = new Date(Math.min(zonedStartOfDay(shiftYmd(lastDay, 1), tz).getTime(), now.getTime()));
+    const to = new Date(
+      Math.min(
+        zonedStartOfDay(shiftYmd(lastDay, 1), tz).getTime(),
+        now.getTime(),
+      ),
+    );
     const length = to.getTime() - from.getTime();
 
-    return { from, to, previousFrom: new Date(from.getTime() - length), unit: daysBetween(firstDay, lastDay) < 2 ? "hour" : "day", tz };
+    return {
+      from,
+      to,
+      previousFrom: new Date(from.getTime() - length),
+      unit: daysBetween(firstDay, lastDay) < 2 ? "hour" : "day",
+      tz,
+    };
   }
 
   const length = ROLLING_HOURS[period.preset] * HOUR_MS;
   const from = new Date(now.getTime() - length);
 
-  return { from, to: now, previousFrom: new Date(from.getTime() - length), unit: period.preset === "24h" ? "hour" : "day", tz: "UTC" };
+  return {
+    from,
+    to: now,
+    previousFrom: new Date(from.getTime() - length),
+    unit: period.preset === "24h" ? "hour" : "day",
+    tz: "UTC",
+  };
 }

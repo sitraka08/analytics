@@ -27,7 +27,10 @@ function LiveTrafficPanel() {
                 <span className="text-muted-foreground">{country.share} %</span>
               </div>
               <div className="mt-1 h-1.5 rounded-full bg-cream-deep">
-                <div className="h-1.5 rounded-full bg-brand-green" style={{ width: `${country.share}%` }} />
+                <div
+                  className="h-1.5 rounded-full bg-brand-green"
+                  style={{ width: `${country.share}%` }}
+                />
               </div>
             </li>
           ))}
@@ -42,15 +45,32 @@ function LiveTrafficPanel() {
             <span className="relative inline-flex size-2.5 rounded-full bg-accent-green" />
           </span>
         </div>
-        <p className="mt-1 font-heading text-3xl font-bold tracking-tight">{live.value}</p>
-        <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="mt-3 h-16 w-full">
+        <p className="mt-1 font-heading text-3xl font-bold tracking-tight">
+          {live.value}
+        </p>
+        <svg
+          viewBox="0 0 200 60"
+          preserveAspectRatio="none"
+          className="mt-3 h-16 w-full"
+        >
           <defs>
             <linearGradient id="live-area" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--brand-blue)" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="var(--brand-blue)" stopOpacity="0" />
+              <stop
+                offset="0%"
+                stopColor="var(--brand-blue)"
+                stopOpacity="0.25"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--brand-blue)"
+                stopOpacity="0"
+              />
             </linearGradient>
           </defs>
-          <path d="M0 48 C20 44 30 30 50 34 S80 20 100 26 S140 8 160 14 S190 6 200 4 V60 H0Z" fill="url(#live-area)" />
+          <path
+            d="M0 48 C20 44 30 30 50 34 S80 20 100 26 S140 8 160 14 S190 6 200 4 V60 H0Z"
+            fill="url(#live-area)"
+          />
           <path
             d="M0 48 C20 44 30 30 50 34 S80 20 100 26 S140 8 160 14 S190 6 200 4"
             fill="none"
@@ -66,15 +86,23 @@ function LiveTrafficPanel() {
 
 export function LandingStats() {
   return (
-    <section id="features" className="mx-auto w-full max-w-6xl scroll-mt-8 px-4 pb-16 pt-28 md:pt-40">
+    <section
+      id="features"
+      className="mx-auto w-full max-w-6xl scroll-mt-8 px-4 pb-16 pt-28 md:pt-40"
+    >
       <Reveal className="grid gap-6 md:grid-cols-2 md:items-start">
         <h2 className="max-w-md text-balance text-3xl font-bold leading-tight tracking-tight md:text-[2.75rem]">
           {STATS_SECTION.title}
         </h2>
-        <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:justify-self-end">{STATS_SECTION.text}</p>
+        <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:justify-self-end">
+          {STATS_SECTION.text}
+        </p>
       </Reveal>
 
-      <RevealGroup className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 md:grid-rows-2" stagger={0.1}>
+      <RevealGroup
+        className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 md:grid-rows-2"
+        stagger={0.1}
+      >
         <RevealItem lift className="md:col-start-1 md:row-start-1">
           <StatCard {...blueCard} className="h-full" />
         </RevealItem>

@@ -10,7 +10,15 @@ type InstallSnippetProps = {
   waitForVisit?: boolean;
 };
 
-function Step({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
+function Step({
+  number,
+  title,
+  children,
+}: {
+  number: number;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <li className="flex gap-3">
       <span
@@ -27,34 +35,51 @@ function Step({ number, title, children }: { number: number; title: string; chil
   );
 }
 
-export function InstallSnippet({ publicKey, domain, waitForVisit = true }: InstallSnippetProps) {
+export function InstallSnippet({
+  publicKey,
+  domain,
+  waitForVisit = true,
+}: InstallSnippetProps) {
   // Sites hosted on Vercel are most often Next.js projects.
   const initialGuideId = domain.endsWith(".vercel.app") ? "nextjs" : undefined;
 
   return (
-    <section aria-labelledby="install-title" className="grid gap-3 lg:grid-cols-5">
+    <section
+      aria-labelledby="install-title"
+      className="grid gap-3 lg:grid-cols-5"
+    >
       <div className="rounded-3xl bg-cream-deep p-4 sm:p-5 lg:col-span-3">
         <h2 id="install-title" className="text-xl font-bold">
           Installer le script
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Trois étapes, moins d&apos;une minute. Aucun cookie ni stockage : pas de bandeau de consentement.
+          Trois étapes, moins d&apos;une minute. Aucun cookie ni stockage : pas
+          de bandeau de consentement.
         </p>
 
         <ol className="mt-5 flex flex-col gap-5">
           <Step number={1} title="Choisissez votre stack et collez le code">
-            <InstallTabs scriptUrl={getScriptUrl()} publicKey={publicKey} initialGuideId={initialGuideId} />
+            <InstallTabs
+              scriptUrl={getScriptUrl()}
+              publicKey={publicKey}
+              initialGuideId={initialGuideId}
+            />
           </Step>
           <Step number={2} title="Publiez votre site, puis ouvrez-le">
             <p className="text-sm text-muted-foreground">
-              Chargez une page de <span className="font-medium text-foreground">{domain}</span>. Le script se charge sans bloquer l&apos;affichage.
+              Chargez une page de{" "}
+              <span className="font-medium text-foreground">{domain}</span>. Le
+              script se charge sans bloquer l&apos;affichage.
             </p>
           </Step>
           <Step number={3} title="Vérifiez la réception">
             {waitForVisit ? (
               <WaitingForVisit />
             ) : (
-              <p className="text-sm text-muted-foreground">Les visites apparaissent dans les statistiques quelques secondes après le chargement d&apos;une page.</p>
+              <p className="text-sm text-muted-foreground">
+                Les visites apparaissent dans les statistiques quelques secondes
+                après le chargement d&apos;une page.
+              </p>
             )}
           </Step>
         </ol>
@@ -64,8 +89,10 @@ export function InstallSnippet({ publicKey, domain, waitForVisit = true }: Insta
             Ne pas compter mes propres visites
           </summary>
           <p className="mt-2 text-muted-foreground">
-            Ouvrez une fois votre site avec <code className="font-mono">?no-track</code> à la fin de l&apos;adresse. Ce navigateur sera
-            ignoré ; <code className="font-mono">?no-track=0</code> réactive le suivi.
+            Ouvrez une fois votre site avec{" "}
+            <code className="font-mono">?no-track</code> à la fin de
+            l&apos;adresse. Ce navigateur sera ignoré ;{" "}
+            <code className="font-mono">?no-track=0</code> réactive le suivi.
           </p>
         </details>
       </div>

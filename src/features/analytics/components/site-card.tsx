@@ -15,14 +15,20 @@ export function SiteCard({ site }: { site: SiteOverview }) {
       className="flex h-full flex-col gap-4 rounded-3xl border border-border/70 bg-surface p-5 transition-colors hover:border-foreground/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
     >
       <span className="min-w-0">
-        <span className="block truncate font-heading font-bold">{site.name}</span>
-        <span className="block truncate text-sm text-muted-foreground">{site.domain}</span>
+        <span className="block truncate font-heading font-bold">
+          {site.name}
+        </span>
+        <span className="block truncate text-sm text-muted-foreground">
+          {site.domain}
+        </span>
       </span>
 
       {hasData ? (
         <>
           <span className="flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-bold tabular-nums">{formatInteger(site.visitors)}</span>
+            <span className="font-heading text-3xl font-bold tabular-nums">
+              {formatInteger(site.visitors)}
+            </span>
             <span className="text-sm text-muted-foreground">visiteurs</span>
             {change === null ? null : (
               <span className="ml-auto">

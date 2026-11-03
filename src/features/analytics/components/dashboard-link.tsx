@@ -7,7 +7,10 @@ import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import { buildDashboardHref } from "../utils/search-params";
 
-type DashboardLinkProps = Omit<ComponentProps<typeof Link>, "href" | "scroll" | "prefetch"> & {
+type DashboardLinkProps = Omit<
+  ComponentProps<typeof Link>,
+  "href" | "scroll" | "prefetch"
+> & {
   basePath: string;
   period: Period;
   filters: Filters;
@@ -17,7 +20,13 @@ type DashboardLinkProps = Omit<ComponentProps<typeof Link>, "href" | "scroll" | 
  * Link to a period and filters combination. It keeps a real href (middle click, copy link), but a plain click
  * only updates the URL in place when the page reads its data through queries.
  */
-export function DashboardLink({ basePath, period, filters, onClick, ...props }: DashboardLinkProps) {
+export function DashboardLink({
+  basePath,
+  period,
+  filters,
+  onClick,
+  ...props
+}: DashboardLinkProps) {
   const { inPlace, go } = useDashboardNavigate(basePath);
 
   return (
@@ -29,7 +38,16 @@ export function DashboardLink({ basePath, period, filters, onClick, ...props }: 
       prefetch={false}
       onClick={(event) => {
         onClick?.(event);
-        if (!inPlace || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (
+          !inPlace ||
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        )
+          return;
         event.preventDefault();
         go(period, filters);
       }}

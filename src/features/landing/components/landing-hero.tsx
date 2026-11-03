@@ -22,7 +22,12 @@ export function LandingHero() {
               <h1 className="mx-auto max-w-3xl text-[2.1rem] font-bold leading-[1.15] tracking-tight sm:text-6xl lg:text-[4rem]">
                 <span className="block">
                   {HERO.titleFirst}{" "}
-                  <svg aria-hidden viewBox="0 0 24 24" className="inline-block size-[0.62em] align-[-0.02em] text-accent-green" fill="currentColor">
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 24 24"
+                    className="inline-block size-[0.62em] align-[-0.02em] text-accent-green"
+                    fill="currentColor"
+                  >
                     <path d="M3 2 22 9.6 13.4 12.4 10.4 21Z" />
                   </svg>{" "}
                   <span className="relative inline-block">
@@ -33,7 +38,10 @@ export function LandingHero() {
                 <span className="block">{HERO.titleLine2}</span>
                 <span className="relative mt-2 inline-block bg-highlight px-3 leading-[1.1]">
                   {BRAND.name}
-                  <span aria-hidden className="absolute -right-0.5 top-0 h-full w-0.75 bg-brand-orange" />
+                  <span
+                    aria-hidden
+                    className="absolute -right-0.5 top-0 h-full w-0.75 bg-brand-orange"
+                  />
                   <span className="absolute -top-3 left-full -translate-x-3 rounded-sm bg-brand-orange px-2 py-0.5 text-[0.65rem] font-medium leading-normal tracking-normal text-tone-foreground">
                     {HERO.tag}
                   </span>
@@ -42,7 +50,9 @@ export function LandingHero() {
             </RevealItem>
 
             <RevealItem>
-              <p className="mx-auto mt-6 max-w-md text-pretty text-base leading-relaxed text-muted-foreground">{HERO.subtitle}</p>
+              <p className="mx-auto mt-6 max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
+                {HERO.subtitle}
+              </p>
             </RevealItem>
 
             <RevealItem className="mt-8">
@@ -56,7 +66,10 @@ export function LandingHero() {
           </RevealGroup>
         </div>
 
-        <div aria-hidden className="scallop-edge absolute inset-x-0 top-full h-12 md:h-20" />
+        <div
+          aria-hidden
+          className="scallop-edge absolute inset-x-0 top-full h-12 md:h-20"
+        />
       </section>
     </div>
   );

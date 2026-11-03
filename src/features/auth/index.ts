@@ -12,4 +12,7 @@ export { ForgotPasswordForm } from "./components/forgot-password-form";
 export { ResetPasswordForm } from "./components/reset-password-form";
 export { SignOutButton } from "./components/sign-out-button";
 export { SignOutMenuButton } from "./components/sign-out-menu-button";
-export { AUTH_ENABLED, AUTH_UNAVAILABLE_MESSAGE } from "./constants/availability";
+export {
+  AUTH_ENABLED,
+  AUTH_UNAVAILABLE_MESSAGE,
+} from "./constants/availability";

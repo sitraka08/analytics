@@ -1,4 +1,7 @@
-import { QueryClient, defaultShouldDehydrateQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  defaultShouldDehydrateQuery,
+} from "@tanstack/react-query";
 
 export function makeQueryClient() {
   return new QueryClient({
@@ -10,7 +13,9 @@ export function makeQueryClient() {
       },
       dehydrate: {
         // Pending queries are streamed to the client, so a slow widget does not block the page.
-        shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === "pending",
+        shouldDehydrateQuery: (query) =>
+          defaultShouldDehydrateQuery(query) ||
+          query.state.status === "pending",
       },
     },
   });

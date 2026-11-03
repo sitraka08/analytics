@@ -22,7 +22,9 @@ const googleSansCode = Google_Sans_Code({
 const TITLE = `${BRAND.name} — Des statistiques web enfin lisibles`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
   title: {
     default: TITLE,
     template: `%s · ${BRAND.name}`,
@@ -54,7 +56,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" data-scroll-behavior="smooth" className={`${googleSans.variable} ${manrope.variable} ${googleSansCode.variable} h-full antialiased`}>
+    <html
+      lang="fr"
+      data-scroll-behavior="smooth"
+      className={`${googleSans.variable} ${manrope.variable} ${googleSansCode.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col">
         <MotionProvider>{children}</MotionProvider>
       </body>

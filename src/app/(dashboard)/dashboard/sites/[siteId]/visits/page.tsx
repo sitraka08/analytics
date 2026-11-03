@@ -3,18 +3,38 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { HeaderActions } from "@/components/layout/header-actions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FilterBar, PeriodTabs, SessionTable, getSessions, pageNumberSchema, parseDashboardQuery } from "@/features/analytics";
+import {
+  FilterBar,
+  PeriodTabs,
+  SessionTable,
+  getSessions,
+  pageNumberSchema,
+  parseDashboardQuery,
+} from "@/features/analytics";
 import { requireSession } from "@/features/auth";
-import { SiteHeader, SiteHeaderSkeleton, SiteNotFoundError, getOwnedSite } from "@/features/sites";
+import {
+  SiteHeader,
+  SiteHeaderSkeleton,
+  SiteNotFoundError,
+  getOwnedSite,
+} from "@/features/sites";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Visites" };
 
-async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboard/sites/[siteId]/visits">, "params" | "searchParams">) {
+async function VisitsContent({
+  params,
+  searchParams,
+}: Pick<
+  PageProps<"/dashboard/sites/[siteId]/visits">,
+  "params" | "searchParams"
+>) {
   const { user } = await requireSession();
   const [{ siteId }, query] = await Promise.all([params, searchParams]);
   const { period, filters } = parseDashboardQuery(query);
-  const pageNumber = pageNumberSchema.parse(typeof query.p === "string" ? query.p : undefined);
+  const pageNumber = pageNumberSchema.parse(
+    typeof query.p === "string" ? query.p : undefined,
+  );
 
   const site = await getOwnedSite(user.id, siteId).catch((error: unknown) => {
     if (error instanceof SiteNotFoundError) notFound();
@@ -31,21 +51,36 @@ async function VisitsContent({ params, searchParams }: Pick<PageProps<"/dashboar
       <SiteHeader site={site} current="visits" />
 
       <div className="mt-6">
-        <FilterBar siteId={siteId} period={period} filters={filters} basePath={basePath} />
+        <FilterBar
+          siteId={siteId}
+          period={period}
+          filters={filters}
+          basePath={basePath}
+        />
       </div>
 
       <div className="mt-4">
-        <SessionTable siteId={siteId} data={data} period={period} filters={filters} basePath={basePath} />
+        <SessionTable
+          siteId={siteId}
+          data={data}
+          period={period}
+          filters={filters}
+          basePath={basePath}
+        />
       </div>
       <p className="mt-3 max-w-2xl px-2 text-xs text-muted-foreground">
-        Une visite regroupe les pages vues d&apos;une même personne tant qu&apos;elle reste active. Les visiteurs sont anonymes : on ne peut pas
+        Une visite regroupe les pages vues d&apos;une même personne tant
+        qu&apos;elle reste active. Les visiteurs sont anonymes : on ne peut pas
         les reconnaître d&apos;un jour à l&apos;autre.
       </p>
     </>
   );
 }
 
-export default function VisitsPage({ params, searchParams }: PageProps<"/dashboard/sites/[siteId]/visits">) {
+export default function VisitsPage({
+  params,
+  searchParams,
+}: PageProps<"/dashboard/sites/[siteId]/visits">) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
       <Suspense

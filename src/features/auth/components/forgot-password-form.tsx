@@ -15,12 +15,18 @@ import { TextField } from "@/components/shared/text-field";
 const INITIAL_STATE: FormState<ForgotPasswordField> = { ok: false };
 
 export function ForgotPasswordForm() {
-  const [state, formAction] = useActionState(requestPasswordResetAction, INITIAL_STATE);
+  const [state, formAction] = useActionState(
+    requestPasswordResetAction,
+    INITIAL_STATE,
+  );
 
   return (
     <form action={formAction} noValidate>
       <FieldGroup className="gap-5">
-        <FormMessage message={state.message} tone={state.ok ? "success" : "error"} />
+        <FormMessage
+          message={state.message}
+          tone={state.ok ? "success" : "error"}
+        />
 
         <TextField
           name="email"
@@ -35,7 +41,14 @@ export function ForgotPasswordForm() {
 
         <Field className="gap-2">
           <SubmitButton>Envoyer le lien</SubmitButton>
-          <Link href={ROUTES.login} className={buttonVariants({ variant: "ghost", size: "lg", className: "h-12 rounded-full text-base hover:bg-cream-deep" })}>
+          <Link
+            href={ROUTES.login}
+            className={buttonVariants({
+              variant: "ghost",
+              size: "lg",
+              className: "h-12 rounded-full text-base hover:bg-cream-deep",
+            })}
+          >
             Retour à la connexion
           </Link>
         </Field>

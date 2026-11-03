@@ -5,4 +5,6 @@ export const resendVerificationSchema = z.object({
   email: emailField,
 });
 
-export type ResendVerificationField = keyof z.infer<typeof resendVerificationSchema>;
+export type ResendVerificationField = keyof z.infer<
+  typeof resendVerificationSchema
+>;

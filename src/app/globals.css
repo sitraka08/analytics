@@ -108,8 +108,11 @@
 
 @theme inline {
   --font-sans: var(--font-google-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-manrope), var(--font-google-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-google-sans-code), ui-monospace, SFMono-Regular, monospace;
+  --font-heading:
+    var(--font-manrope), var(--font-google-sans), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono:
+    var(--font-google-sans-code), ui-monospace, SFMono-Regular, monospace;
   --color-surface: var(--surface);
   --color-cream-deep: var(--cream-deep);
   --color-line: var(--line);
@@ -196,7 +199,11 @@
 @layer components {
   /* Scalloped edge under the hero: half circles touching on the baseline. */
   .scallop-edge {
-    background-image: radial-gradient(circle at 50% 0, var(--cream-deep) 47.5px, transparent 48px);
+    background-image: radial-gradient(
+      circle at 50% 0,
+      var(--cream-deep) 47.5px,
+      transparent 48px
+    );
     background-size: 96px 48px;
     background-position: center top;
     background-repeat: repeat-x;
@@ -204,7 +211,11 @@
 
   @media (min-width: 768px) {
     .scallop-edge {
-      background-image: radial-gradient(circle at 50% 0, var(--cream-deep) 79.5px, transparent 80px);
+      background-image: radial-gradient(
+        circle at 50% 0,
+        var(--cream-deep) 79.5px,
+        transparent 80px
+      );
       background-size: 160px 80px;
     }
   }

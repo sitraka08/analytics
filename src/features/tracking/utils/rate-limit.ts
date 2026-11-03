@@ -7,7 +7,8 @@ const windows = new Map<string, { count: number; resetAt: number }>();
 // Best effort: the counters live in the memory of one instance, which is enough to blunt a single noisy client.
 export function isRateLimited(key: string, now = Date.now()): boolean {
   if (windows.size > MAX_TRACKED_KEYS) {
-    for (const [trackedKey, entry] of windows) if (entry.resetAt <= now) windows.delete(trackedKey);
+    for (const [trackedKey, entry] of windows)
+      if (entry.resetAt <= now) windows.delete(trackedKey);
     if (windows.size > MAX_TRACKED_KEYS) windows.clear();
   }
 

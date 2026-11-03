@@ -6,14 +6,19 @@ import type { DateRange } from "react-day-picker";
 import { fr } from "react-day-picker/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import type { Filters } from "../schemas/filters";
 import type { Period } from "../schemas/period";
 import { useDashboardNavigate } from "../hooks/use-dashboard-params";
 import { browserTimeZone } from "../utils/time-zone";
 
-const pill = "inline-flex h-10 items-center gap-2 rounded-full border px-3 text-sm font-medium transition-colors sm:px-4";
+const pill =
+  "inline-flex h-10 items-center gap-2 rounded-full border px-3 text-sm font-medium transition-colors sm:px-4";
 const pillActive = "border-foreground bg-foreground text-background";
 const pillIdle = "border-border bg-surface hover:border-foreground/35";
 
@@ -27,13 +32,25 @@ function fromYmd(ymd: string) {
   return new Date(year, month - 1, day);
 }
 
-const shortDate = new Intl.DateTimeFormat("fr", { day: "numeric", month: "short" });
-const longDate = new Intl.DateTimeFormat("fr", { day: "numeric", month: "short", year: "numeric" });
+const shortDate = new Intl.DateTimeFormat("fr", {
+  day: "numeric",
+  month: "short",
+});
+const longDate = new Intl.DateTimeFormat("fr", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
 
 type ControlProps = { basePath: string; filters: Filters };
 
 /** "Today" depends on the viewer's time zone, which only the browser knows. */
-export function TodayButton({ active, basePath, filters, className }: ControlProps & { active: boolean; className?: string }) {
+export function TodayButton({
+  active,
+  basePath,
+  filters,
+  className,
+}: ControlProps & { active: boolean; className?: string }) {
   const { go } = useDashboardNavigate(basePath);
 
   return (
@@ -48,11 +65,17 @@ export function TodayButton({ active, basePath, filters, className }: ControlPro
   );
 }
 
-export function DateRangePicker({ current, basePath, filters }: ControlProps & { current: Period }) {
+export function DateRangePicker({
+  current,
+  basePath,
+  filters,
+}: ControlProps & { current: Period }) {
   const { go } = useDashboardNavigate(basePath);
   const [open, setOpen] = useState(false);
   const [range, setRange] = useState<DateRange | undefined>(
-    current.preset === "custom" ? { from: fromYmd(current.from), to: fromYmd(current.to) } : undefined,
+    current.preset === "custom"
+      ? { from: fromYmd(current.from), to: fromYmd(current.to) }
+      : undefined,
   );
   const active = current.preset === "custom";
 
@@ -74,9 +97,14 @@ export function DateRangePicker({ current, basePath, filters }: ControlProps & {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className={cn(pill, active ? pillActive : pillIdle)} aria-label="Choisir une période personnalisée">
+      <PopoverTrigger
+        className={cn(pill, active ? pillActive : pillIdle)}
+        aria-label="Choisir une période personnalisée"
+      >
         <CalendarDays aria-hidden className="size-4" />
-        <span className={cn("hidden", active ? "sm:inline" : "xl:inline")}>{label}</span>
+        <span className={cn("hidden", active ? "sm:inline" : "xl:inline")}>
+          {label}
+        </span>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-auto gap-3 rounded-2xl p-3">
         <Calendar
@@ -95,7 +123,12 @@ export function DateRangePicker({ current, basePath, filters }: ControlProps & {
               ? `${longDate.format(range.from)}${range.to && range.to.getTime() !== range.from.getTime() ? ` – ${longDate.format(range.to)}` : ""}`
               : "Choisissez un jour ou une plage de jours."}
           </p>
-          <Button type="button" className="h-9 rounded-full px-4" disabled={!range?.from} onClick={apply}>
+          <Button
+            type="button"
+            className="h-9 rounded-full px-4"
+            disabled={!range?.from}
+            onClick={apply}
+          >
             Appliquer
           </Button>
         </div>

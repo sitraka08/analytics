@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { CircleAlert } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { ROUTES } from "@/lib/routes";
 import type { SignUpField } from "../schemas/sign-up";
 import { signUpAction } from "../services/sign-up";
@@ -55,7 +61,10 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
           errors={state.fieldErrors?.password}
         />
 
-        <Field className="gap-1.5" data-invalid={termsErrors ? true : undefined}>
+        <Field
+          className="gap-1.5"
+          data-invalid={termsErrors ? true : undefined}
+        >
           <div className="flex items-start gap-3 px-1">
             <Checkbox
               id="field-terms"
@@ -66,20 +75,34 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
               aria-describedby={termsErrors ? "field-terms-error" : undefined}
               className="mt-0.5 size-5 rounded-md border-2 border-foreground/30"
             />
-            <FieldLabel htmlFor="field-terms" className="block text-sm font-normal leading-relaxed">
+            <FieldLabel
+              htmlFor="field-terms"
+              className="block text-sm font-normal leading-relaxed"
+            >
               J&apos;accepte les{" "}
-              <Link href={ROUTES.terms} target="_blank" className="font-medium underline underline-offset-4">
+              <Link
+                href={ROUTES.terms}
+                target="_blank"
+                className="font-medium underline underline-offset-4"
+              >
                 conditions d&apos;utilisation
               </Link>{" "}
               et la{" "}
-              <Link href={ROUTES.privacy} target="_blank" className="font-medium underline underline-offset-4">
+              <Link
+                href={ROUTES.privacy}
+                target="_blank"
+                className="font-medium underline underline-offset-4"
+              >
                 politique de confidentialité
               </Link>
               .
             </FieldLabel>
           </div>
           {termsErrors ? (
-            <FieldError id="field-terms-error" className="flex items-start gap-1.5 px-1">
+            <FieldError
+              id="field-terms-error"
+              className="flex items-start gap-1.5 px-1"
+            >
               <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0" />
               <span>{termsErrors[0]}</span>
             </FieldError>
@@ -90,7 +113,10 @@ export function SignUpForm({ defaultEmail }: { defaultEmail?: string }) {
           <SubmitButton className="w-full">Créer mon compte</SubmitButton>
           <FieldDescription className="text-center text-sm">
             Déjà un compte ?{" "}
-            <Link href={ROUTES.login} className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4">
+            <Link
+              href={ROUTES.login}
+              className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4"
+            >
               Se connecter
             </Link>
           </FieldDescription>

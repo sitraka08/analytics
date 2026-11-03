@@ -18,7 +18,13 @@ export function CopyButton({ value }: { value: string }) {
   }
 
   return (
-    <Button type="button" variant="outline" size="sm" onClick={copy} className="rounded-full bg-surface">
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={copy}
+      className="rounded-full bg-surface"
+    >
       {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
       <span aria-live="polite">{copied ? "Copié" : "Copier"}</span>
     </Button>

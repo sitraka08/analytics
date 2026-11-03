@@ -25,7 +25,10 @@ export function SignupForm({ className = "" }: { className?: string }) {
         className="inline-flex shrink-0 items-center gap-3 rounded-full bg-foreground py-1.5 pl-5 pr-1.5 text-sm font-medium text-background transition-opacity hover:opacity-85"
       >
         {HERO.cta}
-        <span aria-hidden className="grid size-8 place-items-center rounded-full bg-background text-foreground">
+        <span
+          aria-hidden
+          className="grid size-8 place-items-center rounded-full bg-background text-foreground"
+        >
           →
         </span>
       </button>

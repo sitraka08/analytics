@@ -28,7 +28,9 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
       {next ? <input type="hidden" name="next" value={next} /> : null}
       <FieldGroup className="gap-5">
         <FormMessage message={state.message ?? error} />
-        {!state.message && !error ? <FormMessage message={notice} tone="success" /> : null}
+        {!state.message && !error ? (
+          <FormMessage message={notice} tone="success" />
+        ) : null}
 
         <TextField
           name="email"
@@ -48,7 +50,10 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
           required
           errors={state.fieldErrors?.password}
           labelAction={
-            <Link href={ROUTES.forgotPassword} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+            <Link
+              href={ROUTES.forgotPassword}
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
               Mot de passe oublié ?
             </Link>
           }
@@ -58,7 +63,10 @@ export function SignInForm({ next, notice, error }: SignInFormProps) {
           <SubmitButton className="w-full">Se connecter</SubmitButton>
           <FieldDescription className="text-center text-sm">
             Pas encore de compte ?{" "}
-            <Link href={ROUTES.register} className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4">
+            <Link
+              href={ROUTES.register}
+              className="font-medium text-foreground underline decoration-brand-orange decoration-2 underline-offset-4"
+            >
               Créer un compte
             </Link>
           </FieldDescription>

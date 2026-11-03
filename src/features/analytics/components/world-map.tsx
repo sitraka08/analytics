@@ -18,21 +18,42 @@ type WorldTopology = Parameters<typeof feature>[0];
 type CountryCollection = FeatureCollection<Geometry, { name: string }>;
 
 // The JSON import is typed structurally; the cast narrows it to the shape world-atlas documents.
-const world = topology as unknown as WorldTopology & { objects: { countries: Parameters<typeof feature>[1] } };
-const countries = feature(world, world.objects.countries) as unknown as CountryCollection;
-const land = { ...countries, features: countries.features.filter((item) => item.id !== ANTARCTICA) };
-const toPath = geoPath(geoNaturalEarth1().fitSize([WIDTH, HEIGHT], land)).digits(1);
+const world = topology as unknown as WorldTopology & {
+  objects: { countries: Parameters<typeof feature>[1] };
+};
+const countries = feature(
+  world,
+  world.objects.countries,
+) as unknown as CountryCollection;
+const land = {
+  ...countries,
+  features: countries.features.filter((item) => item.id !== ANTARCTICA),
+};
+const toPath = geoPath(
+  geoNaturalEarth1().fitSize([WIDTH, HEIGHT], land),
+).digits(1);
 
 // Projected once at module load: the geometry never changes between requests.
 const SHAPES = land.features.flatMap((item) => {
   const code = COUNTRY_ALPHA2_BY_NUMERIC[String(item.id)];
   const d = toPath(item);
-  return d ? [{ code: code?.toUpperCase() ?? null, name: item.properties.name, d }] : [];
+  return d
+    ? [{ code: code?.toUpperCase() ?? null, name: item.properties.name, d }]
+    : [];
 });
 
-export type MapCountry = { code: string; visitors: number; filters: Filters; active: boolean };
+export type MapCountry = {
+  code: string;
+  visitors: number;
+  filters: Filters;
+  active: boolean;
+};
 
-type WorldMapProps = { countries: MapCountry[]; basePath: string; period: Period };
+type WorldMapProps = {
+  countries: MapCountry[];
+  basePath: string;
+  period: Period;
+};
 
 /** Choropleth: countries with visitors are links that apply the country filter. */
 export function WorldMap({ countries: rows, basePath, period }: WorldMapProps) {
@@ -40,18 +61,41 @@ export function WorldMap({ countries: rows, basePath, period }: WorldMapProps) {
   const max = Math.max(...rows.map((row) => row.visitors), 1);
 
   return (
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label="Carte du monde des visiteurs par pays" className="h-auto w-full">
+    <svg
+      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      role="img"
+      aria-label="Carte du monde des visiteurs par pays"
+      className="h-auto w-full"
+    >
       {SHAPES.map((shape) => {
         const row = shape.code ? byCode.get(shape.code) : undefined;
-        if (!row) return <path key={shape.name} d={shape.d} className="fill-foreground/10 stroke-surface" strokeWidth={0.5} />;
+        if (!row)
+          return (
+            <path
+              key={shape.name}
+              d={shape.d}
+              className="fill-foreground/10 stroke-surface"
+              strokeWidth={0.5}
+            />
+          );
 
         const label = `${formatFilterValue("country", row.code)} : ${formatInteger(row.visitors)} ${row.visitors > 1 ? "visiteurs" : "visiteur"}`;
         return (
-          <DashboardLink key={shape.name} basePath={basePath} period={period} filters={row.filters} aria-label={label} aria-current={row.active ? "true" : undefined}>
+          <DashboardLink
+            key={shape.name}
+            basePath={basePath}
+            period={period}
+            filters={row.filters}
+            aria-label={label}
+            aria-current={row.active ? "true" : undefined}
+          >
             <path
               d={shape.d}
               strokeWidth={row.active ? 1.5 : 0.5}
-              className={cn("fill-brand-blue stroke-surface hover:stroke-foreground", row.active && "stroke-foreground")}
+              className={cn(
+                "fill-brand-blue stroke-surface hover:stroke-foreground",
+                row.active && "stroke-foreground",
+              )}
               style={{ fillOpacity: 0.3 + 0.7 * (row.visitors / max) }}
             >
               <title>{label}</title>

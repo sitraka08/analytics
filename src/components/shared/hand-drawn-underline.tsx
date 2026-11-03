@@ -1,5 +1,9 @@
 // Irregular stroke under a key word, like a marker underline. Place it in a `relative inline-block` parent.
-export function HandDrawnUnderline({ className = "-bottom-2 h-3 w-[108%]" }: { className?: string }) {
+export function HandDrawnUnderline({
+  className = "-bottom-2 h-3 w-[108%]",
+}: {
+  className?: string;
+}) {
   return (
     <svg
       aria-hidden

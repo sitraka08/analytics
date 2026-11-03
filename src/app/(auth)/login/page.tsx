@@ -29,7 +29,9 @@ async function LoginContent({
       <SignInForm
         next={nextPath}
         notice={
-          reset === "success" ? "Mot de passe modifié. Vous pouvez vous connecter." : undefined
+          reset === "success"
+            ? "Mot de passe modifié. Vous pouvez vous connecter."
+            : undefined
         }
         error={
           error === "google"

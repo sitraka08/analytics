@@ -13,19 +13,33 @@ export async function createSiteAction(
   formData: FormData,
 ): Promise<FormState<CreateSiteField>> {
   const { user } = await requireSession();
-  const values = { name: String(formData.get("name") ?? ""), domain: String(formData.get("domain") ?? "") };
+  const values = {
+    name: String(formData.get("name") ?? ""),
+    domain: String(formData.get("domain") ?? ""),
+  };
   const parsed = createSiteSchema.safeParse(values);
 
   if (!parsed.success) {
-    return { ok: false, fieldErrors: z.flattenError(parsed.error).fieldErrors, values };
+    return {
+      ok: false,
+      fieldErrors: z.flattenError(parsed.error).fieldErrors,
+      values,
+    };
   }
 
   let siteId: string;
   try {
     ({ id: siteId } = await createSite(user.id, parsed.data));
   } catch (error) {
-    console.error("createSite failed", error instanceof Error ? error.message : "unknown error");
-    return { ok: false, message: "Le site n'a pas pu être créé. Réessayez dans un instant.", values };
+    console.error(
+      "createSite failed",
+      error instanceof Error ? error.message : "unknown error",
+    );
+    return {
+      ok: false,
+      message: "Le site n'a pas pu être créé. Réessayez dans un instant.",
+      values,
+    };
   }
 
   redirect(ROUTES.site(siteId));

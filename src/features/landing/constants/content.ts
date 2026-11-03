@@ -25,10 +25,30 @@ export const STATS_SECTION = {
   title: "Tout votre trafic, lisible en un instant",
   text: "Visiteurs, pages vues, sources, pays et appareils réunis sur un seul écran. Chaque graphique répond à une question simple, avec la comparaison à la période précédente.",
   cards: [
-    { value: "0", label: "Cookie déposé chez vos visiteurs", tone: "blue", shape: "leaf" },
-    { value: "< 2 Ko", label: "Script ultra léger à installer", tone: "green", shape: "rounded" },
-    { value: "1 ligne", label: "De code pour démarrer", tone: "orange", shape: "rounded" },
-    { value: "10+", label: "Dimensions suivies", tone: "violet", shape: "leaf-alt" },
+    {
+      value: "0",
+      label: "Cookie déposé chez vos visiteurs",
+      tone: "blue",
+      shape: "leaf",
+    },
+    {
+      value: "< 2 Ko",
+      label: "Script ultra léger à installer",
+      tone: "green",
+      shape: "rounded",
+    },
+    {
+      value: "1 ligne",
+      label: "De code pour démarrer",
+      tone: "orange",
+      shape: "rounded",
+    },
+    {
+      value: "10+",
+      label: "Dimensions suivies",
+      tone: "violet",
+      shape: "leaf-alt",
+    },
   ],
   live: {
     label: "Visiteurs en direct",

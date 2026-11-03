@@ -11,10 +11,14 @@ import { SignUpForm } from "@/features/register";
 
 export const metadata: Metadata = { title: "Créer un compte" };
 
-async function RegisterContent({ searchParams }: Pick<PageProps<"/register">, "searchParams">) {
+async function RegisterContent({
+  searchParams,
+}: Pick<PageProps<"/register">, "searchParams">) {
   const { email } = await searchParams;
 
-  return <SignUpForm defaultEmail={typeof email === "string" ? email : undefined} />;
+  return (
+    <SignUpForm defaultEmail={typeof email === "string" ? email : undefined} />
+  );
 }
 
 export default function RegisterPage({ searchParams }: PageProps<"/register">) {

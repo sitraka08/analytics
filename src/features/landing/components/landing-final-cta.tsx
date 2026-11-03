@@ -11,7 +11,9 @@ export function LandingFinalCta() {
           <h2 className="mx-auto max-w-xl text-balance text-3xl font-bold leading-tight tracking-tight md:mx-0 md:text-[2.75rem]">
             {FINAL_CTA.title}
           </h2>
-          <p className="mx-auto mb-8 mt-4 max-w-md text-base leading-relaxed text-muted-foreground md:mx-0">{FINAL_CTA.text}</p>
+          <p className="mx-auto mb-8 mt-4 max-w-md text-base leading-relaxed text-muted-foreground md:mx-0">
+            {FINAL_CTA.text}
+          </p>
           <SignupForm className="md:mx-0" />
         </div>
         <DeskScene className="mx-auto w-full max-w-sm md:max-w-none" />

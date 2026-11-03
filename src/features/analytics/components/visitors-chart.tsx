@@ -2,7 +2,12 @@
 
 import { useId } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
 import { useHourFormat, type HourFormat } from "../hooks/use-hour-format";
 import type { ChartMetric, TimeseriesPoint } from "../types/analytics";
@@ -30,7 +35,11 @@ export function HourFormatToggle() {
   const [hourFormat, setHourFormat] = useHourFormat();
 
   return (
-    <div role="group" aria-label="Format des heures" className="flex w-fit rounded-full bg-cream-deep p-0.5 text-xs font-medium">
+    <div
+      role="group"
+      aria-label="Format des heures"
+      className="flex w-fit rounded-full bg-cream-deep p-0.5 text-xs font-medium"
+    >
       {HOUR_FORMATS.map((option) => (
         <button
           key={option.value}
@@ -39,7 +48,9 @@ export function HourFormatToggle() {
           onClick={() => setHourFormat(option.value)}
           className={cn(
             "rounded-full px-3 py-1 transition-colors",
-            hourFormat === option.value ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
+            hourFormat === option.value
+              ? "bg-foreground text-background"
+              : "text-muted-foreground hover:text-foreground",
           )}
         >
           {option.label}
@@ -53,14 +64,30 @@ export function VisitorsChart({ points, unit, metric }: VisitorsChartProps) {
   const [hourFormat] = useHourFormat();
   const gradientId = `fill-${useId().replace(/:/g, "")}`;
   const hour12 = hourFormat === "12h";
-  const hours = { hour: hour12 ? "numeric" : "2-digit", minute: "2-digit", hour12 } as const;
-  const axisFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? hours : { day: "numeric", month: "short" });
-  const tooltipFormat = new Intl.DateTimeFormat("fr", unit === "hour" ? { day: "numeric", month: "long", ...hours } : { weekday: "long", day: "numeric", month: "long" });
+  const hours = {
+    hour: hour12 ? "numeric" : "2-digit",
+    minute: "2-digit",
+    hour12,
+  } as const;
+  const axisFormat = new Intl.DateTimeFormat(
+    "fr",
+    unit === "hour" ? hours : { day: "numeric", month: "short" },
+  );
+  const tooltipFormat = new Intl.DateTimeFormat(
+    "fr",
+    unit === "hour"
+      ? { day: "numeric", month: "long", ...hours }
+      : { weekday: "long", day: "numeric", month: "long" },
+  );
   const color = `var(--color-${metric})`;
 
   return (
     <>
-      <ChartContainer config={config} className="h-60 w-full sm:h-72" aria-hidden>
+      <ChartContainer
+        config={config}
+        className="h-60 w-full sm:h-72"
+        aria-hidden
+      >
         <AreaChart data={points} margin={{ left: 0, right: 8, top: 8 }}>
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -74,17 +101,42 @@ export function VisitorsChart({ points, unit, metric }: VisitorsChartProps) {
             tickLine={false}
             axisLine={false}
             minTickGap={32}
-            tickFormatter={(value: string) => axisFormat.format(new Date(value))}
+            tickFormatter={(value: string) =>
+              axisFormat.format(new Date(value))
+            }
           />
-          <YAxis tickLine={false} axisLine={false} width={40} allowDecimals={false} tickFormatter={(value: number) => formatCompact(value)} />
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            width={40}
+            allowDecimals={false}
+            tickFormatter={(value: number) => formatCompact(value)}
+          />
           <ChartTooltip
-            content={<ChartTooltipContent labelFormatter={(value: React.ReactNode) => tooltipFormat.format(new Date(String(value)))} indicator="line" />}
+            content={
+              <ChartTooltipContent
+                labelFormatter={(value: React.ReactNode) =>
+                  tooltipFormat.format(new Date(String(value)))
+                }
+                indicator="line"
+              />
+            }
           />
-          <Area key={metric} dataKey={metric} type="monotone" stroke={color} fill={`url(#${gradientId})`} strokeWidth={2.5} activeDot={{ r: 4 }} />
+          <Area
+            key={metric}
+            dataKey={metric}
+            type="monotone"
+            stroke={color}
+            fill={`url(#${gradientId})`}
+            strokeWidth={2.5}
+            activeDot={{ r: 4 }}
+          />
         </AreaChart>
       </ChartContainer>
       <table className="sr-only">
-        <caption>Visiteurs et pages vues par {unit === "hour" ? "heure" : "jour"}</caption>
+        <caption>
+          Visiteurs et pages vues par {unit === "hour" ? "heure" : "jour"}
+        </caption>
         <thead>
           <tr>
             <th scope="col">Date</th>

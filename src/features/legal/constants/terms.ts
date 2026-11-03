@@ -17,7 +17,9 @@ export const TERMS: LegalDocument = {
       id: "account",
       title: "Votre compte",
       paragraphs: [
-        "Vous devez avoir au moins 16 ans et rester responsable de votre mot de passe. Vous pouvez supprimer votre compte à tout moment en écrivant à " + PUBLISHER.email + " : vos sites et statistiques sont alors effacés.",
+        "Vous devez avoir au moins 16 ans et rester responsable de votre mot de passe. Vous pouvez supprimer votre compte à tout moment en écrivant à " +
+          PUBLISHER.email +
+          " : vos sites et statistiques sont alors effacés.",
       ],
     },
     {
@@ -28,7 +30,9 @@ export const TERMS: LegalDocument = {
         "N'envoyez pas de fausses données et ne cherchez pas à contourner ou perturber le service.",
         "N'essayez pas d'accéder aux données d'un autre utilisateur.",
       ],
-      closing: ["En cas de manquement, nous pouvons suspendre ou supprimer le compte."],
+      closing: [
+        "En cas de manquement, nous pouvons suspendre ou supprimer le compte.",
+      ],
     },
     {
       id: "liability",

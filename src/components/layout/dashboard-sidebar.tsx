@@ -34,20 +34,32 @@ function SiteBadge({ name, index }: { name: string; index: number }) {
   return (
     <span
       aria-hidden
-      className={cn("grid size-5 shrink-0 place-items-center rounded-md font-heading text-[11px] leading-none font-bold", toneClass(TONES[index % TONES.length]))}
+      className={cn(
+        "grid size-5 shrink-0 place-items-center rounded-md font-heading text-[11px] leading-none font-bold",
+        toneClass(TONES[index % TONES.length]),
+      )}
     >
       {name.trim()[0]?.toUpperCase() ?? "?"}
     </span>
   );
 }
 
-export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  user,
+  sites,
+  signOut,
+}: DashboardSidebarProps) {
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader className="px-3 pt-4">
-        <Link href={ROUTES.home} className="flex items-center gap-2 text-base font-bold tracking-tight">
+        <Link
+          href={ROUTES.home}
+          className="flex items-center gap-2 text-base font-bold tracking-tight"
+        >
           <BrandMark className="size-8 shrink-0" />
-          <span className="group-data-[collapsible=icon]:hidden">{BRAND.name}</span>
+          <span className="group-data-[collapsible=icon]:hidden">
+            {BRAND.name}
+          </span>
         </Link>
       </SidebarHeader>
 
@@ -56,7 +68,12 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarLink href={ROUTES.dashboard} label="Vue d'ensemble" icon={<LayoutDashboard aria-hidden />} exact />
+                <SidebarLink
+                  href={ROUTES.dashboard}
+                  label="Vue d'ensemble"
+                  icon={<LayoutDashboard aria-hidden />}
+                  exact
+                />
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
@@ -68,11 +85,20 @@ export function DashboardSidebar({ user, sites, signOut }: DashboardSidebarProps
             <SidebarMenu>
               {sites.map((site, index) => (
                 <SidebarMenuItem key={site.id}>
-                  <SidebarLink href={ROUTES.site(site.id)} label={site.name} icon={<SiteBadge name={site.name} index={index} />} />
+                  <SidebarLink
+                    href={ROUTES.site(site.id)}
+                    label={site.name}
+                    icon={<SiteBadge name={site.name} index={index} />}
+                  />
                 </SidebarMenuItem>
               ))}
               <SidebarMenuItem>
-                <SidebarLink href={ROUTES.newSite} label="Ajouter un site" icon={<Plus aria-hidden />} exact />
+                <SidebarLink
+                  href={ROUTES.newSite}
+                  label="Ajouter un site"
+                  icon={<Plus aria-hidden />}
+                  exact
+                />
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

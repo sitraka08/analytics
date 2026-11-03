@@ -3,10 +3,14 @@ import { parsePeriod, type Period } from "../schemas/period";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
-const first = (value: string | string[] | undefined) => (typeof value === "string" ? value : undefined);
+const first = (value: string | string[] | undefined) =>
+  typeof value === "string" ? value : undefined;
 
 /** Period and filters from page search params or an API request: invalid values fall back to defaults. */
-export function parseDashboardQuery(query: SearchParams): { period: Period; filters: Filters } {
+export function parseDashboardQuery(query: SearchParams): {
+  period: Period;
+  filters: Filters;
+} {
   return {
     period: parsePeriod(query),
     filters: filtersSchema.parse({

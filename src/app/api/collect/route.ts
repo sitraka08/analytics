@@ -1,4 +1,7 @@
-import { MAX_BODY_BYTES, collectSchema } from "@/features/tracking/schemas/collect";
+import {
+  MAX_BODY_BYTES,
+  collectSchema,
+} from "@/features/tracking/schemas/collect";
 import { collectEvent } from "@/features/tracking/services/collect";
 import { getClientIp } from "@/features/tracking/utils/client-ip";
 
@@ -6,12 +9,15 @@ import { getClientIp } from "@/features/tracking/utils/client-ip";
 function respond(status: number, allowOrigin?: string) {
   return new Response(null, {
     status,
-    headers: allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin, Vary: "Origin" } : undefined,
+    headers: allowOrigin
+      ? { "Access-Control-Allow-Origin": allowOrigin, Vary: "Origin" }
+      : undefined,
   });
 }
 
 export async function POST(request: Request) {
-  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) return respond(413);
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES)
+    return respond(413);
 
   const body = await request.text();
   if (body.length > MAX_BODY_BYTES) return respond(413);
@@ -49,7 +55,10 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     // Message only: the request itself carries personal data (IP, user-agent) that must not reach the logs.
-    console.error("collect failed", error instanceof Error ? error.message : "unknown error");
+    console.error(
+      "collect failed",
+      error instanceof Error ? error.message : "unknown error",
+    );
     return respond(500);
   }
 }
@@ -59,7 +68,9 @@ function parseCountry(value: string | null): string | null {
 }
 
 function parseRegion(value: string | null): string | null {
-  return value && /^[A-Za-z0-9-]{1,3}$/.test(value) ? value.toUpperCase() : null;
+  return value && /^[A-Za-z0-9-]{1,3}$/.test(value)
+    ? value.toUpperCase()
+    : null;
 }
 
 // Vercel sends the city URL-encoded ("S%C3%A3o%20Paulo").

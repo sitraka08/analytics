@@ -12,7 +12,10 @@ import { SubmitButton } from "@/components/shared/submit-button";
 const INITIAL_STATE: FormState<ResetPasswordField> = { ok: false };
 
 export function ResetPasswordForm({ token }: { token: string }) {
-  const [state, formAction] = useActionState(resetPasswordAction, INITIAL_STATE);
+  const [state, formAction] = useActionState(
+    resetPasswordAction,
+    INITIAL_STATE,
+  );
 
   return (
     <form action={formAction} noValidate>

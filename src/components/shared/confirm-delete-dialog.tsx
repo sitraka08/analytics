@@ -30,7 +30,14 @@ type ConfirmDeleteDialogProps = {
 const normalize = (value: string) => value.trim().toLowerCase();
 
 // Irreversible deletions always go through this dialog: an explicit alert plus a typed confirmation.
-export function ConfirmDeleteDialog({ triggerLabel, title, description, expected, confirmLabel, onConfirm }: ConfirmDeleteDialogProps) {
+export function ConfirmDeleteDialog({
+  triggerLabel,
+  title,
+  description,
+  expected,
+  confirmLabel,
+  onConfirm,
+}: ConfirmDeleteDialogProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string>();
@@ -68,16 +75,24 @@ export function ConfirmDeleteDialog({ triggerLabel, title, description, expected
       </AlertDialogTrigger>
       <AlertDialogContent className="gap-5 rounded-3xl p-6 data-[size=default]:sm:max-w-md">
         <AlertDialogHeader className="place-items-start gap-3 text-left">
-          <span aria-hidden className="grid size-11 place-items-center rounded-full bg-destructive/10 text-destructive">
+          <span
+            aria-hidden
+            className="grid size-11 place-items-center rounded-full bg-destructive/10 text-destructive"
+          >
             <TriangleAlert className="size-5" />
           </span>
-          <AlertDialogTitle className="font-heading text-xl font-bold">{title}</AlertDialogTitle>
-          <AlertDialogDescription className="text-sm leading-relaxed text-muted-foreground">{description}</AlertDialogDescription>
+          <AlertDialogTitle className="font-heading text-xl font-bold">
+            {title}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-sm leading-relaxed text-muted-foreground">
+            {description}
+          </AlertDialogDescription>
         </AlertDialogHeader>
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="confirm-delete-input" className="text-sm">
-            Pour confirmer, saisissez <strong className="font-semibold">{expected}</strong>
+            Pour confirmer, saisissez{" "}
+            <strong className="font-semibold">{expected}</strong>
           </Label>
           <Input
             id="confirm-delete-input"
@@ -97,7 +112,10 @@ export function ConfirmDeleteDialog({ triggerLabel, title, description, expected
         </div>
 
         <AlertDialogFooter className="mx-0 mb-0 flex-col-reverse gap-2 border-0 bg-transparent p-0 sm:flex-row sm:justify-end">
-          <AlertDialogCancel disabled={pending} className="h-10 rounded-full px-5">
+          <AlertDialogCancel
+            disabled={pending}
+            className="h-10 rounded-full px-5"
+          >
             Annuler
           </AlertDialogCancel>
           <Button

@@ -6,24 +6,36 @@ import { cn } from "@/lib/utils";
 
 export type SiteSection = "stats" | "visits" | "settings";
 
-const TABS: { id: SiteSection; label: string; href: (siteId: string) => string }[] = [
+const TABS: {
+  id: SiteSection;
+  label: string;
+  href: (siteId: string) => string;
+}[] = [
   { id: "stats", label: "Statistiques", href: ROUTES.site },
   { id: "visits", label: "Visites", href: ROUTES.siteVisits },
   { id: "settings", label: "Paramètres", href: ROUTES.siteSettings },
 ];
 
-type SiteHeaderProps = { site: { id: string; name: string; domain: string }; current: SiteSection };
+type SiteHeaderProps = {
+  site: { id: string; name: string; domain: string };
+  current: SiteSection;
+};
 
 /** Site title and its section tabs, shared by every page of a site. */
 export function SiteHeader({ site, current }: SiteHeaderProps) {
   return (
     <div>
       <div className="flex items-center gap-3">
-        <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-2xl bg-foreground font-heading text-lg font-bold text-background">
+        <span
+          aria-hidden
+          className="grid size-11 shrink-0 place-items-center rounded-2xl bg-foreground font-heading text-lg font-bold text-background"
+        >
           {site.name.trim()[0]?.toUpperCase() ?? "?"}
         </span>
         <div className="min-w-0">
-          <h1 className="truncate text-2xl font-bold tracking-tight">{site.name}</h1>
+          <h1 className="truncate text-2xl font-bold tracking-tight">
+            {site.name}
+          </h1>
           <a
             href={`https://${site.domain}`}
             target="_blank"
@@ -36,7 +48,10 @@ export function SiteHeader({ site, current }: SiteHeaderProps) {
           </a>
         </div>
       </div>
-      <nav aria-label="Sections du site" className="mt-5 border-b border-border">
+      <nav
+        aria-label="Sections du site"
+        className="mt-5 border-b border-border"
+      >
         <ul className="-mb-px flex gap-6 overflow-x-auto">
           {TABS.map((tab) => {
             const active = tab.id === current;
@@ -48,7 +63,9 @@ export function SiteHeader({ site, current }: SiteHeaderProps) {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "inline-flex h-10 items-center border-b-2 text-sm font-medium whitespace-nowrap transition-colors",
-                    active ? "border-foreground text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+                    active
+                      ? "border-foreground text-foreground"
+                      : "border-transparent text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {tab.label}

@@ -9,8 +9,16 @@ import { filterArgs } from "./filter-params";
 
 export const SESSIONS_PAGE_SIZE = 25;
 
-type Place = { country: string | null; region: string | null; city: string | null };
-type Device = { device: string | null; browser: string | null; os: string | null };
+type Place = {
+  country: string | null;
+  region: string | null;
+  city: string | null;
+};
+type Device = {
+  device: string | null;
+  browser: string | null;
+  os: string | null;
+};
 
 type SessionRow = Place &
   Device & {
@@ -44,7 +52,13 @@ export class SessionNotFoundError extends Error {
 }
 
 /** Visits of a period, newest first. `page` starts at 1. */
-export async function getSessions(userId: string, siteId: string, period: Period, filters: Filters, page: number): Promise<SessionsPage> {
+export async function getSessions(
+  userId: string,
+  siteId: string,
+  period: Period,
+  filters: Filters,
+  page: number,
+): Promise<SessionsPage> {
   await getOwnedSite(userId, siteId);
   const { from, to } = getPeriodRange(period);
 
@@ -76,7 +90,11 @@ export async function getSessions(userId: string, siteId: string, period: Period
 }
 
 /** One visit with its page views in order; the place, device and source are those of the first page view. */
-export async function getSession(userId: string, siteId: string, sessionId: string): Promise<SessionDetail> {
+export async function getSession(
+  userId: string,
+  siteId: string,
+  sessionId: string,
+): Promise<SessionDetail> {
   await getOwnedSite(userId, siteId);
 
   const { rows: data } = await db.execute<SessionEventRow>(
@@ -101,7 +119,14 @@ export async function getSession(userId: string, siteId: string, sessionId: stri
     utmSource: first.utm_source,
     utmMedium: first.utm_medium,
     utmCampaign: first.utm_campaign,
-    durationMs: measured.length > 0 ? measured.reduce((total, row) => total + (row.duration_ms ?? 0), 0) : null,
-    pageviews: data.map((row) => ({ at: new Date(row.created_at).toISOString(), path: row.path, durationMs: row.duration_ms })),
+    durationMs:
+      measured.length > 0
+        ? measured.reduce((total, row) => total + (row.duration_ms ?? 0), 0)
+        : null,
+    pageviews: data.map((row) => ({
+      at: new Date(row.created_at).toISOString(),
+      path: row.path,
+      durationMs: row.duration_ms,
+    })),
   };
 }

@@ -10,15 +10,26 @@ import { buildDashboardHref } from "../utils/search-params";
 /** Period and filters currently in the URL. Next keeps `useSearchParams` in sync with `history.pushState`. */
 export function useDashboardParams(): { period: Period; filters: Filters } {
   const key = useSearchParams().toString();
-  return useMemo(() => parseDashboardQuery(Object.fromEntries(new URLSearchParams(key))), [key]);
+  return useMemo(
+    () => parseDashboardQuery(Object.fromEntries(new URLSearchParams(key))),
+    [key],
+  );
 }
 
 // True under <DashboardNavigationProvider>: the page reads its data through queries, so changing the URL
 // in place is enough. Elsewhere (server-rendered lists) a real navigation is needed.
 const InPlaceNavigationContext = createContext(false);
 
-export function DashboardNavigationProvider({ children }: { children: React.ReactNode }) {
-  return <InPlaceNavigationContext.Provider value>{children}</InPlaceNavigationContext.Provider>;
+export function DashboardNavigationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <InPlaceNavigationContext.Provider value>
+      {children}
+    </InPlaceNavigationContext.Provider>
+  );
 }
 
 export function useDashboardNavigate(basePath: string) {

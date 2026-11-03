@@ -10,7 +10,9 @@ async function SettingsContent() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold tracking-tight">Paramètres du compte</h1>
+      <h1 className="text-3xl font-bold tracking-tight">
+        Paramètres du compte
+      </h1>
 
       <section className="mt-6 rounded-3xl border border-border/70 bg-surface p-5">
         <h2 className="text-base font-bold">Votre compte</h2>
@@ -22,12 +24,18 @@ async function SettingsContent() {
         </dl>
       </section>
 
-      <section aria-labelledby="plan" className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border/70 bg-surface p-5">
+      <section
+        aria-labelledby="plan"
+        className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border/70 bg-surface p-5"
+      >
         <div>
           <h2 id="plan" className="text-base font-bold">
             Votre offre
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">Toutes les fonctionnalités actuelles sont incluses, sans limite de sites.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Toutes les fonctionnalités actuelles sont incluses, sans limite de
+            sites.
+          </p>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-cream-deep px-3 py-1 text-sm font-medium">
           <span aria-hidden className="size-2 rounded-full bg-accent-green" />
@@ -44,7 +52,8 @@ async function SettingsContent() {
             Zone dangereuse
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Supprimer votre compte efface aussi tous vos sites et leurs statistiques. Il n&apos;est pas possible de revenir en arrière.
+            Supprimer votre compte efface aussi tous vos sites et leurs
+            statistiques. Il n&apos;est pas possible de revenir en arrière.
           </p>
         </div>
         <DeleteAccountButton email={user.email} />
@@ -56,7 +65,9 @@ async function SettingsContent() {
 export default function SettingsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6 md:px-6 md:py-8">
-      <Suspense fallback={<div className="h-32 animate-pulse rounded-2xl bg-muted" />}>
+      <Suspense
+        fallback={<div className="h-32 animate-pulse rounded-2xl bg-muted" />}
+      >
         <SettingsContent />
       </Suspense>
     </div>

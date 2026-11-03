@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-const HOSTNAME_PATTERN = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
+const HOSTNAME_PATTERN =
+  /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
 
 // Accepts a bare domain or a pasted URL and keeps only the hostname, without "www.".
 function toHostname(value: string): string {
@@ -14,7 +15,13 @@ export const domainField = z
   .trim()
   .toLowerCase()
   .transform(toHostname)
-  .pipe(z.string().regex(HOSTNAME_PATTERN, { error: "Saisissez un domaine valide, par exemple exemple.fr." }));
+  .pipe(
+    z
+      .string()
+      .regex(HOSTNAME_PATTERN, {
+        error: "Saisissez un domaine valide, par exemple exemple.fr.",
+      }),
+  );
 
 export const createSiteSchema = z.object({
   name: z

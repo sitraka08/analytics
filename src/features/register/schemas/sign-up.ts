@@ -10,7 +10,9 @@ export const signUpSchema = z.object({
   email: emailField,
   password: newPasswordField,
   // A checked checkbox submits "on"; an unchecked one submits nothing.
-  terms: z.literal("on", { error: "Vous devez accepter les conditions pour créer un compte." }),
+  terms: z.literal("on", {
+    error: "Vous devez accepter les conditions pour créer un compte.",
+  }),
 });
 
 export type SignUpField = keyof z.infer<typeof signUpSchema>;

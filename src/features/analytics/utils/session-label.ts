@@ -6,7 +6,10 @@ export function formatSessionDevice(device: string | null, os: string | null) {
 }
 
 /** Campaign source first, then the referring site; empty means a direct visit. */
-export function formatSessionSource(utmSource: string | null, referrerDomain: string | null) {
+export function formatSessionSource(
+  utmSource: string | null,
+  referrerDomain: string | null,
+) {
   return utmSource ?? referrerDomain ?? "Direct";
 }
 
@@ -21,7 +24,13 @@ export function formatSessionTime(iso: string, timeZone: string, long = false) {
   }).format(new Date(iso));
 }
 
-const clock = (timeZone: string) => new Intl.DateTimeFormat("fr", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone });
+const clock = (timeZone: string) =>
+  new Intl.DateTimeFormat("fr", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone,
+  });
 
 export function formatClock(iso: string, timeZone: string) {
   return clock(timeZone).format(new Date(iso));

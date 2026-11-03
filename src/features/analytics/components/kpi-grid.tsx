@@ -1,5 +1,10 @@
 import type { ChartMetric, Overview } from "../types/analytics";
-import { computeChange, formatDuration, formatInteger, formatPercent } from "../utils/format";
+import {
+  computeChange,
+  formatDuration,
+  formatInteger,
+  formatPercent,
+} from "../utils/format";
 import { KpiCard } from "./kpi-card";
 
 type KpiGridProps = {
@@ -9,9 +14,17 @@ type KpiGridProps = {
   onMetricChange: (metric: ChartMetric) => void;
 };
 
-export function KpiGrid({ overview: { current, previous }, metric, onMetricChange }: KpiGridProps) {
+export function KpiGrid({
+  overview: { current, previous },
+  metric,
+  onMetricChange,
+}: KpiGridProps) {
   return (
-    <div role="group" aria-label="Chiffres clés" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    <div
+      role="group"
+      aria-label="Chiffres clés"
+      className="grid grid-cols-2 gap-3 lg:grid-cols-4"
+    >
       <KpiCard
         tone="blue"
         label="Visiteurs"
@@ -31,13 +44,19 @@ export function KpiGrid({ overview: { current, previous }, metric, onMetricChang
       <KpiCard
         tone="orange"
         label="Durée moyenne d'une visite"
-        value={current.avgDurationMs === null ? "—" : formatDuration(current.avgDurationMs)}
+        value={
+          current.avgDurationMs === null
+            ? "—"
+            : formatDuration(current.avgDurationMs)
+        }
         change={computeChange(current.avgDurationMs, previous.avgDurationMs)}
       />
       <KpiCard
         tone="violet"
         label="Visites sans clic"
-        value={current.bounceRate === null ? "—" : formatPercent(current.bounceRate)}
+        value={
+          current.bounceRate === null ? "—" : formatPercent(current.bounceRate)
+        }
         change={computeChange(current.bounceRate, previous.bounceRate)}
         lowerIsBetter
       />

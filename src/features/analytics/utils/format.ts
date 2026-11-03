@@ -1,6 +1,12 @@
-const compact = new Intl.NumberFormat("fr", { notation: "compact", maximumFractionDigits: 1 });
+const compact = new Intl.NumberFormat("fr", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
 const integer = new Intl.NumberFormat("fr");
-const percent = new Intl.NumberFormat("fr", { style: "percent", maximumFractionDigits: 0 });
+const percent = new Intl.NumberFormat("fr", {
+  style: "percent",
+  maximumFractionDigits: 0,
+});
 
 export function formatCompact(value: number) {
   return compact.format(value);
@@ -20,7 +26,9 @@ export function formatDuration(ms: number) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
-  return minutes > 0 ? `${minutes} min ${String(seconds).padStart(2, "0")} s` : `${seconds} s`;
+  return minutes > 0
+    ? `${minutes} min ${String(seconds).padStart(2, "0")} s`
+    : `${seconds} s`;
 }
 
 /** Relative change vs the previous period; null when there is nothing to compare with. */

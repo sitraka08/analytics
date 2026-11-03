@@ -3,15 +3,26 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
-type HeaderSlot = { node: HTMLElement | null; setNode: (node: HTMLElement | null) => void };
+type HeaderSlot = {
+  node: HTMLElement | null;
+  setNode: (node: HTMLElement | null) => void;
+};
 
 const HeaderSlotContext = createContext<HeaderSlot | null>(null);
 
-export function HeaderSlotProvider({ children }: { children: React.ReactNode }) {
+export function HeaderSlotProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [node, setNode] = useState<HTMLElement | null>(null);
   const value = useMemo(() => ({ node, setNode }), [node]);
 
-  return <HeaderSlotContext.Provider value={value}>{children}</HeaderSlotContext.Provider>;
+  return (
+    <HeaderSlotContext.Provider value={value}>
+      {children}
+    </HeaderSlotContext.Provider>
+  );
 }
 
 /** Where the page's header controls land, on the right of the sticky dashboard header. */

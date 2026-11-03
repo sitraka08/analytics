@@ -12,18 +12,35 @@ type ErrorPanelProps = {
 };
 
 /** Body of the `error.tsx` boundaries: a clear message and a retry. The digest matches the server-side log. */
-export function ErrorPanel({ title, error, onRetry, className }: ErrorPanelProps) {
-  const digest = error instanceof Error ? (error as Error & { digest?: string }).digest : undefined;
+export function ErrorPanel({
+  title,
+  error,
+  onRetry,
+  className,
+}: ErrorPanelProps) {
+  const digest =
+    error instanceof Error
+      ? (error as Error & { digest?: string }).digest
+      : undefined;
 
   useEffect(() => {
     if (error) console.error("error boundary", digest ?? "no digest");
   }, [error, digest]);
 
   return (
-    <div role="alert" className={cn("rounded-3xl bg-cream-deep p-6", className)}>
+    <div
+      role="alert"
+      className={cn("rounded-3xl bg-cream-deep p-6", className)}
+    >
       <h1 className="text-xl font-bold">{title}</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Un problème est survenu de notre côté. Réessayez dans un instant.</p>
-      {digest ? <p className="mt-2 font-mono text-xs text-muted-foreground">Référence : {digest}</p> : null}
+      <p className="mt-2 text-sm text-muted-foreground">
+        Un problème est survenu de notre côté. Réessayez dans un instant.
+      </p>
+      {digest ? (
+        <p className="mt-2 font-mono text-xs text-muted-foreground">
+          Référence : {digest}
+        </p>
+      ) : null}
       <button
         type="button"
         onClick={onRetry}

@@ -8,7 +8,10 @@ type AuthPanelProps = {
   children: React.ReactNode;
 };
 
-function Title({ title, highlight }: Pick<AuthPanelProps, "title" | "highlight">) {
+function Title({
+  title,
+  highlight,
+}: Pick<AuthPanelProps, "title" | "highlight">) {
   const index = highlight ? title.indexOf(highlight) : -1;
   if (!highlight || index === -1) return title;
 
@@ -24,14 +27,23 @@ function Title({ title, highlight }: Pick<AuthPanelProps, "title" | "highlight">
   );
 }
 
-export function AuthPanel({ title, highlight, description, children }: AuthPanelProps) {
+export function AuthPanel({
+  title,
+  highlight,
+  description,
+  children,
+}: AuthPanelProps) {
   return (
     <section className="flex flex-col gap-8">
       <header className="flex flex-col gap-3">
         <h1 className="text-balance text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
           <Title title={title} highlight={highlight} />
         </h1>
-        {description ? <p className="text-pretty text-base leading-relaxed text-muted-foreground">{description}</p> : null}
+        {description ? (
+          <p className="text-pretty text-base leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
       </header>
       {children}
     </section>

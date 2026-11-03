@@ -15,7 +15,10 @@ export function LandingHeader() {
           <ul className="flex items-center gap-8 text-sm text-muted-foreground">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="transition-colors hover:text-foreground">
+                <a
+                  href={link.href}
+                  className="transition-colors hover:text-foreground"
+                >
                   {link.label}
                 </a>
               </li>

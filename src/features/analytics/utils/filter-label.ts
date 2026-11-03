@@ -2,7 +2,11 @@ import type { Filters } from "../schemas/filters";
 
 const regionNames = new Intl.DisplayNames("fr", { type: "region" });
 
-const DEVICE_LABELS: Record<string, string> = { desktop: "Ordinateur", mobile: "Mobile", tablet: "Tablette" };
+const DEVICE_LABELS: Record<string, string> = {
+  desktop: "Ordinateur",
+  mobile: "Mobile",
+  tablet: "Tablette",
+};
 
 /** Device values are "<type>:<os>" ("desktop:Windows"); the OS part can be empty. */
 export function parseDevice(value: string) {

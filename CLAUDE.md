@@ -3,25 +3,31 @@
 Web analytics SaaS (countries, pages, durations, devices, sources…) with **readable** charts: the clear alternative to Vercel Analytics. Fullstack Next.js, no separate backend.
 
 ## Stack
+
 Next.js (latest, App Router) · React · strict TypeScript · Tailwind CSS 4 · shadcn/ui · Postgres (Neon in production, Docker locally) via Drizzle ORM + `pg` · Better Auth · Zod · TanStack Query (dashboard reads: server prefetch + hydration, refetch through API Routes) · pnpm · Vercel. Alias `@/*` → `src/*`.
 
 Next.js moves fast: check `node_modules/next/dist/docs` before using an unfamiliar API.
 
 ## Commands
+
 - `pnpm dev` · `pnpm build` · `pnpm lint`
 - `pnpm db:start` · `pnpm db:stop` · `pnpm db:generate` · `pnpm db:migrate` · `pnpm db:reset` · `pnpm db:studio` (Docker Postgres + drizzle-kit; migrations in `drizzle/`, schema in `src/db/schema/`)
 
 ## Context (read before changing anything)
+
 - `.claude/context/product-and-domain.md` — vision, model, metrics
 - `.claude/context/tracking-and-privacy.md` — collection, visitor hash, GDPR
 
 ## Rules (`.claude/rules/`)
+
 `architecture.md` · `nextjs-app-router.md` · `database-and-api.md` · `tracking-privacy.md` · `design-and-dataviz.md` · `code-quality.md`
 
 ## Skills (`.claude/skills/`)
+
 `new-feature` · `new-page` · `new-form` · `new-analytics-widget` · `review-architecture`
 
 ## Non-negotiables
+
 1. Privacy-first: no cookie, no stored IP, no fingerprinting.
 2. Readability over density: one idea per chart, explicit titles, polished empty states.
 3. Aggregate on the server (SQL), never send large event sets to the client.

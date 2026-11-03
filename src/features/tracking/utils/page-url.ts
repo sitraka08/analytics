@@ -25,7 +25,10 @@ export function parsePageUrl(url: string): PageInfo {
 }
 
 /** Referrer reduced to its domain; navigation inside the site itself is not a referrer. */
-export function getReferrerDomain(referrer: string | undefined, siteDomain: string): string | null {
+export function getReferrerDomain(
+  referrer: string | undefined,
+  siteDomain: string,
+): string | null {
   if (!referrer) return null;
 
   let hostname: string;
@@ -35,6 +38,7 @@ export function getReferrerDomain(referrer: string | undefined, siteDomain: stri
     return null;
   }
 
-  if (hostname === siteDomain || hostname.endsWith(`.${siteDomain}`)) return null;
+  if (hostname === siteDomain || hostname.endsWith(`.${siteDomain}`))
+    return null;
   return hostname.slice(0, 253);
 }

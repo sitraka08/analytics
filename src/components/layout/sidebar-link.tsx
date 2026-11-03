@@ -14,10 +14,14 @@ type SidebarLinkProps = {
 
 export function SidebarLink({ href, label, icon, exact }: SidebarLinkProps) {
   const pathname = usePathname();
-  const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = exact
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <SidebarMenuButton render={<Link href={href} />} isActive={isActive}
+    <SidebarMenuButton
+      render={<Link href={href} />}
+      isActive={isActive}
       tooltip={label}
       className="data-active:bg-sidebar-primary data-active:text-sidebar-primary-foreground data-active:hover:bg-sidebar-primary data-active:hover:text-sidebar-primary-foreground"
     >

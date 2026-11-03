@@ -9,7 +9,8 @@ export function SiteList({ sites }: { sites: SiteSummary[] }) {
       <div className="rounded-4xl bg-cream-deep p-8 sm:p-10">
         <h2 className="text-xl font-bold">Aucun site pour le moment</h2>
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          Ajoutez votre premier site, puis collez une ligne de code dans ses pages pour voir arriver les premières visites.
+          Ajoutez votre premier site, puis collez une ligne de code dans ses
+          pages pour voir arriver les premières visites.
         </p>
         <Link
           href={ROUTES.newSite}
@@ -30,12 +31,19 @@ export function SiteList({ sites }: { sites: SiteSummary[] }) {
             href={ROUTES.site(item.id)}
             className="flex items-center gap-4 rounded-3xl border-2 border-foreground/15 bg-surface p-5 transition-colors hover:border-foreground/35"
           >
-            <span aria-hidden className="grid size-11 place-items-center rounded-full bg-cream-deep">
+            <span
+              aria-hidden
+              className="grid size-11 place-items-center rounded-full bg-cream-deep"
+            >
               <Globe className="size-5" />
             </span>
             <span className="min-w-0">
-              <span className="block truncate font-heading font-bold">{item.name}</span>
-              <span className="block truncate text-sm text-muted-foreground">{item.domain}</span>
+              <span className="block truncate font-heading font-bold">
+                {item.name}
+              </span>
+              <span className="block truncate text-sm text-muted-foreground">
+                {item.domain}
+              </span>
             </span>
           </Link>
         </li>

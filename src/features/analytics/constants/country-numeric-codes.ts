@@ -19,7 +19,7 @@ export const COUNTRY_ALPHA2_BY_NUMERIC: Record<string, string> = {
   "076": "br",
   "084": "bz",
   "090": "sb",
-  "undefined": "xk",
+  undefined: "xk",
   "096": "bn",
   "100": "bg",
   "104": "mm",

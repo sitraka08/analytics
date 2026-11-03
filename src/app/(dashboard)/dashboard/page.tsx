@@ -4,14 +4,21 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { HeaderActions } from "@/components/layout/header-actions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DashboardSkeleton, PeriodTabs, SitesOverview, parsePeriod } from "@/features/analytics";
+import {
+  DashboardSkeleton,
+  PeriodTabs,
+  SitesOverview,
+  parsePeriod,
+} from "@/features/analytics";
 import { requireSession } from "@/features/auth";
 import { SiteList, listSites } from "@/features/sites";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "Vue d'ensemble" };
 
-async function Overview({ searchParams }: Pick<PageProps<"/dashboard">, "searchParams">) {
+async function Overview({
+  searchParams,
+}: Pick<PageProps<"/dashboard">, "searchParams">) {
   const { user } = await requireSession();
   const query = await searchParams;
   const period = parsePeriod(query);
@@ -21,15 +28,23 @@ async function Overview({ searchParams }: Pick<PageProps<"/dashboard">, "searchP
     <div className="flex flex-col gap-6">
       {sites.length > 0 ? (
         <HeaderActions>
-          <PeriodTabs current={period} basePath={ROUTES.dashboard} filters={{}} />
+          <PeriodTabs
+            current={period}
+            basePath={ROUTES.dashboard}
+            filters={{}}
+          />
         </HeaderActions>
       ) : null}
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Bonjour {user.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Bonjour {user.name}
+          </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {sites.length > 0 ? "Vue d'ensemble de tous vos sites." : "Bienvenue ! Commençons par votre premier site."}
+            {sites.length > 0
+              ? "Vue d'ensemble de tous vos sites."
+              : "Bienvenue ! Commençons par votre premier site."}
           </p>
         </div>
         {sites.length > 0 ? (
@@ -54,7 +69,9 @@ async function Overview({ searchParams }: Pick<PageProps<"/dashboard">, "searchP
   );
 }
 
-export default function DashboardPage({ searchParams }: PageProps<"/dashboard">) {
+export default function DashboardPage({
+  searchParams,
+}: PageProps<"/dashboard">) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
       <Suspense

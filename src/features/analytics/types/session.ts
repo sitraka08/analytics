@@ -1,4 +1,8 @@
-export type Place = { country: string | null; region: string | null; city: string | null };
+export type Place = {
+  country: string | null;
+  region: string | null;
+  city: string | null;
+};
 
 export type Session = Place & {
   id: string;

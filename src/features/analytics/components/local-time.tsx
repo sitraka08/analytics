@@ -12,8 +12,15 @@ type LocalTimeProps = { iso: string; variant?: "short" | "long" | "clock" };
 
 /** An instant shown in the viewer's own time zone. */
 export function LocalTime({ iso, variant = "short" }: LocalTimeProps) {
-  const timeZone = useSyncExternalStore(subscribe, browserTimeZone, serverTimeZone);
-  const text = variant === "clock" ? formatClock(iso, timeZone) : formatSessionTime(iso, timeZone, variant === "long");
+  const timeZone = useSyncExternalStore(
+    subscribe,
+    browserTimeZone,
+    serverTimeZone,
+  );
+  const text =
+    variant === "clock"
+      ? formatClock(iso, timeZone)
+      : formatSessionTime(iso, timeZone, variant === "long");
 
   return (
     <time dateTime={iso} suppressHydrationWarning>
