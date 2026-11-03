@@ -3,7 +3,12 @@ import { getScriptUrl } from "../utils/script-url";
 import { InstallTabs } from "./install-tabs";
 import { WaitingForVisit } from "./waiting-for-visit";
 
-type InstallSnippetProps = { publicKey: string; domain: string };
+type InstallSnippetProps = {
+  publicKey: string;
+  domain: string;
+  /** Polls for the first visit; off where the site may already be receiving visits (site settings). */
+  waitForVisit?: boolean;
+};
 
 function Step({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
   return (
@@ -22,7 +27,7 @@ function Step({ number, title, children }: { number: number; title: string; chil
   );
 }
 
-export function InstallSnippet({ publicKey, domain }: InstallSnippetProps) {
+export function InstallSnippet({ publicKey, domain, waitForVisit = true }: InstallSnippetProps) {
   // Sites hosted on Vercel are most often Next.js projects.
   const initialGuideId = domain.endsWith(".vercel.app") ? "nextjs" : undefined;
 
@@ -46,7 +51,11 @@ export function InstallSnippet({ publicKey, domain }: InstallSnippetProps) {
             </p>
           </Step>
           <Step number={3} title="Vérifiez la réception">
-            <WaitingForVisit />
+            {waitForVisit ? (
+              <WaitingForVisit />
+            ) : (
+              <p className="text-sm text-muted-foreground">Les visites apparaissent dans les statistiques quelques secondes après le chargement d&apos;une page.</p>
+            )}
           </Step>
         </ol>
 
